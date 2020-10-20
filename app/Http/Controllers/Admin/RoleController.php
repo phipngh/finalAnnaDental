@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helper\Helper as Helper;
 use App\Http\Controllers\Controller;
 use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
+
 
 class RoleController extends Controller
 {
@@ -35,7 +37,7 @@ class RoleController extends Controller
     public function store(Request $request){
         $rules = array(
             'name'    =>  'required',
-            'slug'    =>  'required',
+            // 'slug'    =>  'required',
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -44,10 +46,10 @@ class RoleController extends Controller
         {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-
+       
         $form_data = array(
             'name'        =>  $request->name,
-            'slug'        =>  $request->slug,
+            'slug'        =>  Helper::slugify($request->name),
         );
 
         Role::create($form_data);
@@ -69,8 +71,6 @@ class RoleController extends Controller
     {
         $rules = array(
             'name'        =>  'required',
-            'slug'        =>  'required',
-
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -82,7 +82,7 @@ class RoleController extends Controller
 
         $form_data = array(
             'name'    =>  $request->name,
-            'slug'    =>  $request->slug,
+            'slug'    =>  Helper::slugify($request->name),
         );
 
         Role::whereId($request->hidden_id)->update($form_data);

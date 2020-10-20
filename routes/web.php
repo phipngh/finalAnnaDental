@@ -39,7 +39,7 @@ Route::group(['as' => 'admin.' , 'prefix' => 'admin' , 'namespace' => 'Admin' , 
 function (){
     Route::get('/',function (){
         return redirect()->route('admin.dashboard');
-    });
+    })->name('index');
     Route::get('dashboard', 'AdminController@dashboard')->name('dashboard');
 
     //Roles
