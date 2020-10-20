@@ -42,12 +42,24 @@ function (){
     })->name('index');
     Route::get('dashboard', 'AdminController@dashboard')->name('dashboard');
 
-    //Roles
-
+    //Role Page 
     Route::get('role','RoleController@index')->name('role');
     Route::post('role','RoleController@store')->name('role.store');
     Route::get('role/{id}/edit','RoleController@edit')->name('role.edit');
     Route::post('role/update','RoleController@update')->name('role.update');
     Route::get('role/destroy/{id}','RoleController@destroy');
+    //Service Page 
+    Route::get('service','ServiceController@index')->name('service');
+    Route::post('service','ServiceController@store')->name('service.store');
+    Route::get('service/{id}/edit','ServiceController@edit')->name('service.edit');
+    Route::post('service/update','ServiceController@update')->name('service.update');
+    Route::get('service/destroy/{id}','ServiceController@destroy');
+
+    //Service Page 
+    Route::get('medicine','MedicineController@index')->name('medicine');
+    Route::post('medicine','MedicineController@store')->name('medicine.store');
+    Route::get('medicine/{id}/edit','MedicineController@edit')->name('medicine.edit');
+    Route::post('medicine/update','MedicineController@update')->name('medicine.update');
+    Route::get('medicine/destroy/{id}','MedicineController@destroy');
 }
 );

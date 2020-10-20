@@ -28,6 +28,22 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{route('admin.service')}}">
+                        <i class="fe-airplay"></i>
+                        <span> Service </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('admin.medicine')}}">
+                        <i class="fe-airplay"></i>
+                        <span> Medicine </span>
+                    </a>
+                </li>
+
+
+
                 <!-- end here -->
                 <hr>
 
