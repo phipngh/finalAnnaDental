@@ -6,18 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
-use App\Service;
+use App\Doctor;
 use App\Helper\Helper as Helper;
 
-
-
-class ServiceController extends Controller
+class DoctorController extends Controller
 {
     public function index(Request $request)
     {
         if($request->ajax())
         {
-            $data = Service::latest()->get();
+            $data = Doctor::latest()->get();
             return DataTables::of($data)
                 ->addColumn('action', function($data){
                     $button = '<button type="button" name="info" id="'.$data->id.'" class="info btn btn-info btn-sm rounded">Info</button>';
@@ -32,10 +30,6 @@ class ServiceController extends Controller
                         return '<span class="badge badge-pill badge-success">Active</span>';
                     }
                 })
-                ->editColumn('price', function ($data) {
-                    
-                    return '$ ' . $data->price;
-                })
                 ->editColumn('note', function ($data) {
                     if($data->note == ''){
                         return '<span class="badge badge-pill badge-warning">Empty</span>';
@@ -47,13 +41,13 @@ class ServiceController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
-        return view('Admin.Services.index');
+        return view('Admin.Doctors.index');
     }
 
     public function store(Request $request){
         $rules = array(
-            'name'    =>  'required|unique:services',
-            'price'    =>  'required|numeric',
+            'name'    =>  'required|unique:doctors',
+            
             // 'slug'    =>  'required',
         );
 
@@ -66,15 +60,18 @@ class ServiceController extends Controller
        
         $form_data = array(
             'name'        =>  $request->name,
-            'price'        =>  $request->price,
-            // 'slug'        =>  $request->name,
-            'slug'        =>  Helper::slugify($request->name),
-            'description'        =>  $request->description,
-            'note'        =>  $request->note,
-            
+            'major'        =>  $request->major,
+            'birthday'        =>  $request->birthday,
+            'sex'        =>  $request->sex,
+            'email'        =>  $request->email,
+            'phone'        =>  $request->phone,
+            'address'        =>  $request->address,
+            'image'        =>  $request->image,
+            'info'        =>  $request->info,
+            'note'        =>  $request->note, 
         );
 
-        Service::create($form_data);
+        Doctor::create($form_data);
 
         return response()->json(['success' => 'Data Added successfully.']);
     }
@@ -83,7 +80,7 @@ class ServiceController extends Controller
     {
         if(request()->ajax())
         {
-            $data = Service::findOrFail($id);
+            $data = Doctor::findOrFail($id);
             return response()->json(['result' => $data]);
         }
     }
@@ -93,16 +90,16 @@ class ServiceController extends Controller
     {
         if(request()->ajax())
         {
-            $data = Service::findOrFail($id);
+            $data = Doctor::findOrFail($id);
             return response()->json(['result' => $data]);
         }
     }
 
-    public function update(Request $request, Service $service)
+    public function update(Request $request, Doctor $doctor)
     {
         $rules = array(
             'name'        =>  'required',
-            'price'        =>  'required|numeric',
+           
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -114,22 +111,26 @@ class ServiceController extends Controller
 
         $form_data = array(
             'name'        =>  $request->name,
-            // 'slug'        =>  $request->name,
-            'price'        =>  $request->price,
-            'slug'        =>  Helper::slugify($request->name),
-            'description'        =>  $request->description,
+            'major'        =>  $request->major,
+            'birthday'        =>  $request->birthday,
+            'sex'        =>  $request->sex,
+            'email'        =>  $request->email,
+            'phone'        =>  $request->phone,
+            'address'        =>  $request->address,
+            'image'        =>  $request->image,
+            'info'        =>  $request->info,
             'note'        =>  $request->note,
            
         );
 
-        Service::whereId($request->hidden_id)->update($form_data);
+        Doctor::whereId($request->hidden_id)->update($form_data);
 
         return response()->json(['success' => 'Data is successfully updated']);
     }
 
     public function destroy($id)
     {
-        $data = Service::findOrFail($id);
+        $data = Doctor::findOrFail($id);
         $data->delete();
     }
 }

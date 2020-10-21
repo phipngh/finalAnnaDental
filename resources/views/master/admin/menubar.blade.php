@@ -42,6 +42,12 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{route('admin.doctor')}}">
+                        <i class="fe-airplay"></i>
+                        <span> Doctor </span>
+                    </a>
+                </li>
 
 
                 <!-- end here -->

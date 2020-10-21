@@ -48,9 +48,11 @@ function (){
     Route::get('role/{id}/edit','RoleController@edit')->name('role.edit');
     Route::post('role/update','RoleController@update')->name('role.update');
     Route::get('role/destroy/{id}','RoleController@destroy');
+    
     //Service Page 
     Route::get('service','ServiceController@index')->name('service');
     Route::post('service','ServiceController@store')->name('service.store');
+    Route::get('service/{id}/info','ServiceController@info')->name('service.info');
     Route::get('service/{id}/edit','ServiceController@edit')->name('service.edit');
     Route::post('service/update','ServiceController@update')->name('service.update');
     Route::get('service/destroy/{id}','ServiceController@destroy');
@@ -58,8 +60,19 @@ function (){
     //Service Page 
     Route::get('medicine','MedicineController@index')->name('medicine');
     Route::post('medicine','MedicineController@store')->name('medicine.store');
+    Route::get('medicine/{id}/info','MedicineController@info')->name('medicine.info');
     Route::get('medicine/{id}/edit','MedicineController@edit')->name('medicine.edit');
     Route::post('medicine/update','MedicineController@update')->name('medicine.update');
     Route::get('medicine/destroy/{id}','MedicineController@destroy');
+
+    //Service Page 
+    Route::get('doctor','DoctorController@index')->name('doctor');
+    Route::post('doctor','DoctorController@store')->name('doctor.store');
+    Route::get('doctor/{id}/info','DoctorController@info')->name('doctor.info');
+    Route::get('doctor/{id}/edit','DoctorController@edit')->name('doctor.edit');
+    Route::post('doctor/update','DoctorController@update')->name('doctor.update');
+    Route::get('doctor/destroy/{id}','DoctorController@destroy');
+
+
 }
 );
