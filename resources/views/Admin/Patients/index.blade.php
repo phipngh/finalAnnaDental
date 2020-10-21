@@ -21,29 +21,31 @@
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="{{route('admin.index')}}">AnnaDental</a></li>
                     <!-- <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li> -->
-                    <li class="breadcrumb-item active">Services</li>
+                    <li class="breadcrumb-item active">Patients</li>
                 </ol>
             </div>
-            <h4 class="page-title">Services Page</h4>
+            <h4 class="page-title">Patients Page</h4>
         </div>
     </div>
 </div>
 
 <div class="row">
     <div class="col-12">
-        <a type="button" name="create_record" id="create_record" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Service</span></a>
+        <a type="button" name="create_record" id="create_record" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Doctor</span></a>
     </div>
     <div class="col-12">
         <div class="card-box table-responsive">
-            <h4 class="header-title text-center text-primary"><b>Services</b></h4>
+            <h4 class="header-title text-center text-primary"><b>Patients</b></h4>
             <table id="catelogy_table" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                 <thead>
                     <tr class="text-primary">
                         <th style="width: 1%;">#</th>
                         <th style="width: 1%;">ID</th>
                         <th>Name</th>
-                        <th>Price</th>
-                        <th style="width: 2%;">Description</th>
+                        <th>Birthday</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th style="width: 2%;">Info</th>
                         <th style="width: 2%;">Note</th>
                         <th style="width: 10%;">Action</th>
                     </tr>
@@ -65,40 +67,61 @@
             <form id="sample_form" method="POST">
                 @csrf
                 <div class="modal-header text-center">
-                    <h4 class="modal-title col-12 text-center" id="myExtraLargeModalLabel">???</h4>
+                    <h4 class="modal-title col-12 text-center" id="myExtraLargeModalLabel"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body" style="height: 85vh;
     overflow-y: auto;">
                     <span id="form_result"></span>
                     <div class="form-group form-row">
-                        <div class="col-8">
+                        <div class="col-6">
                             <label>Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter Service Name">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter Doctor Name">
                         </div>
-                        <div class="col">
-                            <label>Price</label>
-                            <div class="input-group mr-sm-2">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">$</div>
-                                </div>
-                                <input type="" class="form-control" id="price" name="price" placeholder="Enter Service Price">
-                            </div>
+                        <div class="col-6">
+                        <label>Image</label>
+                            <input type="text" class="form-control" id="image" name="image" placeholder="Enter Doctor Image">
                         </div>
                     </div>
-
+                    <div class="form-row">
+                        <div class="col">
+                            <label>Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter Doctor Email">
+                        </div>
+                        <div class="col">
+                            <label>Gender</label>
+                            <select class="custom-select" name="sex" id="sex" place>
+                                <option disabled selected>Select Your Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Unknown">Unknown</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label>Birthday</label>
+                            <input type="date" class="form-control" id="birthday" name="birthday" placeholder="Enter Doctor Birthday">
+                        </div>
+                    </div>
+                    <div class="mt-2 form-row">
+                        <div class="col-8">
+                            <label>Address</label>
+                            <textarea class="form-control mb-1" name="address" id="address" rows="4" placeholder="Enter Doctor Address"></textarea>
+                        </div>
+                        <div class="col">
+                            <label>Phone Number</label>
+                            <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Doctor Phone Number">
+                        </div>
+                    </div>
                     <div class="form-row">
                         <div class="col-6">
-                            <label>Description</label>
-                            <textarea type="text" class="form-control" id="ckeditor1" name="description" placeholder="Enter Service Description" rows="6"></textarea>
+                            <label>Info</label>
+                            <textarea type="text" class="form-control" id="ckeditor1" name="info" placeholder="Enter Doctor Info" rows="6"></textarea>
                         </div>
                         <div class="col-6">
                             <label>Note</label>
-                            <textarea type="text" class="form-control" id="ckeditor2" name="note" placeholder="Enter Service Note" rows="4"></textarea>
+                            <textarea type="text" class="form-control" id="ckeditor2" name="note" placeholder="Enter Doctor Note" rows="4"></textarea>
                         </div>
                     </div>
-
-
                     <div class="modal-footer">
                         <input type="button" class="btn btn-danger" data-dismiss="modal" id="cancel_button" value="Cancel">
                         <input type="hidden" id="action" name="action" value="Add" />
@@ -116,49 +139,71 @@
 <!-- ---------INFO---------- -->
 
 <div id="infoModal" name="infoModal" class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+<div class="modal-dialog modal-xl" style="overflow-y: initial !important;">
         <div class="modal-content">
-            <form id="sample_form" method="POST">
-                <div class="modal-header text-center">
-                    <h4 class="modal-title col-12 text-center" id="myExtraLargeModalLabel">Service</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                </div>
-                <div class="modal-body">
-                    <span id="form_result"></span>
-                    <div class="form-group form-row">
-                        <div class="col-6">
-                            <label>Name</label>
-                            <input type="text" class="form-control" id="name_info" name="name_info" disabled>
-                        </div>
-                        <div class="col-4">
-                            <label>Slug</label>
-                            <input type="text" class="form-control" id="slug_info" name="slug_info" disabled>
-                        </div>
-                        <div class="col">
-                            <label>Price</label>
-                            <div class="input-group mr-sm-2">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">$</div>
-                                </div>
-                                <input type="" class="form-control" id="price_info" name="price_info" disabled>
-                            </div>
-                        </div>
+
+            <div class="modal-header text-center">
+                <h4 class="modal-title col-12 text-center" id="myExtraLargeModalLabel">Doctor</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" style="height: 85vh;
+    overflow-y: auto;">
+                <div class="form-group form-row">
+                    <div class="col-6">
+                        <label>Name</label>
+                        <input type="text" class="form-control" id="name_info" name="name_info" disabled>
                     </div>
-                    <div class="form-row">
-                        <div class="col-6">
-                            <label>Description</label>
-                            <textarea type="text" class="form-control" id="ckeditor1_info" name="description_info" rows="6" disabled></textarea>
-                        </div>
-                        <div class="col-6">
-                            <label>Note</label>
-                            <textarea type="text" class="form-control" id="ckeditor2_info" name="note_info" rows="4" disabled></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-danger" data-dismiss="modal" id="cancel_button" value="Cancel">
+                    <div class="col-6">
+                    <label>Image</label>
+                        <input type="text" class="form-control" id="image_info" name="image_info" disabled>
                     </div>
                 </div>
-            </form>
+                <div class="form-row">
+                    <div class="col">
+                        <label>Email</label>
+                        <input type="email" class="form-control" id="email_info" name="email_info" disabled>
+                    </div>
+                    <div class="col">
+                        <label>Gender</label>
+                        <select class="custom-select" name="sex_info" id="sex_info" disabled>
+                            <option disabled selected>Select Your Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Unknown">Unknown</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label>Birthday</label>
+                        <input type="date" class="form-control" id="birthday_info" name="birthday_info" disabled>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-8">
+                        <label>Address</label>
+                        <textarea class="form-control mb-1" name="address_info" id="address_info" rows="4" disabled></textarea>
+                    </div>
+                    <div class="col">
+                       
+                        <label>Phone</label>
+                        <input type="number" class="form-control" id="phone_info" name="phone_info" disabled>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-6">
+                        <label>Info</label>
+                        <textarea type="text" class="form-control" id="ckeditor1_info" name="info_info" placeholder="Enter Doctor Description" rows="6" disabled></textarea>
+                    </div>
+                    <div class="col-6">
+                        <label>Note</label>
+                        <textarea type="text" class="form-control" id="ckeditor2_info" name="note_info" placeholder="Enter Doctor Note" rows="4" disabled></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-danger" data-dismiss="modal" value="Cancel">
+
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -198,16 +243,16 @@
 <script src="{{ asset('AdminSide/libs/ckeditor/ckeditor.js') }}"></script>
 <script>
     CKEDITOR.replace('ckeditor1', {
-        height: 300
+        height: 150
     });
     CKEDITOR.replace('ckeditor2', {
-        height: 300
+        height: 150
     });
     CKEDITOR.replace('ckeditor1_info', {
-        height: 300,
+        height: 150,
     });
     CKEDITOR.replace('ckeditor2_info', {
-        height: 300
+        height: 150
     });
 </script>
 
@@ -268,6 +313,18 @@
                     "className": "text-center text-info",
                 },
                 {
+                    "targets": 2,
+                    "className": "text-center h5 text-primary text-bold",
+                },
+                {
+                    "targets": 3,
+                    "className": "text-center h5 text-primary text-bold",
+                },
+                {
+                    "targets": 4,
+                    "className": "text-center",
+                },
+                {
                     "targets": 5,
                     "className": "text-center",
                 },
@@ -275,19 +332,6 @@
                     "targets": 6,
                     "className": "text-center",
                 },
-                {
-                    "targets": 4,
-                    "className": "text-center",
-                },
-                {
-                    "targets": 3,
-                    "className": "text-center h5 text-primary text-bold",
-                },
-                {
-                    "targets": 2,
-                    "className": "text-center h5 text-primary text-bold",
-                },
-
             ],
             "order": [
                 [1, "asc"]
@@ -295,7 +339,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('admin.service') }}",
+                url: "{{ route('admin.patient') }}",
             },
             columns: [{
                     data: 'DT_RowIndex',
@@ -310,8 +354,16 @@
                     name: 'name'
                 },
                 {
-                    data: 'price',
-                    name: 'price'
+                    data: 'birthday',
+                    name: 'birthday'
+                },
+                {
+                    data: 'email',
+                    name: 'email'
+                },
+                {
+                    data: 'phone',
+                    name: 'phone'
                 },
                 {
                     data: 'description',
@@ -338,13 +390,11 @@
             $('#action').val('Add');
             $('#form_result').html('');
             $('#name').val('');
-            $('#price').val('');
             CKEDITOR.instances.ckeditor1.setData("");
             CKEDITOR.instances.ckeditor2.setData("");
-            $('#note').val('');
 
             // $('#slug').val('');
-            $('.modal-title').text('Services');
+            $('.modal-title').text('Patients');
             $('#formModal').modal('show');
         });
 
@@ -366,11 +416,11 @@
             var action_url = '';
 
             if ($('#action').val() == 'Add') {
-                action_url = "{{ route('admin.service.store') }}";
+                action_url = "{{ route('admin.patient.store') }}";
             }
 
             if ($('#action').val() == 'Edit') {
-                action_url = "{{ route('admin.service.update') }}";
+                action_url = "{{ route('admin.patient.update') }}";
             }
 
             for (instance in CKEDITOR.instances) {
@@ -428,14 +478,19 @@
         $(document).on('click', '.info', function() {
             var id = $(this).attr('id');
             $.ajax({
-                url: "/admin/service/" + id + "/info",
+                url: "/admin/patient/" + id + "/info",
                 dataType: "json",
                 success: function(data) {
 
                     $('#name_info').val(data.result.name);
-                    $('#slug_info').val(data.result.slug);
-                    $('#price_info').val(data.result.price);
-                    CKEDITOR.instances.ckeditor1_info.setData(data.result.description);
+           
+                    $('#birthday_info').val(data.result.birthday);
+                    $('#sex_info').val(data.result.sex);
+                    $('#email_info').val(data.result.email);
+                    $('#phone_info').val(data.result.phone);
+                    $('#address_info').val(data.result.address);
+                    $('#image_info').val(data.result.image);
+                    CKEDITOR.instances.ckeditor1_info.setData(data.result.info);
                     CKEDITOR.instances.ckeditor2_info.setData(data.result.note);
                     // var descHtml ='<div class="p-1 overflow-auto">';
                     // descHtml += data.result.description;
@@ -461,15 +516,21 @@
             var id = $(this).attr('id');
             $('#form_result').html('');
             $.ajax({
-                url: "/admin/service/" + id + "/edit",
+                url: "/admin/patient/" + id + "/edit",
                 dataType: "json",
                 success: function(data) {
                     $('#name').val(data.result.name);
-                    $('#price').val(data.result.price);
-                    CKEDITOR.instances.ckeditor1.setData(data.result.description);
+               
+                    $('#birthday').val(data.result.birthday);
+                    $('#sex').val(data.result.sex);
+                    $('#email').val(data.result.email);
+                    $('#phone').val(data.result.phone);
+                    $('#address').val(data.result.address);
+                    $('#image').val(data.result.image);
+
+                    CKEDITOR.instances.ckeditor1.setData(data.result.info);
                     CKEDITOR.instances.ckeditor2.setData(data.result.note);
                     //$('#description').val(data.result.description);
-                    $('#note').val(data.result.note);
                     // $('#slug').val(data.result.slug);
                     $('#hidden_id').val(id);
                     $('.modal-title').text('Services');
@@ -497,7 +558,7 @@
             }).then(function(t) {
                 if (t.value) {
                     $.ajax({
-                        url: "/admin/service/destroy/" + user_id,
+                        url: "/admin/patient/destroy/" + user_id,
                         success: function(data) {
                             $('#catelogy_table').DataTable().ajax.reload();
                         }

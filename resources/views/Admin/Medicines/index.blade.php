@@ -63,7 +63,7 @@
 <!-- ------------------- -->
 
 <div id="formModal" name="formModal" class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+<div class="modal-dialog modal-xl" style="overflow-y: initial !important;">
         <div class="modal-content ">
             <form id="sample_form" method="POST">
                 @csrf
@@ -71,7 +71,8 @@
                     <h4 class="modal-title col-12 text-center" id="myExtraLargeModalLabel">Medicine</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="height: 85vh;
+    overflow-y: auto;">
                     <span id="form_result"></span>
                     <div class="form-group form-row">
                         <div class="col-8">

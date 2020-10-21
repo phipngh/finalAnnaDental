@@ -65,7 +65,7 @@ function (){
     Route::post('medicine/update','MedicineController@update')->name('medicine.update');
     Route::get('medicine/destroy/{id}','MedicineController@destroy');
 
-    //Service Page 
+    //Doctor Page 
     Route::get('doctor','DoctorController@index')->name('doctor');
     Route::post('doctor','DoctorController@store')->name('doctor.store');
     Route::get('doctor/{id}/info','DoctorController@info')->name('doctor.info');
@@ -73,6 +73,12 @@ function (){
     Route::post('doctor/update','DoctorController@update')->name('doctor.update');
     Route::get('doctor/destroy/{id}','DoctorController@destroy');
 
-
+    //patient Page 
+    Route::get('patient','PatientController@index')->name('patient');
+    Route::post('patient','PatientController@store')->name('patient.store');
+    Route::get('patient/{id}/info','PatientController@info')->name('patient.info');
+    Route::get('patient/{id}/edit','PatientController@edit')->name('patient.edit');
+    Route::post('patient/update','PatientController@update')->name('patient.update');
+    Route::get('patient/destroy/{id}','PatientController@destroy');
 }
 );
