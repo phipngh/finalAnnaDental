@@ -80,5 +80,7 @@ function (){
     Route::get('patient/{id}/edit','PatientController@edit')->name('patient.edit');
     Route::post('patient/update','PatientController@update')->name('patient.update');
     Route::get('patient/destroy/{id}','PatientController@destroy');
+    Route::get('patient/{id}','PatientController@detail')->name('patient.detail');
+    
 }
 );

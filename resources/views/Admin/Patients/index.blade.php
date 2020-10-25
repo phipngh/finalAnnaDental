@@ -31,7 +31,7 @@
 
 <div class="row">
     <div class="col-12">
-        <a type="button" name="create_record" id="create_record" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Doctor</span></a>
+        <a type="button" name="create_record" id="create_record" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Patient</span></a>
     </div>
     <div class="col-12">
         <div class="card-box table-responsive">
@@ -76,22 +76,22 @@
                     <div class="form-group form-row">
                         <div class="col-6">
                             <label>Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter Doctor Name">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter Patient Name">
                         </div>
                         <div class="col-6">
-                        <label>Image</label>
-                            <input type="text" class="form-control" id="image" name="image" placeholder="Enter Doctor Image">
+                            <label>Image</label>
+                            <input type="text" class="form-control" id="image" name="image" placeholder="Enter Patient Image">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col">
                             <label>Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter Doctor Email">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter Patient Email">
                         </div>
                         <div class="col">
                             <label>Gender</label>
                             <select class="custom-select" name="sex" id="sex" place>
-                                <option disabled selected>Select Your Gender</option>
+                                <option disabled selected>Select Patient Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                                 <option value="Unknown">Unknown</option>
@@ -99,27 +99,28 @@
                         </div>
                         <div class="col">
                             <label>Birthday</label>
-                            <input type="date" class="form-control" id="birthday" name="birthday" placeholder="Enter Doctor Birthday">
+                            <input type="date" class="form-control" id="birthday" name="birthday" placeholder="Enter Patient Birthday">
                         </div>
                     </div>
                     <div class="mt-2 form-row">
-                        <div class="col-8">
-                            <label>Address</label>
-                            <textarea class="form-control mb-1" name="address" id="address" rows="4" placeholder="Enter Doctor Address"></textarea>
-                        </div>
                         <div class="col">
                             <label>Phone Number</label>
-                            <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Doctor Phone Number">
+                            <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Patient Phone Number">
                         </div>
+                        <div class="col-8">
+                            <label>Address</label>
+                            <textarea class="form-control mb-1" name="address" id="address" rows="4" placeholder="Enter Patient Address"></textarea>
+                        </div>
+
                     </div>
                     <div class="form-row">
                         <div class="col-6">
                             <label>Info</label>
-                            <textarea type="text" class="form-control" id="ckeditor1" name="info" placeholder="Enter Doctor Info" rows="6"></textarea>
+                            <textarea type="text" class="form-control" id="ckeditor1" name="info" placeholder="Enter Patient Info" rows="6"></textarea>
                         </div>
                         <div class="col-6">
                             <label>Note</label>
-                            <textarea type="text" class="form-control" id="ckeditor2" name="note" placeholder="Enter Doctor Note" rows="4"></textarea>
+                            <textarea type="text" class="form-control" id="ckeditor2" name="note" placeholder="Enter Patient Note" rows="4"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -133,17 +134,19 @@
         </div>
     </div>
 </div>
+
+
 <!-- ------------------- -->
 
 
 <!-- ---------INFO---------- -->
 
 <div id="infoModal" name="infoModal" class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-xl" style="overflow-y: initial !important;">
+    <div class="modal-dialog modal-xl" style="overflow-y: initial !important;">
         <div class="modal-content">
 
             <div class="modal-header text-center">
-                <h4 class="modal-title col-12 text-center" id="myExtraLargeModalLabel">Doctor</h4>
+                <h4 class="modal-title col-12 text-center" id="myExtraLargeModalLabel">Patient</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body" style="height: 85vh;
@@ -154,7 +157,7 @@
                         <input type="text" class="form-control" id="name_info" name="name_info" disabled>
                     </div>
                     <div class="col-6">
-                    <label>Image</label>
+                        <label>Image</label>
                         <input type="text" class="form-control" id="image_info" name="image_info" disabled>
                     </div>
                 </div>
@@ -178,24 +181,23 @@
                     </div>
                 </div>
                 <div class="form-row">
+                    <div class="col">
+                        <label>Phone</label>
+                        <input type="number" class="form-control" id="phone_info" name="phone_info" disabled>
+                    </div>
                     <div class="col-8">
                         <label>Address</label>
                         <textarea class="form-control mb-1" name="address_info" id="address_info" rows="4" disabled></textarea>
-                    </div>
-                    <div class="col">
-                       
-                        <label>Phone</label>
-                        <input type="number" class="form-control" id="phone_info" name="phone_info" disabled>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-6">
                         <label>Info</label>
-                        <textarea type="text" class="form-control" id="ckeditor1_info" name="info_info" placeholder="Enter Doctor Description" rows="6" disabled></textarea>
+                        <textarea type="text" class="form-control" id="ckeditor1_info" name="info_info" placeholder="Enter Patient Description" rows="6" disabled></textarea>
                     </div>
                     <div class="col-6">
                         <label>Note</label>
-                        <textarea type="text" class="form-control" id="ckeditor2_info" name="note_info" placeholder="Enter Doctor Note" rows="4" disabled></textarea>
+                        <textarea type="text" class="form-control" id="ckeditor2_info" name="note_info" placeholder="Enter Patient Note" rows="4" disabled></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -366,8 +368,8 @@
                     name: 'phone'
                 },
                 {
-                    data: 'description',
-                    name: 'description'
+                    data: 'info',
+                    name: 'info'
                 },
                 {
                     data: 'note',
@@ -483,7 +485,7 @@
                 success: function(data) {
 
                     $('#name_info').val(data.result.name);
-           
+
                     $('#birthday_info').val(data.result.birthday);
                     $('#sex_info').val(data.result.sex);
                     $('#email_info').val(data.result.email);
@@ -520,7 +522,7 @@
                 dataType: "json",
                 success: function(data) {
                     $('#name').val(data.result.name);
-               
+
                     $('#birthday').val(data.result.birthday);
                     $('#sex').val(data.result.sex);
                     $('#email').val(data.result.email);

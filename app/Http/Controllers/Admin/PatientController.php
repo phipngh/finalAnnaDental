@@ -19,12 +19,13 @@ class PatientController extends Controller
             return DataTables::of($data)
                 ->addColumn('action', function($data){
                     $button = '<button type="button" name="info" id="'.$data->id.'" class="info btn btn-info btn-sm rounded">Info</button>';
+                    $button .= '&nbsp;&nbsp;&nbsp;<a href="/admin/patient/'.$data->id.'" class="btn btn-dark btn-sm rounded">Detail</a>';
                     $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-secondary btn-sm rounded">Edit</button>';
                     $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm rounded">Delete</button>';
                     return $button;
                 })
-                ->editColumn('description', function ($data) {
-                    if($data->description == ''){
+                ->editColumn('info', function ($data) {
+                    if($data->info == ''){
                         return '<span class="badge badge-pill badge-warning">Empty</span>';
                     }else{
                         return '<span class="badge badge-pill badge-success">Active</span>';
@@ -37,7 +38,7 @@ class PatientController extends Controller
                         return '<span class="badge badge-pill badge-success">Active</span>';
                     }
                 })
-                ->rawColumns(['action','description','note','ordinal'])
+                ->rawColumns(['action','info','note','ordinal'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -130,5 +131,11 @@ class PatientController extends Controller
     {
         $data = Patient::findOrFail($id);
         $data->delete();
+    }
+
+
+    public function detail($id){
+        $patient = Patient::findOrFail($id);
+        return view('Admin.Patients.detail',compact('patient'));
     }
 }
