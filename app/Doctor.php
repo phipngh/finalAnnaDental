@@ -9,4 +9,9 @@ class Doctor extends Model
     protected $fillable = [
         'name','major','birthday','sex','email','phone','address','image','info','note'
     ];
+
+
+    public function caserecord(){
+        return $this->hasMany('App\CaseRecord');
+    }
 }

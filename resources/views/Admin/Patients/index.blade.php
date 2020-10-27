@@ -70,8 +70,7 @@
                     <h4 class="modal-title col-12 text-center" id="myExtraLargeModalLabel"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
-                <div class="modal-body" style="height: 85vh;
-    overflow-y: auto;">
+                <div class="modal-body" style=" overflow-y: auto;">
                     <span id="form_result"></span>
                     <div class="form-group form-row">
                         <div class="col-6">
@@ -543,8 +542,9 @@
                 }
             })
         });
-        var user_id;
 
+
+        var user_id;
         $(document).on('click', '.delete', function() {
             user_id = $(this).attr('id');
             Swal.fire({

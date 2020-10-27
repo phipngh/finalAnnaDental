@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\CaseRecord;
+use App\Doctor;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use App\Patient;
+use Illuminate\Support\Facades\DB;
 use App\Helper\Helper as Helper;
 
 class PatientController extends Controller
@@ -24,6 +27,10 @@ class PatientController extends Controller
                     $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm rounded">Delete</button>';
                     return $button;
                 })
+                ->editColumn('name', function ($data) {
+                    $button = '<a href="/admin/patient/'.$data->id.'">'.$data->name.'</a>';
+                    return $button;
+                })
                 ->editColumn('info', function ($data) {
                     if($data->info == ''){
                         return '<span class="badge badge-pill badge-warning">Empty</span>';
@@ -38,7 +45,7 @@ class PatientController extends Controller
                         return '<span class="badge badge-pill badge-success">Active</span>';
                     }
                 })
-                ->rawColumns(['action','info','note','ordinal'])
+                ->rawColumns(['action','info','note','name','ordinal'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -133,9 +140,13 @@ class PatientController extends Controller
         $data->delete();
     }
 
+    // Detail Patient
 
     public function detail($id){
         $patient = Patient::findOrFail($id);
-        return view('Admin.Patients.detail',compact('patient'));
+        $doctors = Doctor::all();
+        //$caserecords = DB::table('case_records')->where('patient_id',$id)->get();
+        $caserecords = CaseRecord::where('patient_id',$id)->get();
+        return view('Admin.Patients.detail',compact('patient','doctors','caserecords'));
     }
 }

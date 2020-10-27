@@ -79,8 +79,19 @@ function (){
     Route::get('patient/{id}/info','PatientController@info')->name('patient.info');
     Route::get('patient/{id}/edit','PatientController@edit')->name('patient.edit');
     Route::post('patient/update','PatientController@update')->name('patient.update');
+    Route::post('patient/{id}/update','PatientController@update')->name('patient.update.detail');
     Route::get('patient/destroy/{id}','PatientController@destroy');
     Route::get('patient/{id}','PatientController@detail')->name('patient.detail');
     
+    //Case Record Page 
+    
+    // Route::post('patient/{id}/caserecord','CaseRecordController@store')->name('caserecord.store');
+    Route::post('caserecord','CaseRecordController@store')->name('caserecord.store');
+    Route::get('caserecord/{id}/edit','CaseRecordController@edit')->name('caserecord.edit');
+    Route::post('caserecord/update','CaseRecordController@update')->name('caserecord.update');
+    Route::post('caserecord/{id}/update','CaseRecordController@update')->name('caserecord.update.detail');
+    Route::get('caserecord/destroy/{id}','CaseRecordController@destroy');
+    Route::get('caserecord/{id}','CaseRecordController@detail')->name('caserecord.detail');
+
 }
 );
