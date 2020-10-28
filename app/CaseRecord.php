@@ -25,4 +25,8 @@ class CaseRecord extends Model
     public function patient(){
         return $this->belongsTo('App\Patient','patient_id');
     }
+
+    public function caserecorddetails(){
+        return $this->hasMany('App\CaseRecordDetail');
+    }
 }

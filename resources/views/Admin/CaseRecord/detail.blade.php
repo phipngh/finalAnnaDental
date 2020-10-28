@@ -39,7 +39,7 @@
             <div class="card-body" style="font-size: 1.1rem;">
                 <p>Patient : {{$caserecord->patient->name}}</p>
                 <p>Doctor : {{$caserecord->doctor->name}}</p>
-                <p>Toatal Fee : Null</p>
+                <p>Total Fee : $ {{$caserecord->total_fee}}</p>
                 @if($caserecord->is_paied == 0)
                 <span class="badge badge-warning">Unpaid</span>
                 @else
@@ -55,7 +55,7 @@
         </div>
     </div>
     <div class="col-md-8">
-        <div class="card-box">
+        <div class="card-box" id="main-card-box">
             <ul class="nav nav-tabs nav-bordered nav-justified">
                 <li class="nav-item">
                     <a href="#desbox" data-toggle="tab" aria-expanded="true" class="nav-link active">
@@ -99,18 +99,77 @@
                     </div>
                 </div> <!-- end col-->
                 <div class="col-sm-10">
-                    <div class="tab-content pt-0">
+                    <div class="tab-content pt-0" id="below-tab-content">
                         <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                            <p class="mb-0">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+                            @if($crds->count() > 0 )
+
+                            <div class="card-box">
+                                <a id="create_crDetail" name="create_crDetail" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
+                                <h4 class="header-title text-center my-2">All Case Record Detail</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 5%;">#</th>
+                                                <th style="width: 25%;">Service</th>
+                                                <th style="width: 15%;">Price</th>
+                                                <th>Note</th>
+                                                <th style="width: 15%;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @php
+                                            $index = 1;
+                                            $total = 0;
+                                            @endphp
+
+                                            @foreach($crds as $crd)
+                                            <tr>
+                                                <th scope="row">{{$index}}</th>
+                                                <td>{{$crd->service->name}}</td>
+                                                <td>{{$crd->service->price}}</td>
+                                                <td>{{$crd->note}}</td>
+                                                <td>
+                                                    <button type="button" name="edit_crDetail" id="{{$crd->id}}" class="edit_crDetail btn btn-info btn-sm rounded">Edit</button>
+                                                    &nbsp;&nbsp;&nbsp;
+                                                    <button type="button" name="delete_crDetail" id="{{$crd->id}}" class="delete_crDetail btn btn-danger btn-sm rounded">Delete</button>
+                                                </td>
+                                            </tr>
+                                            @php
+                                            $index++;
+                                            $total += $crd->service->price;
+                                            @endphp
+
+                                            @endforeach
+                                            <tr class="table-primary">
+                                                <th scope="">---</th>
+                                                <td class="font-weight-bold">Total</td>
+                                                <td class="font-weight-bold">{{$total}}</td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+
+                            @else
+                            <div class="col-12 text-center">
+                                <p>Theres no detail recorded.</p>
+                                <a id="create_crDetail" name="create_crDetail" type="button" class="btn btn-primary mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
+                                
+                            </div>
+
+
+                            @endif
                         </div>
                         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                            <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
-                            <p class="mb-0">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
+
                         </div>
                         <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                            <p class="mb-0">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+
                         </div>
                     </div>
                 </div> <!-- end col-->
@@ -120,6 +179,64 @@
 
     <!-- end col -->
 </div>
+
+<hr>
+
+
+
+<!-- CR Detail -->
+
+
+<!-- ------------------------ -->
+<div id="crDetailModal" name="crDetailModal" class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" style="overflow-y: initial !important;">
+        <div class="modal-content">
+            <form id="crDetailForm" method="POST">
+                @csrf
+                <div class="modal-header text-center">
+                    <h4 class="modal-title_crDetail col-12 text-center" id="myExtraLargeModalLabel"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body" style=" overflow-y: auto;">
+                    <span id="form_result_crDetail"></span>
+                    <div class="modal-append">
+                        <!-- ----- -->
+                        <div class="form-group form-row">
+                            <div class="col-4">
+                                <label>Service</label>
+                                <select class="custom-select" name="service_id_crDetail" id="service_id_crDetail" place>
+                                    @foreach($services as $service )
+                                    <option value="{{$service->id}}">{{$service->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-8">
+                                <label>Note</label>
+                                <textarea type="text" class="form-control" id="note_crDetail" name="note_crDetail" rows="1" placeholder="Enter Patient Name"></textarea>
+                            </div>
+                        </div>
+                        <!-- ----- -->
+                    </div>
+                    <input type="hidden" id="case_record_id_crDetail" name="case_record_id_crDetail" value="{{$caserecord->id}}">
+
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-danger" data-dismiss="modal" id="cancel_button" value="Cancel">
+                        <input type="hidden" id="action_crDetail" name="action_crDetail" value="Add" />
+                        <input type="hidden" id="hidden_id_crDetail" name="hidden_id_crDetail" />
+                        <input type="submit" id="action_button_crDetail" name="action_button_crDetail" class="btn btn-success" value="Add">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!--End  CR Detail -->
+
+
+
 
 <!-- ------------------------ -->
 <div id="createModal" name="createModal" class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
@@ -192,6 +309,7 @@
     </div>
 </div>
 
+
 <!-- ------------ -->
 
 @endsection
@@ -200,6 +318,144 @@
 <script src="{{asset('AdminSide/libs/sweetalert2/sweetalert2.min.js')}}"></script>
 <script src="{{ asset('AdminSide/libs/ckeditor/ckeditor.js') }}"></script>
 
+<!-- crDetail -->
+
+
+<script>
+    $(document).ready(function() {
+        $(document).ready(function() {
+            $('#create_crDetail').click(function() {
+                $('#action_button_crDetail').val('Add');
+                $('#action_crDetail').val('Add');
+                $('#form_result_crDetail').html('');
+                $('#note_crDetail').val('');
+                // $('#slug').val('');
+                $('.modal-title_crDetail').text('Case Record Detail');
+                $('#crDetailModal').modal('show');
+            });
+        });
+
+        $('#cancel_button').click(function() {
+            if ($('#action_crDetail').val() == 'Edit') {
+                Swal.fire({
+                    title: "Cancelled",
+                    text: "Your data is safe :)",
+                    type: "error",
+                    position: "center",
+                    showConfirmButton: !1,
+                    timer: 1500,
+                })
+            }
+        });
+
+        $('#crDetailForm').on('submit', function(event) {
+            event.preventDefault();
+            var action_url = '';
+
+            if ($('#action_crDetail').val() == 'Add') {
+                action_url = "{{ route('admin.caserecorddetail.store') }}";
+            }
+
+            if ($('#action_crDetail').val() == 'Edit') {
+                action_url = "{{ route('admin.caserecorddetail.update') }}";
+            }
+            $.ajax({
+
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: action_url,
+                method: "POST",
+                data: $(this).serialize(),
+                // data: $("form[name='formModal']").serialize(),
+                dataType: "json",
+
+                success: function(data) {
+
+                    
+
+                    if (data.success) {
+                        console.log(data.dataa);
+                        setTimeout(window.location.reload.bind(window.location), 1000);
+                        Swal.fire({
+                            position: "top",
+                            type: "success",
+                            title: "Your data has been saved",
+                            showConfirmButton: !1,
+                            timer: 1500
+                        });
+                        $('#crDetailForm')[0].reset();
+
+                        if ($('#action_crDetail').val() == 'Edit') {
+                            $('#crDetailModal').modal('hide');
+                        }
+                    }
+
+                }
+            });
+        });
+
+
+        $(document).on('click', '.edit_crDetail', function() {
+            var id = $(this).attr('id');
+            $.ajax({
+                url: "/admin/caserecorddetail/" + id + "/edit",
+                dataType: "json",
+                success: function(data) {
+                    $('#service_id_crDetail').val(data.result.service_id);
+                    $('#note_crDetail').val(data.result.note);
+                    $('#hidden_id_crDetail').val(id);
+                    $('.modal-title_crDetail').text('Edit CRDetail');
+                    // $('.modal-title').text('Edit Record');
+                    $('#action_button_crDetail').val('Edit');
+                    $('#action_crDetail').val('Edit');
+                    $('#crDetailModal').modal('show');
+                }
+            })
+        });
+
+        var id;
+        $(document).on('click', '.delete_crDetail', function() {
+            id = $(this).attr('id');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: !0,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                confirmButtonClass: "btn btn-success mt-2",
+                cancelButtonClass: "btn btn-danger ml-2 mt-2",
+                buttonsStyling: !1
+            }).then(function(t) {
+                if (t.value) {
+                    $.ajax({
+                        url: "/admin/caserecorddetail/destroy/" + id,
+                        success: function(data) {
+                            setTimeout(window.location.reload.bind(window.location), 1000);
+                        }
+                    });
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        type: "success",
+                        timer: 1500,
+                        showConfirmButton: !1,
+                    });
+                } else {
+                    t.dismiss === Swal.DismissReason.cancel && Swal.fire({
+                        title: "Cancelled",
+                        text: "Your data is safe :)",
+                        type: "error",
+                        timer: 1500,
+                        showConfirmButton: !1,
+                    })
+                }
+            })
+        });
+    });
+</script>
+<!--End crDetail -->
 <script>
     CKEDITOR.replace('ckeditor1_cr', {
         height: 150
@@ -343,7 +599,21 @@
         $(this).removeClass("active");
     });
     $("#main-tab-content .tab-pane:first").addClass("active");
-    $("#desbox,#notebox").height(maxHeight);
+    $("#desbox,#notebox").height(190);
+    
+   
+</script>
+
+<script>
+    var maxHeight = 0;
+    $("#below-tab-content .tab-pane").each(function() {
+        $(this).addClass("active");
+        var height = $(this).height();
+        maxHeight = height > maxHeight ? height : maxHeight;
+        $(this).removeClass("active");
+    });
+    $("#below-tab-content .tab-pane:first").addClass("active");
+    $("#v-pills-home,#v-pills-profile,#v-pills-messages").height(maxHeight);
 </script>
 <!-- <script>
     var maxHeight = 0;

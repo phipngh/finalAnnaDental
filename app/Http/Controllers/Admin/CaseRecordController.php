@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\CaseRecord;
+use App\CaseRecordDetail;
 use App\Doctor;
-use PhpParser\Comment\Doc;
+use App\Service;
+
 
 class CaseRecordController extends Controller
 {
@@ -31,6 +33,7 @@ class CaseRecordController extends Controller
             'name'        =>  $request->name_create,
             'doctor_id'        =>  $request->doctor_id_create,
             'description'        =>  $request->description_create,
+            'total_fee' => 0,
             'note'        =>  $request->note_create,
             'is_instalment_plant'        =>  $request->has('is_instalment_plan_create'),
             'is_paied'        =>  $request->has('is_paid_create'),
@@ -91,6 +94,8 @@ class CaseRecordController extends Controller
     public function detail($id){
         $caserecord = CaseRecord::find($id);
         $doctors = Doctor::all();
-        return view('Admin.CaseRecord.detail',compact('caserecord','doctors'));
+        $crds = CaseRecordDetail::where('case_record_id',$id)->get();
+        $services = Service::all();
+        return view('Admin.CaseRecord.detail',compact('caserecord','doctors','crds','services'));
     }
 }

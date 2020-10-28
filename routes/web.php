@@ -83,9 +83,7 @@ function (){
     Route::get('patient/destroy/{id}','PatientController@destroy');
     Route::get('patient/{id}','PatientController@detail')->name('patient.detail');
     
-    //Case Record Page 
-    
-    // Route::post('patient/{id}/caserecord','CaseRecordController@store')->name('caserecord.store');
+    //Case Record Page     
     Route::post('caserecord','CaseRecordController@store')->name('caserecord.store');
     Route::get('caserecord/{id}/edit','CaseRecordController@edit')->name('caserecord.edit');
     Route::post('caserecord/update','CaseRecordController@update')->name('caserecord.update');
@@ -93,5 +91,10 @@ function (){
     Route::get('caserecord/destroy/{id}','CaseRecordController@destroy');
     Route::get('caserecord/{id}','CaseRecordController@detail')->name('caserecord.detail');
 
+    //Case Record Page     
+    Route::post('caserecorddetail','CaseRecordDetailController@store')->name('caserecorddetail.store');
+    Route::get('caserecorddetail/{id}/edit','CaseRecordDetailController@edit')->name('caserecorddetail.edit');
+    Route::post('caserecorddetail/update','CaseRecordDetailController@update')->name('caserecorddetail.update');
+    Route::get('caserecorddetail/destroy/{id}','CaseRecordDetailController@destroy');
 }
 );

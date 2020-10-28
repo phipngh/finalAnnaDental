@@ -124,7 +124,7 @@
         <h4 class="mb-4">{{ $patient->name}}'s Case Record</h4>
     </div>
     @foreach($caserecords as $caserecord)
-    <div class="col-md-3">
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
         <div class="card border border-success ">
             <div class="card-body">
                 <i class="mdi mdi-access-point float-left mr-3" style="font-size: 2.3rem; color:green;"></i>.
@@ -148,6 +148,11 @@
                 @if($caserecord->is_instalment_plan == 1)
                 <span class="badge badge-warning">Instalment Plan</span>
                 @endif
+
+                @php
+                    $crdCount = \App\CaseRecordDetail::where('case_record_id',$caserecord->id)->count();
+                @endphp
+                <span class="badge badge-info">{{$crdCount}}</span>
                 <br>
                 <button type="button" name="edit_create" id="{{$caserecord->id}}" class="edit_create btn btn-success btn-sm rounded float-right px-3 ">Edit</button>
                 <button type="button" name="delete_create" id="{{$caserecord->id}}" class="delete_create btn btn-danger btn-sm rounded float-right px-3 mx-2">Delete</button>
