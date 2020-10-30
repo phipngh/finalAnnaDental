@@ -29,4 +29,12 @@ class CaseRecord extends Model
     public function caserecorddetails(){
         return $this->hasMany('App\CaseRecordDetail');
     }
+
+    public function installmentplans(){
+        return $this->hasMany('App\InstallmentPlan');
+    }
+
+    public function process(){
+        return $this->hasMany('App\Process');
+    }
 }

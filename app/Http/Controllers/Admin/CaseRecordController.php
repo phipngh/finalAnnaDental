@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use App\CaseRecord;
 use App\CaseRecordDetail;
 use App\Doctor;
+use App\InstallmentPlan;
+use App\Process;
 use App\Service;
 
 
@@ -95,7 +97,9 @@ class CaseRecordController extends Controller
         $caserecord = CaseRecord::find($id);
         $doctors = Doctor::all();
         $crds = CaseRecordDetail::where('case_record_id',$id)->get();
+        $crips = InstallmentPlan::where('case_record_id',$id)->get();
+        $crps = Process::where('case_record_id',$id)->get();
         $services = Service::all();
-        return view('Admin.CaseRecord.detail',compact('caserecord','doctors','crds','services'));
+        return view('Admin.CaseRecord.detail',compact('caserecord','doctors','crds','services','crips','crps'));
     }
 }

@@ -91,10 +91,22 @@ function (){
     Route::get('caserecord/destroy/{id}','CaseRecordController@destroy');
     Route::get('caserecord/{id}','CaseRecordController@detail')->name('caserecord.detail');
 
-    //Case Record Page     
+    //Case Record Detail   
     Route::post('caserecorddetail','CaseRecordDetailController@store')->name('caserecorddetail.store');
     Route::get('caserecorddetail/{id}/edit','CaseRecordDetailController@edit')->name('caserecorddetail.edit');
     Route::post('caserecorddetail/update','CaseRecordDetailController@update')->name('caserecorddetail.update');
     Route::get('caserecorddetail/destroy/{id}','CaseRecordDetailController@destroy');
+
+    //Case Record Installment Plan    
+    Route::post('installmentplan','InstallmentPlanController@store')->name('installmentplan.store');
+    Route::get('installmentplan/{id}/edit','InstallmentPlanController@edit')->name('installmentplan.edit');
+    Route::post('installmentplan/update','InstallmentPlanController@update')->name('installmentplan.update');
+    Route::get('installmentplan/destroy/{id}','InstallmentPlanController@destroy');
+
+    //Case Record Process   
+    Route::post('process','ProcessController@store')->name('process.store');
+    Route::get('process/{id}/edit','ProcessController@edit')->name('process.edit');
+    Route::post('process/update','ProcessController@update')->name('process.update');
+    Route::get('process/destroy/{id}','ProcessController@destroy');
 }
 );

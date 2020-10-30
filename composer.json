@@ -9,11 +9,11 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "doctrine/dbal": "^2.11",
+        "doctrine/dbal": "*",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.18.35",
         "laravel/tinker": "^2.0",
-        "yajra/laravel-datatables-buttons": "4.0",
+        "yajra/laravel-datatables-buttons": "^4.0",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {

@@ -11,7 +11,7 @@
                 <li class="menu-title">Navigation</li>
 
                 <li>
-                    <a href="index.html">
+                    <a href="/admin">
                         <i class="fe-airplay"></i>
                         <span> Dashboard </span>
                     </a>
