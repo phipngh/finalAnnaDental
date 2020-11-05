@@ -41,6 +41,7 @@
                     <tr class="text-primary">
                         <th style="width: 1%;">#</th>
                         <th style="width: 1%;">ID</th>
+                        <!-- <th style="width: 5%;">Image</th> -->
                         <th>Name</th>
                         <th>Major</th>
                         <th>Birthday</th>
@@ -74,12 +75,29 @@
                 <div class="modal-body" style="height: 85vh;
     overflow-y: auto;">
                     <span id="form_result"></span>
+                    <!-- <div class="form-row form-group">
+                        <div class="col-3 text-center">
+                            <img src="" style="width: 75px;" class="rounded-circle" id="image_show" alt="">
+                        </div>
+
+                        <div class="col-3">
+                            <label>Image</label>
+                            <input type="file" class="form-control border-input" id="image" name="image" placeholder="Enter Doctor Image">
+                        </div>
+                        <div class="col-3">
+                            <img src="" style="width: 75px; height: 75px;" class="rounded-circle" id="image_show_new" alt="">
+                        </div>
+                    </div> -->
                     <div class="form-group form-row">
+                        <div class="col-3 text-center">
+                            <img src="" style="width: 75px;" class="rounded-circle" id="image_show" alt="">
+                            <input type="file" class="" id="image" name="image" placeholder="Enter Doctor Image">
+                        </div>
                         <div class="col-6">
                             <label>Name</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="Enter Doctor Name">
                         </div>
-                        <div class="col-6">
+                        <div class="col-3">
                             <label>Major</label>
                             <input type="text" class="form-control" id="major" name="major" placeholder="Enter Doctor Major">
                         </div>
@@ -109,8 +127,7 @@
                             <textarea class="form-control mb-1" name="address" id="address" rows="4" placeholder="Enter Doctor Address"></textarea>
                         </div>
                         <div class="col">
-                            <label>Image</label>
-                            <input type="text" class="form-control" id="image" name="image" placeholder="Enter Doctor Image">
+
                             <label>Phone Number</label>
                             <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Doctor Phone Number">
                         </div>
@@ -151,11 +168,14 @@
             </div>
             <div class="modal-body">
                 <div class="form-group form-row">
+                    <div class="col-2 text-center">
+                        <img src="" style="width: 75px;" class="rounded-circle" id="image_info" alt="">
+                    </div>
                     <div class="col-6">
                         <label>Name</label>
                         <input type="text" class="form-control" id="name_info" name="name_info" disabled>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <label>Major</label>
                         <input type="text" class="form-control" id="major_info" name="major_info" disabled>
                     </div>
@@ -352,6 +372,10 @@
                     data: 'id',
                     name: 'id'
                 },
+                // {
+                //     data: 'image',
+                //     name: 'image'
+                // },
                 {
                     data: 'name',
                     name: 'name'
@@ -399,6 +423,7 @@
             $('#name').val('');
             CKEDITOR.instances.ckeditor1.setData("");
             CKEDITOR.instances.ckeditor2.setData("");
+          
 
             // $('#slug').val('');
             $('.modal-title').text('Services');
@@ -420,6 +445,7 @@
 
         $('#sample_form').on('submit', function(event) {
             event.preventDefault();
+            var formData = new FormData($(this)[0]);
             var action_url = '';
 
             if ($('#action').val() == 'Add') {
@@ -441,9 +467,11 @@
                 },
                 url: action_url,
                 method: "POST",
-                data: $(this).serialize(),
-                // data: $("form[name='formModal']").serialize(),
+                //data: $(this).serialize(),
+                data: formData,
                 dataType: "json",
+                processData: false,
+                contentType: false,
 
                 success: function(data) {
                     var html = '';
@@ -488,7 +516,8 @@
                 url: "/admin/doctor/" + id + "/info",
                 dataType: "json",
                 success: function(data) {
-
+                    //var imgrul = 'upload' + '/' + data.result.image;
+                    var imgurl = "{{url('upload')}}" + "/" + data.result.image;
                     $('#name_info').val(data.result.name);
                     $('#major_info').val(data.result.major);
                     $('#birthday_info').val(data.result.birthday);
@@ -496,7 +525,9 @@
                     $('#email_info').val(data.result.email);
                     $('#phone_info').val(data.result.phone);
                     $('#address_info').val(data.result.address);
-                    $('#image_info').val(data.result.image);
+                    //$('#image_info').attr('src',imgurl);
+                    $('#image_info').attr('src', imgurl);
+
                     CKEDITOR.instances.ckeditor1_info.setData(data.result.info);
                     CKEDITOR.instances.ckeditor2_info.setData(data.result.note);
                     // var descHtml ='<div class="p-1 overflow-auto">';
@@ -516,7 +547,23 @@
 
         // ---------------
 
+        function filePreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    //$('#formModal + #image_show').remove();
+                    $('#image_show').attr('src', e.target.result);
 
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#image").change(function() {
+            filePreview(this);
+        });
+
+        
         //---------------------------------
 
         $(document).on('click', '.edit', function() {
@@ -526,6 +573,7 @@
                 url: "/admin/doctor/" + id + "/edit",
                 dataType: "json",
                 success: function(data) {
+                    var imgurl = "{{url('upload')}}" + "/" + data.result.image;
                     $('#name').val(data.result.name);
                     $('#major').val(data.result.major);
                     $('#birthday').val(data.result.birthday);
@@ -533,7 +581,7 @@
                     $('#email').val(data.result.email);
                     $('#phone').val(data.result.phone);
                     $('#address').val(data.result.address);
-                    $('#image').val(data.result.image);
+                    $('#image_show').attr('src', imgurl);
 
                     CKEDITOR.instances.ckeditor1.setData(data.result.info);
                     CKEDITOR.instances.ckeditor2.setData(data.result.note);
