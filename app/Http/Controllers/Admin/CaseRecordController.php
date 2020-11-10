@@ -9,6 +9,8 @@ use App\CaseRecord;
 use App\CaseRecordDetail;
 use App\Doctor;
 use App\InstallmentPlan;
+use App\Medicine;
+use App\Prescription;
 use App\Process;
 use App\Service;
 
@@ -99,7 +101,9 @@ class CaseRecordController extends Controller
         $crds = CaseRecordDetail::where('case_record_id',$id)->get();
         $crips = InstallmentPlan::where('case_record_id',$id)->get();
         $crps = Process::where('case_record_id',$id)->get();
+        $crprs = Prescription::where('case_record_id',$id)->get();
         $services = Service::all();
-        return view('Admin.CaseRecord.detail',compact('caserecord','doctors','crds','services','crips','crps'));
+        $medicines = Medicine::all();
+        return view('Admin.CaseRecord.detail',compact('caserecord','doctors','crds','services','crips','crps','medicines','crprs'));
     }
 }

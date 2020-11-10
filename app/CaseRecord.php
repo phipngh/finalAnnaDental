@@ -37,4 +37,8 @@ class CaseRecord extends Model
     public function process(){
         return $this->hasMany('App\Process');
     }
+
+    public function prescription(){
+        return $this->hasMany('App\Prescription');
+    }
 }
