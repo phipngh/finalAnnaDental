@@ -114,5 +114,11 @@ Route::group(
         //Case Record Prescription  
         Route::post('prescription', 'PrescriptionController@store')->name('presciption.store');
         Route::get('prescription/{id}', 'PrescriptionController@detail')->name('presciption.detail');
+
+        //Calendar
+        Route::get('calendar', 'CalendarController@index')->name('calendar');
+        Route::post('calendar', 'CalendarController@store')->name('calendar.store');
+        Route::post('calendar/update', 'CalendarController@update')->name('calendar.update');
+        Route::get('calendar/destroy/{id}', 'CalendarController@destroy');
     }
 );

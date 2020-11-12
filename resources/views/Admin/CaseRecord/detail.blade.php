@@ -157,8 +157,8 @@
                             <tr>
                                 <th style="width: 5%;">#</th>
                                 <th style="width: 20%;">Title</th>
-                                <th style="width: 15%;">Date</th>
-                                <th style="width: 10%;">Time</th>
+                                <th style="width: 25%;">Date</th>
+                                <th style="width: 10%;">Duration</th>
                                 <th style="width: 10%;">Description</th>
                                 <th>Note</th>
                                 <th style="width: 25%;">Action</th>
@@ -176,7 +176,7 @@
                                 <th scope="row">{{$index}}</th>
                                 <td>{{$crp->title}}</td>
                                 <td>{{$crp->schedule_date}}</td>
-                                <td>{{$crp->schedule_time}}</td>
+                                <td>{{$crp->duration}}</td>
                                 <td>{{$crp->description}}</td>
                                 <td>{{$crp->note}}</td>
 
@@ -572,11 +572,11 @@
                             <div class="form-group form-row">
                                 <div class="col-md-6">
                                     <label>Date</label>
-                                    <input type="date" class="form-control" id="schedule_date_crProcess" name="schedule_date_crProcess">
+                                    <input type="datetime-local" class="form-control" id="schedule_date_crProcess" name="schedule_date_crProcess">
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Time</label>
-                                    <input type="time" class="form-control" id="schedule_time_crProcess" name="schedule_time_crProcess">
+                                    <label>Duration</label>
+                                    <input type="text" class="form-control" id="duration_crProcess" name="duration_crProcess">
                                 </div>
                             </div>
 
@@ -910,7 +910,7 @@
                     $('#note_crProcess').val('');
                     $('#description_crProcess').val('');
                     $('#title_crProcess').val('');
-                    $('#schedule_time_crProcess').val('');
+                    $('#duration_crProcess').val('');
                     $('#schedule_date_crProcess').val('');
 
                     // $('#slug').val('');
@@ -1000,7 +1000,7 @@
                         $('#description_crProcess').val(data.result.description);
                         $('#note_crProcess').val(data.result.note);
                         $('#schedule_date_crProcess').val(data.result.schedule_date);
-                        $('#schedule_time_crProcess').val(data.result.schedule_time);
+                        $('#duration_crProcess').val(data.result.duration);
                         $('#hidden_id_crProcess').val(id);
                         $('.modal-title_crProcess').text('Edit Process');
                         // $('.modal-title').text('Edit Record');

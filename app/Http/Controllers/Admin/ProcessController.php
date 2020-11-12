@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Validator;
 
 class ProcessController extends Controller
 {
-       
+
     public function store(Request $request)
     {
         $rules = array(
             'title_crProcess'    =>  'required',
             'schedule_date_crProcess'    =>  'required',
-            
+            'duration_crProcess'    =>  'required|numeric',
+
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -27,10 +28,10 @@ class ProcessController extends Controller
         $form_data = array(
             'title'        =>  $request->title_crProcess,
             'description'        =>  $request->description_crProcess,
-            'note' => $request-> note_crProcess,
-            'schedule_date' => $request-> schedule_date_crProcess,
-            'schedule_time' => $request-> schedule_time_crProcess,
-            'case_record_id' => $request-> case_record_id_crProcess,
+            'note' => $request->note_crProcess,
+            'schedule_date' => $request->schedule_date_crProcess,
+            'duration' => $request->duration_crProcess,
+            'case_record_id' => $request->case_record_id_crProcess,
         );
         Process::create($form_data);
         return response()->json(['success' => 'Data Added successfully.']);
@@ -47,12 +48,12 @@ class ProcessController extends Controller
 
     public function update(Request $request, Process $process)
     {
-       
+
 
         $rules = array(
             'title_crProcess'    =>  'required',
             'schedule_date_crProcess'    =>  'required',
-           
+            'duration_crProcess'    =>  'required|numeric',
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -64,10 +65,10 @@ class ProcessController extends Controller
         $form_data = array(
             'title'        =>  $request->title_crProcess,
             'description'        =>  $request->description_crProcess,
-            'note' => $request-> note_crProcess,
-            'schedule_date' => $request-> schedule_date_crProcess,
-            'schedule_time' => $request-> schedule_time_crProcess,
-            'case_record_id' => $request-> case_record_id_crProcess,
+            'note' => $request->note_crProcess,
+            'schedule_date' => $request->schedule_date_crProcess,
+            'duration' => $request->duration_crProcess,
+            'case_record_id' => $request->case_record_id_crProcess,
         );
 
         Process::whereId($request->hidden_id_crProcess)->update($form_data);
@@ -77,9 +78,7 @@ class ProcessController extends Controller
 
     public function destroy($id)
     {
-        $data = Process::findOrFail($id);  
+        $data = Process::findOrFail($id);
         $data->delete();
-
     }
-
 }
