@@ -15,42 +15,42 @@ class ServiceController extends Controller
 {
     public function index(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             $data = Service::latest()->get();
             return DataTables::of($data)
-                ->addColumn('action', function($data){
-                    $button = '<button type="button" name="info" id="'.$data->id.'" class="info btn btn-info btn-sm rounded">Info</button>';
-                    $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-secondary btn-sm rounded">Edit</button>';
-                    $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm rounded">Delete</button>';
+                ->addColumn('action', function ($data) {
+                    $button = '<button type="button" name="info" id="' . $data->id . '" class="info btn btn-info btn-sm rounded"><i class="fas fa-info"></i></button>';
+                    $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-secondary btn-sm rounded"><i class="far fa-edit"></i></button>';
+                    $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="' . $data->id . '" class="delete btn btn-danger btn-sm rounded"><i class="fas fa-trash"></i></button>';
                     return $button;
                 })
                 ->editColumn('description', function ($data) {
-                    if($data->description == ''){
+                    if ($data->description == '') {
                         return '<span class="badge badge-pill badge-warning">Empty</span>';
-                    }else{
+                    } else {
                         return '<span class="badge badge-pill badge-success">Active</span>';
                     }
                 })
                 ->editColumn('price', function ($data) {
-                    
+
                     return '$ ' . $data->price;
                 })
                 ->editColumn('note', function ($data) {
-                    if($data->note == ''){
+                    if ($data->note == '') {
                         return '<span class="badge badge-pill badge-warning">Empty</span>';
-                    }else{
+                    } else {
                         return '<span class="badge badge-pill badge-success">Active</span>';
                     }
                 })
-                ->rawColumns(['action','description','note','ordinal'])
+                ->rawColumns(['action', 'description', 'note', 'ordinal'])
                 ->addIndexColumn()
                 ->make(true);
         }
         return view('Admin.Services.index');
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $rules = array(
             'name'    =>  'required|unique:services',
             'price'    =>  'required|numeric',
@@ -59,11 +59,10 @@ class ServiceController extends Controller
 
         $error = Validator::make($request->all(), $rules);
 
-        if($error->fails())
-        {
+        if ($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-       
+
         $form_data = array(
             'name'        =>  $request->name,
             'price'        =>  $request->price,
@@ -71,7 +70,7 @@ class ServiceController extends Controller
             'slug'        =>  Helper::slugify($request->name),
             'description'        =>  $request->description,
             'note'        =>  $request->note,
-            
+
         );
 
         Service::create($form_data);
@@ -81,8 +80,7 @@ class ServiceController extends Controller
 
     public function info($id)
     {
-        if(request()->ajax())
-        {
+        if (request()->ajax()) {
             $data = Service::findOrFail($id);
             return response()->json(['result' => $data]);
         }
@@ -91,8 +89,7 @@ class ServiceController extends Controller
 
     public function edit($id)
     {
-        if(request()->ajax())
-        {
+        if (request()->ajax()) {
             $data = Service::findOrFail($id);
             return response()->json(['result' => $data]);
         }
@@ -107,8 +104,7 @@ class ServiceController extends Controller
 
         $error = Validator::make($request->all(), $rules);
 
-        if($error->fails())
-        {
+        if ($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
 
@@ -119,7 +115,7 @@ class ServiceController extends Controller
             'slug'        =>  Helper::slugify($request->name),
             'description'        =>  $request->description,
             'note'        =>  $request->note,
-           
+
         );
 
         Service::whereId($request->hidden_id)->update($form_data);

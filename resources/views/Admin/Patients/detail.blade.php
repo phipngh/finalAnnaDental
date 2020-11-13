@@ -115,7 +115,7 @@
                 </div>
             </div>
         </div>
-        <button type="button" name="edit" id="{{$patient->id}}" class="edit btn btn-secondary btn-sm rounded float-right px-3">Edit</button>
+        <button type="button" name="edit" id="{{$patient->id}}" class="edit btn btn-secondary btn-sm rounded float-right px-3"><i class="far fa-edit"></i></button>
     </div>
 </div>
 
@@ -150,12 +150,12 @@
                 @endif
 
                 @php
-                    $crdCount = \App\CaseRecordDetail::where('case_record_id',$caserecord->id)->count();
+                $crdCount = \App\CaseRecordDetail::where('case_record_id',$caserecord->id)->count();
                 @endphp
                 <span class="badge badge-info">{{$crdCount}}</span>
                 <br>
-                <button type="button" name="edit_create" id="{{$caserecord->id}}" class="edit_create btn btn-success btn-sm rounded float-right px-3 ">Edit</button>
-                <button type="button" name="delete_create" id="{{$caserecord->id}}" class="delete_create btn btn-danger btn-sm rounded float-right px-3 mx-2">Delete</button>
+                <button type="button" name="edit_create" id="{{$caserecord->id}}" class="edit_create btn btn-success btn-sm rounded float-right px-2 "><i class="far fa-edit"></i></button>
+                <button type="button" name="delete_create" id="{{$caserecord->id}}" class="delete_create btn btn-danger btn-sm rounded float-right px-2 mx-1"><i class="fas fa-trash"></i></button>
             </div>
         </div>
     </div>

@@ -53,10 +53,10 @@
                         <div class="col-4">
                             <label>Service</label>
                             <select class="custom-select" name="color" id="color" place>
-                                <option value="#ffd5cd" style="background-color: #ffd5cd;">Examination</option>
-                                <option value="#a0c1b8" style="background-color: #a0c1b8;">Checkup</option>
-                                <option value="#c3aed6" style="background-color: #c3aed6;">Surgery</option>
-                                <option value="#709fb0" style="background-color: #709fb0;">Correction</option>
+                                <option value="#348cd4" style="background-color: #348cd4;">Examination </option>
+                                <option value="#3ec396" style="background-color: #3ec396;">Checkup <span><i class="fas fa-square"></i></span></option>
+                                <option value="#4fbde9" style="background-color: #4fbde9;">Surgery <span><i class="fas fa-square"></i></span></option>
+                                <option value="#f9bc0b" style="background-color: #f9bc0b;">Correction <span><i class="fas fa-square"></i></span></option>
                             </select>
                         </div>
                     </div>
@@ -91,8 +91,6 @@
 <script src="{{asset('AdminSide/libs/moment/moment.min.js')}}"></script>
 <script src="{{asset('AdminSide/libs/jquery-ui/jquery-ui.min.js')}}"></script>
 <script src="{{asset('AdminSide/libs/fullcalendar/fullcalendar.min.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.js"></script>
-
 <script>
     $(document).ready(function() {
         var calendar = $('#calendar').fullCalendar({

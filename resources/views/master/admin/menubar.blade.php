@@ -23,36 +23,43 @@
 
                 <li>
                     <a href="{{route('admin.role')}}">
-                        <i class="fe-airplay"></i>
+                        <i class="fas fa-user-tag"></i>
                         <span> Role </span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{route('admin.service')}}">
-                        <i class="fe-airplay"></i>
+                        <i class="fas fa-hand-holding-heart"></i>
                         <span> Service </span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{route('admin.medicine')}}">
-                        <i class="fe-airplay"></i>
+                        <i class="fas fa-pills"></i>
                         <span> Medicine </span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{route('admin.doctor')}}">
-                        <i class="fe-airplay"></i>
+                        <i class="fas fa-user-md"></i>
                         <span> Doctor </span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{route('admin.patient')}}">
-                        <i class="fe-airplay"></i>
+                        <i class="fas fa-user-injured"></i>
                         <span> Patient </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('admin.calendar')}}">
+                        <i class="far fa-calendar-alt"></i>
+                        <span> Calendar </span>
                     </a>
                 </li>
 

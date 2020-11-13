@@ -15,26 +15,26 @@ class RoleController extends Controller
 
     public function index(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             $data = Role::latest()->get();
             return DataTables::of($data)
-                ->addColumn('action', function($data){
-                    $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-info btn-sm rounded">Edit</button>';
-                    $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm rounded">Delete</button>';
+                ->addColumn('action', function ($data) {
+                    $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-info btn-sm rounded"><i class="far fa-edit"></i></button>';
+                    $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="' . $data->id . '" class="delete btn btn-danger btn-sm rounded"><i class="fas fa-trash"></i></button>';
                     return $button;
                 })
                 ->editColumn('created_at', function ($data) {
                     return $data->created_at->diffForHumans();
                 })
-                ->rawColumns(['action','created_at','ordinal'])
+                ->rawColumns(['action', 'created_at', 'ordinal'])
                 ->addIndexColumn()
                 ->make(true);
         }
         return view('Admin.Roles.index');
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $rules = array(
             'name'    =>  'required',
             // 'slug'    =>  'required',
@@ -42,11 +42,10 @@ class RoleController extends Controller
 
         $error = Validator::make($request->all(), $rules);
 
-        if($error->fails())
-        {
+        if ($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-       
+
         $form_data = array(
             'name'        =>  $request->name,
             'slug'        =>  Helper::slugify($request->name),
@@ -60,8 +59,7 @@ class RoleController extends Controller
 
     public function edit($id)
     {
-        if(request()->ajax())
-        {
+        if (request()->ajax()) {
             $data = Role::findOrFail($id);
             return response()->json(['result' => $data]);
         }
@@ -75,8 +73,7 @@ class RoleController extends Controller
 
         $error = Validator::make($request->all(), $rules);
 
-        if($error->fails())
-        {
+        if ($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
 
@@ -95,7 +92,4 @@ class RoleController extends Controller
         $data = Role::findOrFail($id);
         $data->delete();
     }
-
-
-
 }
