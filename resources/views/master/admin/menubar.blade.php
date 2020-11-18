@@ -63,6 +63,13 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="/laravel-filemanager">
+                        <i class="fas fa-folder-open"></i>
+                        <span> File Manager </span>
+                    </a>
+                </li>
+
 
                 <!-- end here -->
                 <hr>

@@ -14,4 +14,9 @@ class Process extends Model
     {
         return $this->belongsTo('App\CaseRecord', 'case_record_id');
     }
+
+    public function calendar()
+    {
+        return $this->hasOne('App\Calendar');
+    }
 }

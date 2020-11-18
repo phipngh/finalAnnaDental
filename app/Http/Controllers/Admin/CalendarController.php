@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use  Response;
 use Illuminate\Support\Carbon;
+use App\Process;
 
 class CalendarController extends Controller
 {
@@ -28,7 +29,6 @@ class CalendarController extends Controller
             'title'    =>  'required',
             'start'    =>  'required|after_or_equal:now',
             'duration'    =>  'required|numeric',
-
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -60,7 +60,6 @@ class CalendarController extends Controller
             'title'    =>  'required',
             'start'    =>  'required|after_or_equal:now',
             'duration'    =>  'required|numeric',
-
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -81,11 +80,19 @@ class CalendarController extends Controller
             'color' => $request->color,
         );
 
-
         Calendar::whereId($request->event_id)->update($form_data);
 
-        $event = Calendar::whereId($request->event_id)->get();
+        $calendar = Calendar::find($request->event_id);
+        if (!empty($calendar->process_id)) {
+            $form_data_process = array(
+                'title'        =>  $calendar->title,
+                'schedule_date' => $calendar->start,
+                'duration' => $request->duration,
+            );
+            Process::whereId($calendar->process_id)->update($form_data_process);
+        }
 
+        $event = Calendar::whereId($request->event_id)->get();
         return response()->json(['result' => $event, 'success' => 'Data Added successfully.']);
         //return response()->json(['success' => 'Data Added successfully.']);
     }

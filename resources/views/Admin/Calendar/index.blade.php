@@ -3,8 +3,11 @@
 @section('style')
 <link href="{{asset('AdminSide/libs/fullcalendar/fullcalendar.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('AdminSide/libs/jquery-ui/jquery-ui.min.css')}}" rel="stylesheet" type="text/css" />
+
 <link rel="stylesheet" href="{{asset('AdminSide/libs/sweetalert2/sweetalert2.min.css')}}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css">
+
+
 
 @endsection
 
@@ -30,6 +33,8 @@
         </div>
     </div>
 </div>
+
+
 
 {{Carbon\Carbon::now()}}
 <!-- ------------------------ -->

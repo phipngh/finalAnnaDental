@@ -15,6 +15,10 @@
 //    return view('welcome');
 //});
 
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth', 'admin']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});
+
 //UserSide
 Route::group(
     ['middleware' => 'verified'],
@@ -92,12 +96,14 @@ Route::group(
         Route::post('caserecord/{id}/update', 'CaseRecordController@update')->name('caserecord.update.detail');
         Route::get('caserecord/destroy/{id}', 'CaseRecordController@destroy');
         Route::get('caserecord/{id}', 'CaseRecordController@detail')->name('caserecord.detail');
-
+        Route::get('caserecord/{id}/invoice', 'CaseRecordController@invoice')->name('caserecord.invoice');
         //Case Record Detail   
         Route::post('caserecorddetail', 'CaseRecordDetailController@store')->name('caserecorddetail.store');
         Route::get('caserecorddetail/{id}/edit', 'CaseRecordDetailController@edit')->name('caserecorddetail.edit');
         Route::post('caserecorddetail/update', 'CaseRecordDetailController@update')->name('caserecorddetail.update');
         Route::get('caserecorddetail/destroy/{id}', 'CaseRecordDetailController@destroy');
+
+
 
         //Case Record Installment Plan    
         Route::post('installmentplan', 'InstallmentPlanController@store')->name('installmentplan.store');

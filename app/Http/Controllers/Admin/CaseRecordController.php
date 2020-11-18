@@ -106,4 +106,9 @@ class CaseRecordController extends Controller
         $medicines = Medicine::all();
         return view('Admin.CaseRecord.detail',compact('caserecord','doctors','crds','services','crips','crps','medicines','crprs'));
     }
+
+    public function invoice($id){
+        $caserecord = CaseRecord::find($id);
+        return view('Admin.CaseRecord.invoice',compact('caserecord'));
+    }
 }
