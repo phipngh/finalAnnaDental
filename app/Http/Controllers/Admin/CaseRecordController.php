@@ -75,9 +75,9 @@ class CaseRecordController extends Controller
             'doctor_id'        =>  $request->doctor_id_create,
             'description'        =>  $request->description_create,
             'note'        =>  $request->note_create,
-            
+
             'is_instalment_plant'        =>  $request->has('is_instalment_plan_create'),
-          
+
             // 'is_paied'        =>  $request->has('is_paid_create'),
             'is_paied'        =>  $request->has('is_paid_create'),
             'patient_id'        =>  $request->patient_id_create,
@@ -89,26 +89,39 @@ class CaseRecordController extends Controller
         return response()->json(['success' => 'Data is successfully updated']);
     }
 
+    public function description(Request $request, CaseRecord $caserecord)
+    {
+        $form_data = array(
+            'description' => $request->description_form_description,
+        );
+
+        $data = CaseRecord::whereId($request->caserecord_id_description)->update($form_data);
+
+        return response()->json(['success' => 'Data is successfully updated', 'result' => $data]);
+    }
+
     public function destroy($id)
     {
         $data = CaseRecord::findOrFail($id);
         $data->delete();
     }
 
-    public function detail($id){
+    public function detail($id)
+    {
         $caserecord = CaseRecord::find($id);
         $doctors = Doctor::all();
-        $crds = CaseRecordDetail::where('case_record_id',$id)->get();
-        $crips = InstallmentPlan::where('case_record_id',$id)->get();
-        $crps = Process::where('case_record_id',$id)->get();
-        $crprs = Prescription::where('case_record_id',$id)->get();
+        $crds = CaseRecordDetail::where('case_record_id', $id)->get();
+        $crips = InstallmentPlan::where('case_record_id', $id)->get();
+        $crps = Process::where('case_record_id', $id)->get();
+        $crprs = Prescription::where('case_record_id', $id)->get();
         $services = Service::all();
         $medicines = Medicine::all();
-        return view('Admin.CaseRecord.detail',compact('caserecord','doctors','crds','services','crips','crps','medicines','crprs'));
+        return view('Admin.CaseRecord.detail', compact('caserecord', 'doctors', 'crds', 'services', 'crips', 'crps', 'medicines', 'crprs'));
     }
 
-    public function invoice($id){
+    public function invoice($id)
+    {
         $caserecord = CaseRecord::find($id);
-        return view('Admin.CaseRecord.invoice',compact('caserecord'));
+        return view('Admin.CaseRecord.invoice', compact('caserecord'));
     }
 }

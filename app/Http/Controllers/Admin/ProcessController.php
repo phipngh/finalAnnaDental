@@ -47,6 +47,7 @@ class ProcessController extends Controller
             'start' => $process->schedule_date,
             'end' => $carbon_date,
             'duration' => $process->duration,
+            'color' => $request->color_crProcess,
             'process_id' => $process->id,
         );
         Calendar::create($form_data_calendar);
@@ -101,7 +102,7 @@ class ProcessController extends Controller
             'start' => $process->schedule_date,
             'end' => $carbon_date,
             'duration' => $process->duration,
-
+            'color' => $request->color_crProcess,
         );
         Calendar::where('process_id', $process->id)->update($form_data_calendar);
 

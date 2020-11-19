@@ -13,7 +13,7 @@
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="{{route('admin.index')}}">AnnaDental</a></li>
                     <li class="breadcrumb-item"><a href="{{route('admin.patient')}}">Patients</a></li>
-                    <li class="breadcrumb-item"><a href="{{route('admin.patient')}}">Patients</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('admin.patient.detail',$caserecord->patient->id)}}">{{$caserecord->patient->name}}</a></li>
                     <!-- <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li> -->
                     <li class="breadcrumb-item active">Case Record</li>
                 </ol>
@@ -39,11 +39,7 @@
                         Profile
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#messages-b1" data-toggle="tab" aria-expanded="false" class="nav-link">
-                        Description
-                    </a>
-                </li>
+
                 <li class="nav-item">
                     <a href="#settings-b1" data-toggle="tab" aria-expanded="false" class="nav-link">
                         Note
@@ -108,13 +104,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane" id="messages-b1">
-                    {!! html_entity_decode($caserecord->description) !!}
-                </div>
                 <div class="tab-pane" id="settings-b1">
                     {!! html_entity_decode($caserecord->note) !!}
                 </div>
             </div>
+        </div>
+
+        <div class="card-box">
+            <h4 class="mb-3 header-title text-center">Description</h4>
+            <form id="form_description" method="POST">
+                @csrf
+                <div class="form-group">
+                    <textarea type="text" class="form-control" id="ckeditor1_cr" name="description_form_description"></textarea>
+                </div>
+                <input type="hidden" id="caserecord_id_description" name="caserecord_id_description" value="{{$caserecord->id}}">
+                <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-danger d-none" id="description_cancel">Cancel</button>
+                <button type="submit" class="btn btn-primary mx-1 d-none" id="description_submit">Submit</button>
+                <button type="button" class="btn btn-secondary" id="toggle">Enable</button>    
+            </div>
+            </form>
         </div>
     </div>
     <div class="col-6">
@@ -369,9 +378,18 @@
                                 <label>Date</label>
                                 <input type="datetime-local" class="form-control" id="schedule_date_crProcess" name="schedule_date_crProcess">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <label>Duration</label>
                                 <input type="text" class="form-control" id="duration_crProcess" name="duration_crProcess">
+                            </div>
+                            <div class="col-md-3">
+                                <label>Service</label>
+                                <select class="custom-select" name="color_crProcess" id="color_crProcess" place>
+                                    <option value="#348cd4" style="background-color: #348cd4;">Examination </option>
+                                    <option value="#3ec396" style="background-color: #3ec396;">Checkup <span><i class="fas fa-square"></i></span></option>
+                                    <option value="#4fbde9" style="background-color: #4fbde9;">Surgery <span><i class="fas fa-square"></i></span></option>
+                                    <option value="#f9bc0b" style="background-color: #f9bc0b;">Correction <span><i class="fas fa-square"></i></span></option>
+                                </select>
                             </div>
                         </div>
 
@@ -548,11 +566,11 @@
                     </div>
 
                     <div class="form-row">
-                        <div class="col-6">
+                        <!-- <div class="col-6">
                             <label>Description</label>
                             <textarea type="text" class="form-control" id="ckeditor1_cr" name="description_create" placeholder="Enter Patient Info" rows="6"></textarea>
-                        </div>
-                        <div class="col-6">
+                        </div> -->
+                        <div class="col-12">
                             <label>Note</label>
                             <textarea type="text" class="form-control" id="ckeditor2_cr" name="note_create" placeholder="Enter Patient Note" rows="4"></textarea>
                         </div>
@@ -1146,12 +1164,103 @@
 </script>
 <!--End crDetail -->
 <script>
+    $(document).ready(function() {
+        
+        
+        var description_form = {!!json_encode($caserecord-> description)!!};
+        CKEDITOR.instances.ckeditor1_cr.setData(description_form);
+
+        $(function() {
+            $('button#toggle').click(function() {
+                if(CKEDITOR.instances.ckeditor1_cr.readOnly == true){
+                    CKEDITOR.instances.ckeditor1_cr.setReadOnly(false);
+                    $('#description_submit').removeClass("d-none");
+                    $('#description_cancel').removeClass("d-none");
+                    $('#toggle').text('Disable');
+                }else{
+                    CKEDITOR.instances.ckeditor1_cr.setReadOnly(true);
+                    $('#description_submit').addClass("d-none");
+                    $('#description_cancel').addClass("d-none");
+                    $('#toggle').text('Enable');
+                }
+                
+            });
+        });
+
+        $('#description_cancel').click(function() {
+            Swal.fire({
+                title: "Cancelled",
+                text: "Your data is safe :)",
+                type: "error",
+                position: "center",
+                showConfirmButton: !1,
+                timer: 1500,
+            });
+            CKEDITOR.instances.ckeditor1_cr.setReadOnly(true);
+            $('#description_submit').addClass("d-none");
+            $('#description_cancel').addClass("d-none");
+            $('#toggle').text('Enable');
+            CKEDITOR.instances.ckeditor1_cr.setData(description_form);
+        });
+
+        $('#form_description').on('submit', function(event) {
+            event.preventDefault();
+          
+            var caserecord_id = document.getElementById('caserecord_id_description').value;
+
+            for (instance in CKEDITOR.instances) {
+                CKEDITOR.instances[instance].updateElement();
+            }
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "/admin/caserecord/" + caserecord_id + "/update/description",
+                method: "POST",
+                data: $(this).serialize(),
+                // data: $("form[name='formModal']").serialize(),
+                dataType: "json",
+
+                success: function(data) {
+                    var html = '';
+                    
+                    if (data.success) {
+                        Swal.fire({
+                            position: "top",
+                            type: "success",
+                            title: "Your data has been saved",
+                            showConfirmButton: !1,
+                            timer: 1500
+                        });  
+                        CKEDITOR.instances.ckeditor1_cr.setData(data.result.description);
+                        $('#description_submit').addClass("d-none");
+                        $('#description_cancel').addClass("d-none");
+                        $('#toggle').text('Enable');
+                        CKEDITOR.instances.ckeditor1_cr.setReadOnly(true);
+                    }
+                    
+                }
+            });
+        });
+
+    });
+</script>
+<script>
     CKEDITOR.replace('ckeditor1_cr', {
-        height: 150
+        height: 350,
+        readOnly:true,
+        filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+        filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token=',
+        filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+        filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token='
     });
     CKEDITOR.replace('ckeditor2_cr', {
         height: 150
     });
+
+
+
+    
 </script>
 
 <script>
@@ -1177,16 +1286,10 @@
             var action_url = '';
             var caserecord_id = document.getElementById('caserecord_id_create').value;
 
-
-
-
-
-
             for (instance in CKEDITOR.instances) {
                 CKEDITOR.instances[instance].updateElement();
             }
             $.ajax({
-
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -1216,7 +1319,7 @@
 
                         setTimeout(window.location.reload.bind(window.location), 1000);
                         $('#create_form')[0].reset();
-                        CKEDITOR.instances.ckeditor1_cr.setData("");
+                        //CKEDITOR.instances.ckeditor1_cr.setData("");
                         CKEDITOR.instances.ckeditor2_cr.setData("");
 
 
@@ -1243,9 +1346,7 @@
 
                     $('#name_create').val(data.result.name);
                     $('#doctor_id_create').val(data.result.doctor_id);
-
                     // $('#is_instalment_plan_create').val(data.result.is_instalment_plant);
-
                     if (data.result.is_instalment_plant == 1) {
                         $('#is_instalment_plan_create').prop('checked', true);
                     } else {
@@ -1263,7 +1364,7 @@
                     // }else{
                     //     $('#is_done_create').prop('checked', false);
                     // }
-                    CKEDITOR.instances.ckeditor1_cr.setData(data.result.description);
+                    //CKEDITOR.instances.ckeditor1_cr.setData(data.result.description);
                     CKEDITOR.instances.ckeditor2_cr.setData(data.result.note);
                     //$('#description').val(data.result.description);
                     // $('#slug').val(data.result.slug);
@@ -1290,6 +1391,8 @@
     $("#main-tab-content .tab-pane:first").addClass("active");
     $("#profile-b1,#messages-b1,#settings-b1").height(maxHeight);
 </script>
+
+
 
 
 @endsection
