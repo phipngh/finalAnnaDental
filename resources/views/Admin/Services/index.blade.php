@@ -396,6 +396,8 @@
                             html += '<p>' + data.errors[count] + '</p>';
                         }
                         html += '</div>';
+
+                        
                     }
                     if (data.success) {
                         // html = '<div class="alert alert-success">' + data.success + '</div>';

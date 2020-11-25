@@ -35,8 +35,9 @@
 </div>
 
 
-
-{{Carbon\Carbon::now()}}
+{{date('d-m-Y', strtotime(Carbon\Carbon::now()))}}
+<br>
+{{Carbon\Carbon::now()->format('m-d-Y')}}
 <!-- ------------------------ -->
 <div id="CldModal" name="CldModal" class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" style="overflow-y: initial !important;">
@@ -54,6 +55,7 @@
                         <div class="col-8">
                             <label>Title</label>
                             <input type="text" class="form-control" id="title" name="title" placeholder="Enter Title">
+                            <small class="text-danger" id="title_error"></small>
                         </div>
                         <div class="col-4">
                             <label>Service</label>
@@ -69,10 +71,12 @@
                         <div class="col-md-6">
                             <label>Date</label>
                             <input type="datetime-local" class="form-control" id="start" name="start">
+                            <small class="text-danger" id="start_error"></small>
                         </div>
                         <div class="col-md-6">
                             <label>Duration</label>
                             <input type="text" class="form-control" id="duration" name="duration">
+                            <small class="text-danger" id="duration_error"></small>
                         </div>
                     </div>
                     <input type="hidden" id="event_id" name="event_id" value="">
@@ -141,6 +145,11 @@
                                 }
                                 html += '</div>';
                                 $('#form_result').html(html);
+
+                                // $('#title_error').text(data.errors['title']);
+                                // $('#start_error').text(data.errors[1]);
+                                // $('#duration_error').text(data.errors[2]);
+                                console.log(data.errors[title]);
                             }
                             if (data.success) {
                                 // $('#calendar').fullCalendar('removeEvents', event);

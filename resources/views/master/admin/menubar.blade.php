@@ -70,6 +70,13 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{route('admin.appointment')}}">
+                        <i class="far fa-calendar-check"></i>
+                        <span> Appointment </span>
+                    </a>
+                </li>
+
 
                 <!-- end here -->
                 <hr>

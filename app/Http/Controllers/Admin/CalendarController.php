@@ -31,9 +31,11 @@ class CalendarController extends Controller
             'duration'    =>  'required|numeric',
         );
 
+        
         $error = Validator::make($request->all(), $rules);
 
         if ($error->fails()) {
+           
             return response()->json(['errors' => $error->errors()->all()]);
         }
 

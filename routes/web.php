@@ -30,6 +30,8 @@ Route::group(
 Route::get('/', 'User\UserController@index')->name('user.index');
 Route::get('/aboutus', 'User\UserController@aboutus')->name('user.aboutus');
 Route::get('/contactus', 'User\UserController@contactus')->name('user.contactus');
+Route::post('/contactus','User\MessageController@store')->name('user.message.store');
+Route::post('/appointment','User\AppointmentController@store')->name('user.appointment.store');
 Route::get('/blog', 'User\UserController@blog')->name('user.blog');
 
 
@@ -127,5 +129,15 @@ Route::group(
         Route::post('calendar', 'CalendarController@store')->name('calendar.store');
         Route::post('calendar/update', 'CalendarController@update')->name('calendar.update');
         Route::get('calendar/destroy/{id}', 'CalendarController@destroy');
+
+        //Appointment
+        Route::get('appointment', 'AppointmentController@index')->name('appointment');
+        Route::get('appointment/{id}/edit', 'AppointmentController@edit')->name('appointment.edit');
+        Route::post('appointment/update', 'AppointmentController@update')->name('appointment.update');
+        Route::get('appointment/destroy/{id}', 'AppointmentController@destroy');
+        Route::get('appointment/accept/{id}', 'AppointmentController@accept');
+        Route::get('appointment/pending/{id}', 'AppointmentController@pending');
+
+        Route::get('appointment/datatable', 'AppointmentController@index2')->name('appointment.datatable');
     }
 );
