@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
 use App\Calendar;
+use Yajra\DataTables\DataTables;
 
 class ProcessController extends Controller
 {
@@ -114,5 +115,37 @@ class ProcessController extends Controller
         $data = Process::findOrFail($id);
         Calendar::where('process_id', $data->id)->delete();
         $data->delete();
+    }
+
+
+    ////////////////////////////////////////////
+
+    public function index2(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $data = Process::where('case_record_id', $id)->get();
+
+            return DataTables::of($data)
+                ->addColumn('action', function ($data) {
+
+                    $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit_crProcess btn btn-secondary btn-sm rounded"><i class="far fa-edit"></i></button>';
+                    $button .= '&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete_crProcess btn btn-danger btn-sm rounded"><i class="fas fa-trash"></i></button>';
+                    return $button;
+                })
+                ->editColumn('date', function ($data) {
+
+                    return date('d-m-Y', strtotime($data->schedule_date));
+                })
+                ->editColumn('time', function ($data) {
+
+                    return date('H:i', strtotime($data->schedule_date));
+                })
+                
+
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+        return view('Admin.CaseRecord.detail');
     }
 }

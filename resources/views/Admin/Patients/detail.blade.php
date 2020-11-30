@@ -125,17 +125,20 @@
     </div>
     @foreach($caserecords as $caserecord)
     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-        <div class="card border border-success ">
-            <div class="card-body">
-                <i class="mdi mdi-access-point float-left mr-3" style="font-size: 2.3rem; color:green;"></i>.
+        <div class="card border {{$caserecord->is_paied == 0 ? 'border-success' : 'border-danger'}} ">
+            <div class="card-header bg-white">
+                @if($caserecord->is_paied == 0)
                 <span class="badge badge-success float-right">Active</span>
-                <a href="{{route('admin.caserecord.detail',$caserecord->id)}}" class="text-success">
-                    <h5 class="card-title">{{$caserecord->name}}</h5>
+                @else
+                <span class="badge badge-danger float-right">Closed</span>
+                @endif
+                <a href="{{route('admin.caserecord.detail',$caserecord->id)}}" class="{{$caserecord->is_paied == 0 ? 'text-success' : 'text-danger'}} my-3" >
+                    <h5 class="card-title text-uppercase">{{$caserecord->name}}</h5>
                 </a>
-                <h6 class="card-subtitle text-muted">By {{$caserecord->doctor->name}}</h6>
+                <h6 class="ml-3 card-subtitle text-muted">By {{$caserecord->doctor->name}}</h6>
             </div>
-            <hr class="border-success">
-            <div class="card-body">
+            <hr class="{{$caserecord->is_paied == 0 ? 'border-success' : 'border-danger'}} ">
+            <div class="card-body" style="z-index: 1;">
                 <p>Day Created : {{date('m-d-Y', strtotime($caserecord->created_at))}}</p>
                 <p>Last Updated : {{date('m-d-Y', strtotime($caserecord->updated_at))}}</p>
 
@@ -157,6 +160,13 @@
                 <button type="button" name="edit_create" id="{{$caserecord->id}}" class="edit_create btn btn-success btn-sm rounded float-right px-2 "><i class="far fa-edit"></i></button>
                 <button type="button" name="delete_create" id="{{$caserecord->id}}" class="delete_create btn btn-danger btn-sm rounded float-right px-2 mx-1"><i class="fas fa-trash"></i></button>
             </div>
+            
+            @if($caserecord->is_paied == 1)
+            <div class="" style="z-index: 2;position: absolute; top: 40%;right: 10%; transform: rotate(0deg); ">
+                <!-- <h1 class="text-danger">CLOSED</h1> -->
+                <img style="position: relative; width: 120px;" src="{{url('upload/case_closed.png')}}" alt="">
+            </div>
+            @endif
         </div>
     </div>
     @endforeach

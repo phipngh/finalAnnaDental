@@ -1,6 +1,9 @@
 @extends('master.admin.master')
 
 @section('style')
+<link href="{{asset('AdminSide/libs/datatables/dataTables.bootstrap4.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{asset('AdminSide/libs/datatables/responsive.bootstrap4.css')}}" rel="stylesheet" type="text/css" />
+
 <link rel="stylesheet" href="{{asset('AdminSide/libs/sweetalert2/sweetalert2.min.css')}}">
 
 @endsection
@@ -61,7 +64,7 @@
                                 $IPn = \App\InstallmentPlan::where('case_record_id',$caserecord->id)->pluck('money')->sum();
                                 @endphp
                                 @if($caserecord->is_instalment_plant == 1)
-                                <p>* Installment Plan : <span class="text-uppercase">$ {{$IPn}} / $ {{$caserecord->total_fee}}</span></p>
+                                <p>* Installment Plan : <span class="text-uppercase">$ <span id="ipn">{{$IPn}}</span>  / $ {{$caserecord->total_fee}}</span></p>
                                 @endif
                                 <div class="row">
                                     @if($caserecord->is_active == 1)
@@ -70,7 +73,7 @@
                                     <span class="badge badge-warning mx-2">INACTIVE</span>
                                     @endif
 
-                                    @if($caserecord->is_instalment_plan == 1)
+                                    @if($caserecord->is_instalment_plant == 1)
                                     <span class="badge badge-warning mx-2">INSTALLMENT PLANT</span>
                                     @endif
                                 </div>
@@ -83,7 +86,7 @@
                                     @php
                                     $cripCount = \App\InstallmentPlan::where('case_record_id',$caserecord->id)->count();
                                     @endphp
-                                    @if($caserecord->is_instalment_plan == 0)
+                                    @if($caserecord->is_instalment_plant == 1)
                                     <span class="badge badge-info m-2">Installment Plan : {{$cripCount}}</span>
                                     @endif
 
@@ -119,18 +122,19 @@
                 </div>
                 <input type="hidden" id="caserecord_id_description" name="caserecord_id_description" value="{{$caserecord->id}}">
                 <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-danger d-none" id="description_cancel">Cancel</button>
-                <button type="submit" class="btn btn-primary mx-1 d-none" id="description_submit">Submit</button>
-                <button type="button" class="btn btn-secondary" id="toggle">Enable</button>    
-            </div>
+                    <button type="button" class="btn btn-danger d-none" id="description_cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary mx-1 d-none" id="description_submit">Submit</button>
+                    <button type="button" class="btn btn-secondary" id="toggle">Enable</button>
+                </div>
             </form>
         </div>
     </div>
     <div class="col-6">
 
-        <div class="card-box">
+    
+        <!-- <div class="card-box">
             @if($crds->count() > 0 )
-            <a id="create_crDetail" name="create_crDetail" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
+            <a id="" name="create_crDetail" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
             <h4 class="header-title text-center">All Case Record Detail</h4>
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -181,9 +185,9 @@
             <a id="create_crDetail" name="create_crDetail" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
             <h4 class="header-title text-center">All Case Record Detail</h4>
             @endif
-        </div>
+        </div> -->
 
-        <div class="card-box">
+        <!-- <div class="card-box">
             @if($crps->count() > 0 )
             <a id="create_crProcess" name="create_crProcess" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
             <h4 class="header-title text-center my-2">All Case Record Processing Plan</h4>
@@ -211,7 +215,7 @@
                         <tr>
                             <th scope="row">{{$index}}</th>
                             <td>{{$crp->title}}</td>
-                            <!-- <td>{{$crp->schedule_date}}</td> -->
+                         
                             <td>{{date("d-m-y", strtotime($crp->schedule_date))}}</td>
                             <td>{{date("H:i:s", strtotime($crp->schedule_date))}}</td>
                             <td>{{$crp->duration}}</td>
@@ -242,9 +246,9 @@
             <a id="create_crProcess" name="create_crProcess" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Process</span></a>
             <h4 class="header-title text-center">All Case Record Processing Plan</h4>
             @endif
-        </div>
+        </div> -->
 
-        @if($caserecord->is_instalment_plant == 1)
+        <!-- @if($caserecord->is_instalment_plant == 1)
         <div class="card-box">
             @if($crips->count() > 0 )
             <a id="create_crIPlan" name="create_crIPlan" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
@@ -303,8 +307,8 @@
             <h4 class="header-title text-center">All Case Record Installment Plan</h4>
             @endif
         </div>
-        @endif
-
+        @endif -->
+<!-- 
         <div class="card-box">
             @if($crprs->count() > 0 )
             <a id="create_crPresc" name="create_crPresc" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Prescription</span></a>
@@ -347,7 +351,106 @@
             <a id="create_crPresc" name="create_crPresc" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Prescription</span></a>
             <h4 class="header-title text-center">All Case Record Prescription</h4>
             @endif
+        </div> -->
+
+        <!-- DATA TABLE TEST -->
+        <div class="card-box">
+            <a id="create_crDetail" name="create_crDetail" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
+            <h4 class="header-title text-center">All Case Record Detail</h4>
+            <div class="table-responsive">
+                <table id="crdetail" class="table  table-bordered dt-responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 25%;">Service</th>
+                            <th style="width: 5%;">Price</th>
+                            <th style="width: 3%;">Quantity</th>
+                            <th>Note</th>
+                            <th style="width: 16%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr class="table-primary">
+                            <th scope="">-</th>
+                            <td class="font-weight-bold">Total</td>
+                            <td></td>
+                            <td></td>
+                            @php
+                                $total = 0;
+                                $datas = \App\CaseRecordDetail::where('case_record_id',$caserecord->id)->get();
+                                foreach($datas as $data)
+                                    $total += $data->service->price*$data->quantity;
+                               
+                            @endphp
+                            <td id="total" class="font-weight-bold">{{$total}}</td>
+                            <td class="text-center"><a type="button" href="{{route('admin.caserecord.invoice',$caserecord->id)}}" name="edit_crDetail" id="{{$crd->id}}" class="edit_crDetail btn btn-secondary btn-sm rounded"><i class="fas fa-file-invoice-dollar"></i></a></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
+
+
+        <div class="card-box">
+           
+            <a id="create_crProcess" name="create_crProcess" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
+            <h4 class="header-title text-center my-2">All Case Record Processing Plan</h4>
+            <div class="table-responsive">
+                <table id="crprocess" class="table table-bordered dt-responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 20%;">Title</th>
+                            <th style="width: 20%;">Date</th>
+                            <th style="width: 15%;">Time</th>
+                            <th style="width: 10%;">Duration</th>
+                            <th>Note</th>
+                            <th style="width: 16%;">Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        @if($caserecord->is_instalment_plant == 1)
+        <div class="card-box">
+            <a id="create_crIPlan" name="create_crIPlan" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
+            <h4 class="header-title text-center my-2">All Case Record Installment Plan</h4>
+            <div class="table-responsive">
+                <table id="crinstallment" class="table table-bordered dt-responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 25%;">Date</th>
+                            <th style="width: 15%;">Money</th>
+                            <th>Note</th>
+                            <th style="width: 16%;">Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        @endif
+
+        <div class="card-box">
+            
+            <a id="create_crPresc" name="create_crPresc" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Prescription</span></a>
+            <h4 class="header-title text-center my-2">All Case Record Prescription</h4>
+            <div class="table-responsive">
+                <table id="crprescription" class="table table-bordered dt-responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="">Date</th>
+                            <th style="width: 16%;">Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+
+
     </div>
 </div>
 
@@ -615,575 +718,200 @@
 <!-- ------------ -->
 @endsection
 @section('script')
+<script src="{{asset('AdminSide/libs/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('AdminSide/libs/datatables/dataTables.bootstrap4.min.js')}}"></script>
+
+<script src="{{asset('https://cdn.datatables.net/v/dt/b-1.6.5/datatables.min.js')}}"></script>
+
+<script src="{{asset('AdminSide/libs/datatables/dataTables.responsive.min.js')}}"></script>
+<script src="{{asset('AdminSide/libs/datatables/responsive.bootstrap4.min.js')}}"></script>
+
 <script src="{{asset('AdminSide/libs/sweetalert2/sweetalert2.min.js')}}"></script>
 <script src="{{ asset('AdminSide/libs/ckeditor/ckeditor.js') }}"></script>
 
-<!-- <script>
-        $(document).ready(function() {
-            console.log('hello Phi');
-
-            var a = [@foreach($doctors as $doctor => $info)
-                '{{ $info->image}}',
-                @endforeach
-            ];
-            var b = [@foreach($doctors as $doctor => $info)
-                '{{ $info->name}}',
-                @endforeach
-            ];
-            console.log(a);
-            console.log(b);
-        });
-    </script> -->
 
 <script>
     $(document).ready(function() {
-        // 
-
-        function dynamic_field(number) {
-            html = '<div class="form-group form-row" id="medicineAdd">';
-            html += '<div class="col-6">';
-            html += '<label>Service</label>';
-            html += '<select class="custom-select" name="Pmedicine[]" id="service_id_crPresc">';
-            html += '@foreach($medicines as $medicine )';
-            html += '<option value="{{$medicine->id}}">{{$medicine->name}}</option>';
-            html += '@endforeach';
-            html += '</select>';
-            html += '</div>';
-            html += '<div class="col-4">';
-            html += '<label>Quantity</label>';
-            html += '<input type="text" id="" name="Pquantity[]" placeholder="Quantity" class="form-control">';
-            html += '</div>';
-            html += '<div class="col-2">';
-            html += '<label for="">Action</label>';
-            if (number > 1) {
-                html += '<a id="removeRow" type="button" class="btn btn-danger form-control text-white">Remove Row</a></div></div>';
-                $('#Apeendform').append(html);
-            } else {
-                html += '<a id="addRow" type="button" class="btn btn-success form-control text-white">Add Row</a></div></div>';
-                $('#Apeendform').html(html);
-            }
-        }
-
-        $(document).on('click', '#addRow', function() {
-            count++;
-            dynamic_field(count);
-        });
-
-        $(document).on('click', '#removeRow', function() {
-            count--;
-            $(this).closest("#medicineAdd").remove();
-        });
-
-
-        $(document).ready(function() {
-            $('#create_crPresc').click(function() {
-                count = 1;
-                dynamic_field(count);
-                $('#action_button_crPresc').val('Add');
-                $('#action_crPresc').val('Add');
-                $('#form_result_crPresc').html('');
-                $('#note_crPresc').val('');
-                // $('#slug').val('');
-                $('.modal-title_crPresc').text('Case Record Prescription');
-                $('#crPrescModal').modal('show');
-            });
-        });
-
-        $('#crPrescForm').on('submit', function(event) {
-            event.preventDefault();
-            $.ajax({
-                url: '{{ route("admin.presciption.store") }}',
-                method: 'post',
-                data: $(this).serialize(),
-                dataType: 'json',
-                beforeSend: function() {
-                    $('#action_button_crPresc').attr('disabled', 'disabled');
-                },
-                success: function(data) {
-                    if (data.error) {
-                        var error_html = '';
-                        for (var count = 0; count < data.error.length; count++) {
-                            error_html += '<p>' + data.error[count] + '</p>';
-                        }
-                        $('#form_result_crPresc').html('<div class="alert alert-danger">' + error_html + '</div>');
-                    } else {
-                        dynamic_field(1);
-                        $('#form_result_crPresc').html('<div class="alert alert-success">' + data.success + '</div>');
-                    }
-                    $('#action_button_crPresc').attr('disabled', false);
-                }
-            })
-        });
+        
     });
 </script>
 <!-- installment Plan -->
 <script>
     $(document).ready(function() {
-        $(document).ready(function() {
-            $('#create_crProcess').click(function() {
-                $('#action_button_crProcess').val('Add');
-                $('#action_crProcess').val('Add');
-                $('#form_result_crProcess').html('');
-                $('#note_crProcess').val('');
-                $('#description_crProcess').val('');
-                $('#title_crProcess').val('');
-                $('#duration_crProcess').val('');
-                $('#schedule_date_crProcess').val('');
-
-                // $('#slug').val('');
-                $('.modal-title_crProcess').text('Case Record Installment Plan');
-                $('#crProcessModal').modal('show');
-            });
-        });
-        $('#cancel_button').click(function() {
-            if ($('#action_crProcess').val() == 'Edit') {
-                Swal.fire({
-                    title: "Cancelled",
-                    text: "Your data is safe :)",
-                    type: "error",
-                    position: "center",
-                    showConfirmButton: !1,
-                    timer: 1500,
-                })
-            }
-        });
-
-        $('#crProcessForm').on('submit', function(event) {
-            event.preventDefault();
-            var action_url = '';
-
-            if ($('#action_crProcess').val() == 'Add') {
-                action_url = "{{ route('admin.process.store') }}";
-            }
-
-            if ($('#action_crProcess').val() == 'Edit') {
-                action_url = "{{ route('admin.process.update') }}";
-            }
-            $.ajax({
-
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: action_url,
-                method: "POST",
-                data: $(this).serialize(),
-                // data: $("form[name='formModal']").serialize(),
-                dataType: "json",
-                success: function(data) {
-                    var html = '';
-                    if (data.errors) {
-                        html = '<div class="alert alert-danger">';
-                        for (var count = 0; count < data.errors.length; count++) {
-                            html += '<p>' + data.errors[count] + '</p>';
-                        }
-                        html += '</div>';
-                    }
-                    if (data.success) {
-                        console.log(data.dataa);
-                        //-----
-                        setTimeout(window.location.reload.bind(window.location), 1000);
-
-                        //-----
-
-
-
-                        Swal.fire({
-                            position: "top",
-                            type: "success",
-                            title: "Your data has been saved",
-                            showConfirmButton: !1,
-                            timer: 1500
-                        });
-                        $('#crProcessForm')[0].reset();
-
-                        if ($('#action_crProcess').val() == 'Edit') {
-                            $('#crProcessModal').modal('hide');
-                        }
-                    }
-                    $('#form_result_Process').html(html);
-
-                }
-            });
-        });
-
-
-        $(document).on('click', '.edit_crProcess', function() {
-            var id = $(this).attr('id');
-            $.ajax({
-                url: "/admin/process/" + id + "/edit",
-                dataType: "json",
-                success: function(data) {
-                    $('#title_crProcess').val(data.result.title);
-                    $('#description_crProcess').val(data.result.description);
-                    $('#note_crProcess').val(data.result.note);
-                    var newdates = new Date(data.result.schedule_date.toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0];
-                    $('#schedule_date_crProcess').val(newdates);
-                    $('#duration_crProcess').val(data.result.duration);
-                    $('#hidden_id_crProcess').val(id);
-                    $('.modal-title_crProcess').text('Edit Process');
-                    // $('.modal-title').text('Edit Record');
-                    $('#action_button_crProcess').val('Edit');
-                    $('#action_crProcess').val('Edit');
-                    $('#crProcessModal').modal('show');
-                }
-            })
-        });
-
-        var id;
-        $(document).on('click', '.delete_crProcess', function() {
-            id = $(this).attr('id');
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                type: "warning",
-                showCancelButton: !0,
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "No, cancel!",
-                confirmButtonClass: "btn btn-success mt-2",
-                cancelButtonClass: "btn btn-danger ml-2 mt-2",
-                buttonsStyling: !1
-            }).then(function(t) {
-                if (t.value) {
-                    $.ajax({
-                        url: "/admin/process/destroy/" + id,
-                        success: function(data) {
-                            setTimeout(window.location.reload.bind(window.location), 1000);
-                        }
-                    });
-                    Swal.fire({
-                        title: "Deleted!",
-                        text: "Your file has been deleted.",
-                        type: "success",
-                        timer: 1500,
-                        showConfirmButton: !1,
-                    });
-                } else {
-                    t.dismiss === Swal.DismissReason.cancel && Swal.fire({
-                        title: "Cancelled",
-                        text: "Your data is safe :)",
-                        type: "error",
-                        timer: 1500,
-                        showConfirmButton: !1,
-                    })
-                }
-            })
-        });
+        
+        
     });
 </script>
 <!--End crDetail -->
 
 <!-- installment Plan -->
-<script>
-    $(document).ready(function() {
-        $(document).ready(function() {
-            $('#create_crIPlan').click(function() {
-                $('#action_button_crIPlan').val('Add');
-                $('#action_crIPlan').val('Add');
-                $('#form_result_crIPlan').html('');
-                $('#note_crIPlan').val('');
-                $('#money_crIPlan').val('');
-                // $('#slug').val('');
-                $('.modal-title_crIPlan').text('Case Record Installment Plan');
-                $('#crIPlanModal').modal('show');
-            });
-        });
-        $('#cancel_button').click(function() {
-            if ($('#action_crIPlan').val() == 'Edit') {
-                Swal.fire({
-                    title: "Cancelled",
-                    text: "Your data is safe :)",
-                    type: "error",
-                    position: "center",
-                    showConfirmButton: !1,
-                    timer: 1500,
-                })
-            }
-        });
 
-        $('#crIPlanForm').on('submit', function(event) {
-            event.preventDefault();
-            var action_url = '';
-
-            if ($('#action_crIPlan').val() == 'Add') {
-                action_url = "{{ route('admin.installmentplan.store') }}";
-            }
-
-            if ($('#action_crIPlan').val() == 'Edit') {
-                action_url = "{{ route('admin.installmentplan.update') }}";
-            }
-            $.ajax({
-
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: action_url,
-                method: "POST",
-                data: $(this).serialize(),
-                // data: $("form[name='formModal']").serialize(),
-                dataType: "json",
-                success: function(data) {
-                    var html = '';
-                    if (data.errors) {
-                        html = '<div class="alert alert-danger">';
-                        for (var count = 0; count < data.errors.length; count++) {
-                            html += '<p>' + data.errors[count] + '</p>';
-                        }
-                        html += '</div>';
-                    }
-                    if (data.success) {
-                        console.log(data.dataa);
-                        //-----
-                        setTimeout(window.location.reload.bind(window.location), 1000);
-
-                        //-----
-
-
-
-                        Swal.fire({
-                            position: "top",
-                            type: "success",
-                            title: "Your data has been saved",
-                            showConfirmButton: !1,
-                            timer: 1500
-                        });
-                        $('#crIPlanForm')[0].reset();
-
-                        if ($('#action_crIPlan').val() == 'Edit') {
-                            $('#crIPlanModal').modal('hide');
-                        }
-                    }
-                    $('#form_result_crIPlan').html(html);
-
-                }
-            });
-        });
-
-
-        $(document).on('click', '.edit_crIPlan', function() {
-            var id = $(this).attr('id');
-            $.ajax({
-                url: "/admin/installmentplan/" + id + "/edit",
-                dataType: "json",
-                success: function(data) {
-                    $('#money_crIPlan').val(data.result.money);
-                    $('#note_crIPlan').val(data.result.note);
-                    $('#hidden_id_crIPlan').val(id);
-                    $('.modal-title_crIPlan').text('Edit Installment Plan');
-                    // $('.modal-title').text('Edit Record');
-                    $('#action_button_crIPlan').val('Edit');
-                    $('#action_crIPlan').val('Edit');
-                    $('#crIPlanModal').modal('show');
-                }
-            })
-        });
-
-        var id;
-        $(document).on('click', '.delete_crIPlan', function() {
-            id = $(this).attr('id');
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                type: "warning",
-                showCancelButton: !0,
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "No, cancel!",
-                confirmButtonClass: "btn btn-success mt-2",
-                cancelButtonClass: "btn btn-danger ml-2 mt-2",
-                buttonsStyling: !1
-            }).then(function(t) {
-                if (t.value) {
-                    $.ajax({
-                        url: "/admin/installmentplan/destroy/" + id,
-                        success: function(data) {
-                            setTimeout(window.location.reload.bind(window.location), 1000);
-                        }
-                    });
-                    Swal.fire({
-                        title: "Deleted!",
-                        text: "Your file has been deleted.",
-                        type: "success",
-                        timer: 1500,
-                        showConfirmButton: !1,
-                    });
-                } else {
-                    t.dismiss === Swal.DismissReason.cancel && Swal.fire({
-                        title: "Cancelled",
-                        text: "Your data is safe :)",
-                        type: "error",
-                        timer: 1500,
-                        showConfirmButton: !1,
-                    })
-                }
-            })
-        });
-    });
-</script>
 <!--End crDetail -->
 <!-- crDetail -->
 <script>
     $(document).ready(function() {
-        $(document).ready(function() {
-            $('#create_crDetail').click(function() {
-                $('#action_button_crDetail').val('Add');
-                $('#action_crDetail').val('Add');
-                $('#form_result_crDetail').html('');
-                $('#note_crDetail').val('');
-                $('#quantity_crDetail').val(1);
+        // $(document).ready(function() {
+        //     $('#create_crDetail').click(function() {
+        //         $('#action_button_crDetail').val('Add');
+        //         $('#action_crDetail').val('Add');
+        //         $('#form_result_crDetail').html('');
+        //         $('#note_crDetail').val('');
+        //         $('#quantity_crDetail').val(1);
 
-                // $('#slug').val('');
-                $('.modal-title_crDetail').text('Case Record Detail');
-                $('#crDetailModal').modal('show');
-            });
-        });
-        $('#cancel_button').click(function() {
-            if ($('#action_crDetail').val() == 'Edit') {
-                Swal.fire({
-                    title: "Cancelled",
-                    text: "Your data is safe :)",
-                    type: "error",
-                    position: "center",
-                    showConfirmButton: !1,
-                    timer: 1500,
-                })
-            }
-        });
+        //         // $('#slug').val('');
+        //         $('.modal-title_crDetail').text('Case Record Detail');
+        //         $('#crDetailModal').modal('show');
+        //     });
+        // });
+        // $('#cancel_button').click(function() {
+        //     if ($('#action_crDetail').val() == 'Edit') {
+        //         Swal.fire({
+        //             title: "Cancelled",
+        //             text: "Your data is safe :)",
+        //             type: "error",
+        //             position: "center",
+        //             showConfirmButton: !1,
+        //             timer: 1500,
+        //         })
+        //     }
+        // });
 
-        $('#crDetailForm').on('submit', function(event) {
-            event.preventDefault();
-            var action_url = '';
+        // $('#crDetailForm').on('submit', function(event) {
+        //     event.preventDefault();
+        //     var action_url = '';
 
-            if ($('#action_crDetail').val() == 'Add') {
-                action_url = "{{ route('admin.caserecorddetail.store') }}";
-            }
+        //     if ($('#action_crDetail').val() == 'Add') {
+        //         action_url = "{{ route('admin.caserecorddetail.store') }}";
+        //     }
 
-            if ($('#action_crDetail').val() == 'Edit') {
-                action_url = "{{ route('admin.caserecorddetail.update') }}";
-            }
-            $.ajax({
+        //     if ($('#action_crDetail').val() == 'Edit') {
+        //         action_url = "{{ route('admin.caserecorddetail.update') }}";
+        //     }
+        //     $.ajax({
 
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: action_url,
-                method: "POST",
-                data: $(this).serialize(),
-                // data: $("form[name='formModal']").serialize(),
-                dataType: "json",
-                success: function(data) {
-                    var html = '';
-                    if (data.errors) {
-                        html = '<div class="alert alert-danger">';
-                        for (var count = 0; count < data.errors.length; count++) {
-                            html += '<p>' + data.errors[count] + '</p>';
-                        }
-                        html += '</div>';
-                    }
-                    if (data.success) {
-                        console.log(data.dataa);
-                        setTimeout(window.location.reload.bind(window.location), 1000);
-                        Swal.fire({
-                            position: "top",
-                            type: "success",
-                            title: "Your data has been saved",
-                            showConfirmButton: !1,
-                            timer: 1500
-                        });
-                        $('#crDetailForm')[0].reset();
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         url: action_url,
+        //         method: "POST",
+        //         data: $(this).serialize(),
+        //         // data: $("form[name='formModal']").serialize(),
+        //         dataType: "json",
+        //         success: function(data) {
+        //             var html = '';
+        //             if (data.errors) {
+        //                 html = '<div class="alert alert-danger">';
+        //                 for (var count = 0; count < data.errors.length; count++) {
+        //                     html += '<p>' + data.errors[count] + '</p>';
+        //                 }
+        //                 html += '</div>';
+        //             }
+        //             if (data.success) {
+        //                 console.log(data.dataa);
+        //                 setTimeout(window.location.reload.bind(window.location), 1000);
+        //                 Swal.fire({
+        //                     position: "top",
+        //                     type: "success",
+        //                     title: "Your data has been saved",
+        //                     showConfirmButton: !1,
+        //                     timer: 1500
+        //                 });
+        //                 $('#crDetailForm')[0].reset();
 
-                        if ($('#action_crDetail').val() == 'Edit') {
-                            $('#crDetailModal').modal('hide');
-                        }
-                    }
-                    $('#form_result_crDetail').html(html);
-
-
-                }
-            });
-        });
+        //                 if ($('#action_crDetail').val() == 'Edit') {
+        //                     $('#crDetailModal').modal('hide');
+        //                 }
+        //             }
+        //             $('#form_result_crDetail').html(html);
 
 
-        $(document).on('click', '.edit_crDetail', function() {
-            var id = $(this).attr('id');
-            $.ajax({
-                url: "/admin/caserecorddetail/" + id + "/edit",
-                dataType: "json",
-                success: function(data) {
-                    $('#service_id_crDetail').val(data.result.service_id);
-                    $('#note_crDetail').val(data.result.note);
-                    $('#quantity_crDetail').val(data.result.quantity);
-                    $('#hidden_id_crDetail').val(id);
-                    $('.modal-title_crDetail').text('Edit CRDetail');
-                    // $('.modal-title').text('Edit Record');
-                    $('#action_button_crDetail').val('Edit');
-                    $('#action_crDetail').val('Edit');
-                    $('#crDetailModal').modal('show');
-                }
-            })
-        });
+        //         }
+        //     });
+        // });
 
-        var id;
-        $(document).on('click', '.delete_crDetail', function() {
-            id = $(this).attr('id');
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                type: "warning",
-                showCancelButton: !0,
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "No, cancel!",
-                confirmButtonClass: "btn btn-success mt-2",
-                cancelButtonClass: "btn btn-danger ml-2 mt-2",
-                buttonsStyling: !1
-            }).then(function(t) {
-                if (t.value) {
-                    $.ajax({
-                        url: "/admin/caserecorddetail/destroy/" + id,
-                        success: function(data) {
-                            setTimeout(window.location.reload.bind(window.location), 1000);
-                        }
-                    });
-                    Swal.fire({
-                        title: "Deleted!",
-                        text: "Your file has been deleted.",
-                        type: "success",
-                        timer: 1500,
-                        showConfirmButton: !1,
-                    });
-                } else {
-                    t.dismiss === Swal.DismissReason.cancel && Swal.fire({
-                        title: "Cancelled",
-                        text: "Your data is safe :)",
-                        type: "error",
-                        timer: 1500,
-                        showConfirmButton: !1,
-                    })
-                }
-            })
-        });
+
+        // $(document).on('click', '.edit_crDetail', function() {
+        //     var id = $(this).attr('id');
+        //     $.ajax({
+        //         url: "/admin/caserecorddetail/" + id + "/edit",
+        //         dataType: "json",
+        //         success: function(data) {
+        //             $('#service_id_crDetail').val(data.result.service_id);
+        //             $('#note_crDetail').val(data.result.note);
+        //             $('#quantity_crDetail').val(data.result.quantity);
+        //             $('#hidden_id_crDetail').val(id);
+        //             $('.modal-title_crDetail').text('Edit CRDetail');
+        //             // $('.modal-title').text('Edit Record');
+        //             $('#action_button_crDetail').val('Edit');
+        //             $('#action_crDetail').val('Edit');
+        //             $('#crDetailModal').modal('show');
+        //         }
+        //     })
+        // });
+
+        // var id;
+        // $(document).on('click', '.delete_crDetail', function() {
+        //     id = $(this).attr('id');
+        //     Swal.fire({
+        //         title: "Are you sure?",
+        //         text: "You won't be able to revert this!",
+        //         type: "warning",
+        //         showCancelButton: !0,
+        //         confirmButtonText: "Yes, delete it!",
+        //         cancelButtonText: "No, cancel!",
+        //         confirmButtonClass: "btn btn-success mt-2",
+        //         cancelButtonClass: "btn btn-danger ml-2 mt-2",
+        //         buttonsStyling: !1
+        //     }).then(function(t) {
+        //         if (t.value) {
+        //             $.ajax({
+        //                 url: "/admin/caserecorddetail/destroy/" + id,
+        //                 success: function(data) {
+        //                     setTimeout(window.location.reload.bind(window.location), 1000);
+        //                 }
+        //             });
+        //             Swal.fire({
+        //                 title: "Deleted!",
+        //                 text: "Your file has been deleted.",
+        //                 type: "success",
+        //                 timer: 1500,
+        //                 showConfirmButton: !1,
+        //             });
+        //         } else {
+        //             t.dismiss === Swal.DismissReason.cancel && Swal.fire({
+        //                 title: "Cancelled",
+        //                 text: "Your data is safe :)",
+        //                 type: "error",
+        //                 timer: 1500,
+        //                 showConfirmButton: !1,
+        //             })
+        //         }
+        //     })
+        // });
     });
 </script>
 <!--End crDetail -->
 <script>
     $(document).ready(function() {
-        
-        
-        var description_form = {!!json_encode($caserecord-> description)!!};
+
+
+        var description_form = {!!json_encode($caserecord->description)!!};
         CKEDITOR.instances.ckeditor1_cr.setData(description_form);
 
         $(function() {
             $('button#toggle').click(function() {
-                if(CKEDITOR.instances.ckeditor1_cr.readOnly == true){
+                if (CKEDITOR.instances.ckeditor1_cr.readOnly == true) {
                     CKEDITOR.instances.ckeditor1_cr.setReadOnly(false);
                     $('#description_submit').removeClass("d-none");
                     $('#description_cancel').removeClass("d-none");
                     $('#toggle').text('Disable');
-                }else{
+                } else {
                     CKEDITOR.instances.ckeditor1_cr.setReadOnly(true);
                     $('#description_submit').addClass("d-none");
                     $('#description_cancel').addClass("d-none");
                     $('#toggle').text('Enable');
                 }
-                
+
             });
         });
 
@@ -1205,7 +933,7 @@
 
         $('#form_description').on('submit', function(event) {
             event.preventDefault();
-          
+
             var caserecord_id = document.getElementById('caserecord_id_description').value;
 
             for (instance in CKEDITOR.instances) {
@@ -1223,7 +951,7 @@
 
                 success: function(data) {
                     var html = '';
-                    
+
                     if (data.success) {
                         Swal.fire({
                             position: "top",
@@ -1231,14 +959,14 @@
                             title: "Your data has been saved",
                             showConfirmButton: !1,
                             timer: 1500
-                        });  
+                        });
                         CKEDITOR.instances.ckeditor1_cr.setData(data.result.description);
                         $('#description_submit').addClass("d-none");
                         $('#description_cancel').addClass("d-none");
                         $('#toggle').text('Enable');
                         CKEDITOR.instances.ckeditor1_cr.setReadOnly(true);
                     }
-                    
+
                 }
             });
         });
@@ -1248,7 +976,7 @@
 <script>
     CKEDITOR.replace('ckeditor1_cr', {
         height: 350,
-        readOnly:true,
+        readOnly: true,
         filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
         filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token=',
         filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
@@ -1257,10 +985,6 @@
     CKEDITOR.replace('ckeditor2_cr', {
         height: 150
     });
-
-
-
-    
 </script>
 
 <script>
@@ -1394,5 +1118,712 @@
 
 
 
+
+
+
+
+
+<!-- DATA TABLE FOR ALL TABLE TEST START HERE -->
+
+<!-- CASE RECORD DETAIL -->
+<script>
+    $(document).ready(function() {
+        var id = {{$caserecord->id}};
+        $('#crdetail').DataTable({
+            searching: false,
+            paging: true,
+            info: false,
+            lengthChange: false,
+            pageLength: 5,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/admin/crdetail/" + id,
+            },
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                },
+                {
+                    data: 'service_id',
+                    name: 'service_id'
+                },
+                {
+                    data: 'price',
+                    name: 'price'
+                },
+                {
+                    data: 'quantity',
+                    name: 'quantity'
+                },
+                {
+                    data: 'note',
+                    name: 'note'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false
+                },
+            ],
+        }).buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)");
+
+        $(document).ready(function() {
+            $('#create_crDetail').click(function() {
+                $('#action_button_crDetail').val('Add');
+                $('#action_crDetail').val('Add');
+                $('#form_result_crDetail').html('');
+                $('#note_crDetail').val('');
+                $('#quantity_crDetail').val(1);
+                $('.modal-title_crDetail').text('Case Record Detail');
+                $('#crDetailModal').modal('show');
+            });
+        });
+        $('#cancel_button').click(function() {
+            if ($('#action_crDetail').val() == 'Edit') {
+                Swal.fre({
+                    title: "Cancelled",
+                    text: "Your data is safe :)",
+                    type: "error",
+                    position: "center",
+                    showConfirmButton: !1,
+                    timer: 1500,
+                })
+            }
+        });
+
+        $('#crDetailForm').on('submit', function(event) {
+            event.preventDefault();
+            var action_url = '';
+
+            if ($('#action_crDetail').val() == 'Add') {
+                action_url = "{{ route('admin.caserecorddetail.store') }}";
+            }
+
+            if ($('#action_crDetail').val() == 'Edit') {
+                action_url = "{{ route('admin.caserecorddetail.update') }}";
+            }
+            $.ajax({
+
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: action_url,
+                method: "POST",
+                data: $(this).serialize(),
+                // data: $("form[name='formModal']").serialize(),
+                dataType: "json",
+                success: function(data) {
+                    var html = '';
+                    if (data.errors) {
+                        html = '<div class="alert alert-danger">';
+                        for (var count = 0; count < data.errors.length; count++) {
+                            html += '<p>' + data.errors[count] + '</p>';
+                        }
+                        html += '</div>';
+                    }
+                    if (data.success) {
+                        
+                        Swal.fire({
+                            position: "top",
+                            type: "success",
+                            title: "Your data has been saved",
+                            showConfirmButton: !1,
+                            timer: 1500
+                        });
+                        $('#crdetail').DataTable().ajax.reload();
+                        $('#crDetailForm')[0].reset();
+
+                        if ($('#action_crDetail').val() == 'Edit') {
+                            $('#crDetailModal').modal('hide');
+                        }
+                        $('#total').html(data.total);
+                        console.log(data.total);
+                    }
+                    $('#form_result_crDetail').html(html);
+
+
+                }
+            });
+        });
+
+
+        $(document).on('click', '.edit_crDetail', function() {
+            var id = $(this).attr('id');
+            $.ajax({
+                url: "/admin/caserecorddetail/" + id + "/edit",
+                dataType: "json",
+                success: function(data) {
+                    $('#service_id_crDetail').val(data.result.service_id);
+                    $('#note_crDetail').val(data.result.note);
+                    $('#quantity_crDetail').val(data.result.quantity);
+                    $('#hidden_id_crDetail').val(id);
+                    $('.modal-title_crDetail').text('Edit CRDetail');
+                    // $('.modal-title').text('Edit Record');
+                    $('#action_button_crDetail').val('Edit');
+                    $('#action_crDetail').val('Edit');
+                    $('#crDetailModal').modal('show');
+                }
+            })
+        });
+
+        var id;
+        $(document).on('click', '.delete_crDetail', function() {
+            id = $(this).attr('id');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: !0,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                confirmButtonClass: "btn btn-success mt-2",
+                cancelButtonClass: "btn btn-danger ml-2 mt-2",
+                buttonsStyling: !1
+            }).then(function(t) {
+                if (t.value) {
+                    $.ajax({
+                        url: "/admin/caserecorddetail/destroy/" + id,
+                        success: function(data) {
+                            $('#crdetail').DataTable().ajax.reload();
+                            $('#total').html(data.total);
+                        }
+                    });
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        type: "success",
+                        timer: 1500,
+                        showConfirmButton: !1,
+                    });
+                } else {
+                    t.dismiss === Swal.DismissReason.cancel && Swal.fire({
+                        title: "Cancelled",
+                        text: "Your data is safe :)",
+                        type: "error",
+                        timer: 1500,
+                        showConfirmButton: !1,
+                    })
+                }
+            })
+        });
+        
+
+    });
+</script>
+
+<script>
+    $(document).ready(function(){
+        var id = {{$caserecord->id}};
+        $('#crinstallment').DataTable({
+            searching: false,
+            paging: true,
+            info: false,
+            lengthChange: false,
+            pageLength: 5,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/admin/crinstallment/" + id,
+            },
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at'
+                },
+                {
+                    data: 'money',
+                    name: 'money'
+                },
+                {
+                    data: 'note',
+                    name: 'note'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false
+                },
+            ],
+        }).buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)");
+    
+        $('#create_crIPlan').click(function() {
+                $('#action_button_crIPlan').val('Add');
+                $('#action_crIPlan').val('Add');
+                $('#form_result_crIPlan').html('');
+                $('#note_crIPlan').val('');
+                $('#money_crIPlan').val('');
+                $('.modal-title_crIPlan').text('Case Record Installment Plan');
+                $('#crIPlanModal').modal('show');
+        });
+
+        $('#cancel_button').click(function() {
+            if ($('#action_crIPlan').val() == 'Edit') {
+                Swal.fire({
+                    title: "Cancelled",
+                    text: "Your data is safe :)",
+                    type: "error",
+                    position: "center",
+                    showConfirmButton: !1,
+                    timer: 1500,
+                })
+            }
+        });
+
+        $('#crIPlanForm').on('submit', function(event) {
+            event.preventDefault();
+            var action_url = '';
+
+            if ($('#action_crIPlan').val() == 'Add') {
+                action_url = "{{ route('admin.installmentplan.store') }}";
+            }
+
+            if ($('#action_crIPlan').val() == 'Edit') {
+                action_url = "{{ route('admin.installmentplan.update') }}";
+            }
+            $.ajax({
+
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: action_url,
+                method: "POST",
+                data: $(this).serialize(),
+                // data: $("form[name='formModal']").serialize(),
+                dataType: "json",
+                success: function(data) {
+                    var html = '';
+                    if (data.errors) {
+                        html = '<div class="alert alert-danger">';
+                        for (var count = 0; count < data.errors.length; count++) {
+                            html += '<p>' + data.errors[count] + '</p>';
+                        }
+                        html += '</div>';
+                    }
+                    if (data.success) {
+                        console.log(data.dataa);
+
+                        Swal.fire({
+                            position: "top",
+                            type: "success",
+                            title: "Your data has been saved",
+                            showConfirmButton: !1,
+                            timer: 1500
+                        });
+                        $('#crinstallment').DataTable().ajax.reload();
+                        $('#crIPlanForm')[0].reset();
+                        $('#ipn').html(data.data);
+
+                        
+                            $('#crIPlanModal').modal('hide');
+                 
+                    }
+                    $('#form_result_crIPlan').html(html);
+
+                }
+            });
+        });
+
+        $(document).on('click', '.edit_crIPlan', function() {
+            var id = $(this).attr('id');
+            $.ajax({
+                url: "/admin/installmentplan/" + id + "/edit",
+                dataType: "json",
+                success: function(data) {
+                    $('#money_crIPlan').val(data.result.money);
+                    $('#note_crIPlan').val(data.result.note);
+                    $('#hidden_id_crIPlan').val(id);
+                    $('.modal-title_crIPlan').text('Edit Installment Plan');
+                    // $('.modal-title').text('Edit Record');
+                    $('#action_button_crIPlan').val('Edit');
+                    $('#action_crIPlan').val('Edit');
+                    $('#crIPlanModal').modal('show');
+                }
+            })
+        });
+
+        var id;
+        $(document).on('click', '.delete_crIPlan', function() {
+            id = $(this).attr('id');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: !0,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                confirmButtonClass: "btn btn-success mt-2",
+                cancelButtonClass: "btn btn-danger ml-2 mt-2",
+                buttonsStyling: !1
+            }).then(function(t) {
+                if (t.value) {
+                    $.ajax({
+                        url: "/admin/installmentplan/destroy/" + id,
+                        success: function(data) {
+                            $('#crinstallment').DataTable().ajax.reload();
+                            $('#ipn').html(data.data);
+                        }
+                    });
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        type: "success",
+                        timer: 1500,
+                        showConfirmButton: !1,
+                    });
+                } else {
+                    t.dismiss === Swal.DismissReason.cancel && Swal.fire({
+                        title: "Cancelled",
+                        text: "Your data is safe :)",
+                        type: "error",
+                        timer: 1500,
+                        showConfirmButton: !1,
+                    })
+                }
+            })
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function(){
+        var id = {{$caserecord->id}};
+        $('#crprocess').DataTable({
+            searching: false,
+            paging: true,
+            info: false,
+            lengthChange: false,
+            pageLength: 5,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/admin/crprocess/" + id,
+            },
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                },
+                {
+                    data: 'title',
+                    name: 'titile'
+                },
+                {
+                    data: 'date',
+                    name: 'date'
+                },
+                {
+                    data: 'time',
+                    name: 'time'
+                },
+                {
+                    data: 'duration',
+                    name: 'duration'
+                },
+                {
+                    data: 'note',
+                    name: 'note'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false
+                },
+            ],
+        }).buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)");
+
+        $('#create_crProcess').click(function() {
+            $('#action_button_crProcess').val('Add');
+            $('#action_crProcess').val('Add');
+            $('#form_result_crProcess').html('');
+            $('#note_crProcess').val('');
+            $('#description_crProcess').val('');
+            $('#title_crProcess').val('');
+            $('#duration_crProcess').val('');
+            $('#schedule_date_crProcess').val('');
+
+            // $('#slug').val('');
+            $('.modal-title_crProcess').text('Case Record Installment Plan');
+            $('#crProcessModal').modal('show');
+        });
+       
+        $('#cancel_button').click(function() {
+            if ($('#action_crProcess').val() == 'Edit') {
+                Swal.fire({
+                    title: "Cancelled",
+                    text: "Your data is safe :)",
+                    type: "error",
+                    position: "center",
+                    showConfirmButton: !1,
+                    timer: 1500,
+                })
+            }
+        });
+
+        $('#crProcessForm').on('submit', function(event) {
+            event.preventDefault();
+            var action_url = '';
+
+            if ($('#action_crProcess').val() == 'Add') {
+                action_url = "{{ route('admin.process.store') }}";
+            }
+
+            if ($('#action_crProcess').val() == 'Edit') {
+                action_url = "{{ route('admin.process.update') }}";
+            }
+            $.ajax({
+
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: action_url,
+                method: "POST",
+                data: $(this).serialize(),
+                // data: $("form[name='formModal']").serialize(),
+                dataType: "json",
+                success: function(data) {
+                    var html = '';
+                    if (data.errors) {
+                        html = '<div class="alert alert-danger">';
+                        for (var count = 0; count < data.errors.length; count++) {
+                            html += '<p>' + data.errors[count] + '</p>';
+                        }
+                        html += '</div>';
+                    }
+                    if (data.success) {
+                        console.log(data.dataa);
+                        Swal.fire({
+                            position: "top",
+                            type: "success",
+                            title: "Your data has been saved",
+                            showConfirmButton: !1,
+                            timer: 1500
+                        });
+                        $('#crprocess').DataTable().ajax.reload();
+                        $('#crProcessForm')[0].reset();
+
+                        
+                            $('#crProcessModal').modal('hide');
+                        
+                    }
+                    $('#form_result_Process').html(html);
+
+                }
+            });
+        });
+
+
+        $(document).on('click', '.edit_crProcess', function() {
+            var id = $(this).attr('id');
+            $.ajax({
+                url: "/admin/process/" + id + "/edit",
+                dataType: "json",
+                success: function(data) {
+                    $('#title_crProcess').val(data.result.title);
+                    $('#description_crProcess').val(data.result.description);
+                    $('#note_crProcess').val(data.result.note);
+                    var newdates = new Date(data.result.schedule_date.toString().split('GMT')[0] + ' UTC').toISOString().split('.')[0];
+                    $('#schedule_date_crProcess').val(newdates);
+                    $('#duration_crProcess').val(data.result.duration);
+                    $('#hidden_id_crProcess').val(id);
+                    $('.modal-title_crProcess').text('Edit Process');
+                    // $('.modal-title').text('Edit Record');
+                    $('#action_button_crProcess').val('Edit');
+                    $('#action_crProcess').val('Edit');
+                    $('#crProcessModal').modal('show');
+                }
+            })
+        });
+
+        var id;
+        $(document).on('click', '.delete_crProcess', function() {
+            id = $(this).attr('id');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: !0,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                confirmButtonClass: "btn btn-success mt-2",
+                cancelButtonClass: "btn btn-danger ml-2 mt-2",
+                buttonsStyling: !1
+            }).then(function(t) {
+                if (t.value) {
+                    $.ajax({
+                        url: "/admin/process/destroy/" + id,
+                        success: function(data) {
+                            $('#crprocess').DataTable().ajax.reload();                        }
+                    });
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        type: "success",
+                        timer: 1500,
+                        showConfirmButton: !1,
+                    });
+                } else {
+                    t.dismiss === Swal.DismissReason.cancel && Swal.fire({
+                        title: "Cancelled",
+                        text: "Your data is safe :)",
+                        type: "error",
+                        timer: 1500,
+                        showConfirmButton: !1,
+                    })
+                }
+            })
+        });
+
+    });
+</script>
+
+<script>
+    $(document).ready(function(){
+        var id = {{$caserecord->id}};
+        $('#crprescription').DataTable({
+            searching: false,
+            paging: true,
+            info: false,
+            lengthChange: false,
+            pageLength: 5,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/admin/crprescription/" + id,
+            },
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                },
+                {
+                    data: 'date',
+                    name: 'date'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false
+                },
+            ],
+        }).buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)");
+
+        function dynamic_field(number) {
+            html = '<div class="form-group form-row" id="medicineAdd">';
+            html += '<div class="col-6">';
+            html += '<label>Service</label>';
+            html += '<select class="custom-select" name="Pmedicine[]" id="service_id_crPresc">';
+            html += '@foreach($medicines as $medicine )';
+            html += '<option value="{{$medicine->id}}">{{$medicine->name}}</option>';
+            html += '@endforeach';
+            html += '</select>';
+            html += '</div>';
+            html += '<div class="col-4">';
+            html += '<label>Quantity</label>';
+            html += '<input type="text" id="" name="Pquantity[]" placeholder="Quantity" class="form-control">';
+            html += '</div>';
+            html += '<div class="col-2">';
+            html += '<label for="">Action</label>';
+            if (number > 1) {
+                html += '<a id="removeRow" type="button" class="btn btn-danger form-control text-white">Remove Row</a></div></div>';
+                $('#Apeendform').append(html);
+            } else {
+                html += '<a id="addRow" type="button" class="btn btn-success form-control text-white">Add Row</a></div></div>';
+                $('#Apeendform').html(html);
+            }
+        }
+
+        $(document).on('click', '#addRow', function() {
+            count++;
+            dynamic_field(count);
+        });
+
+        $(document).on('click', '#removeRow', function() {
+            count--;
+            $(this).closest("#medicineAdd").remove();
+        });
+
+        
+            $('#create_crPresc').click(function() {
+                count = 1;
+                dynamic_field(count);
+                $('#action_button_crPresc').val('Add');
+                $('#action_crPresc').val('Add');
+                $('#form_result_crPresc').html('');
+                $('#note_crPresc').val('');
+                // $('#slug').val('');
+                $('.modal-title_crPresc').text('Case Record Prescription');
+                $('#crPrescModal').modal('show');
+            });
+        
+
+        $('#crPrescForm').on('submit', function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: '{{ route("admin.presciption.store") }}',
+                method: 'post',
+                data: $(this).serialize(),
+                dataType: 'json',
+                beforeSend: function() {
+                    $('#action_button_crPresc').attr('disabled', 'disabled');
+                },
+                success: function(data) {
+                    if (data.error) {
+                        var error_html = '';
+                        for (var count = 0; count < data.error.length; count++) {
+                            error_html += '<p>' + data.error[count] + '</p>';
+                        }
+                        $('#form_result_crPresc').html('<div class="alert alert-danger">' + error_html + '</div>');
+                    } else {
+                        dynamic_field(1);
+                        $('#form_result_crPresc').html('<div class="alert alert-success">' + data.success + '</div>');
+                        $('#crprescription').DataTable().ajax.reload();       
+                    }
+                    $('#action_button_crPresc').attr('disabled', false);
+                }
+            })
+        });
+
+        var id;
+        $(document).on('click', '.delete_pre', function() {
+            id = $(this).attr('id');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: !0,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                confirmButtonClass: "btn btn-success mt-2",
+                cancelButtonClass: "btn btn-danger ml-2 mt-2",
+                buttonsStyling: !1
+            }).then(function(t) {
+                if (t.value) {
+                    $.ajax({
+                        url: "/admin/prescription/destroy/" + id,
+                        success: function(data) {
+                            $('#crprescription').DataTable().ajax.reload();                        }
+                    });
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        type: "success",
+                        timer: 1500,
+                        showConfirmButton: !1,
+                    });
+                } else {
+                    t.dismiss === Swal.DismissReason.cancel && Swal.fire({
+                        title: "Cancelled",
+                        text: "Your data is safe :)",
+                        type: "error",
+                        timer: 1500,
+                        showConfirmButton: !1,
+                    })
+                }
+            })
+        });
+    });
+</script>
 
 @endsection

@@ -100,13 +100,21 @@ Route::group(
         Route::get('caserecord/destroy/{id}', 'CaseRecordController@destroy');
         Route::get('caserecord/{id}', 'CaseRecordController@detail')->name('caserecord.detail');
         Route::get('caserecord/{id}/invoice', 'CaseRecordController@invoice')->name('caserecord.invoice');
+
         //Case Record Detail   
         Route::post('caserecorddetail', 'CaseRecordDetailController@store')->name('caserecorddetail.store');
         Route::get('caserecorddetail/{id}/edit', 'CaseRecordDetailController@edit')->name('caserecorddetail.edit');
         Route::post('caserecorddetail/update', 'CaseRecordDetailController@update')->name('caserecorddetail.update');
         Route::get('caserecorddetail/destroy/{id}', 'CaseRecordDetailController@destroy');
 
+        //CCASE RECORD DETAIL TEST DATATABLE
+        Route::get('crdetail/{id}', 'CaseRecordDetailController@index2')->name('crdetail');
+        Route::get('crinstallment/{id}', 'InstallmentPlanController@index2')->name('crinstallment');
+        Route::get('crprocess/{id}', 'ProcessController@index2')->name('crprocess');
+        Route::get('crprescription/{id}', 'PrescriptionController@index2')->name('crprescription');
 
+
+        //CCASE RECORD DETAIL TEST DATATABLE
 
         //Case Record Installment Plan    
         Route::post('installmentplan', 'InstallmentPlanController@store')->name('installmentplan.store');
@@ -123,6 +131,7 @@ Route::group(
         //Case Record Prescription  
         Route::post('prescription', 'PrescriptionController@store')->name('presciption.store');
         Route::get('prescription/{id}', 'PrescriptionController@detail')->name('presciption.detail');
+        Route::get('prescription/destroy/{id}', 'PrescriptionController@destroy');
 
         //Calendar
         Route::get('calendar', 'CalendarController@index')->name('calendar');

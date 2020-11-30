@@ -75,12 +75,6 @@
                         </li>
                         @endguest
 
-
-
-
-
-
-
                     </ul>
                 </nav>
             </div>
