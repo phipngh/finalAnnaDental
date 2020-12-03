@@ -112,13 +112,13 @@
                     {!! html_entity_decode($caserecord->note) !!}
                 </div>
                 @if($caserecord->is_paied == 1)
-            <div class="" style="z-index: 2;position: absolute; top: 10%;right: 10%; transform: rotate(0deg); ">
-                <!-- <h1 class="text-danger">CLOSED</h1> -->
-                <img style="position: relative; width: 320px;" src="{{url('upload/case_closed.png')}}" alt="">
+                <div class="" style="z-index: 2;position: absolute; top: 10%;right: 10%; transform: rotate(0deg); ">
+                    <!-- <h1 class="text-danger">CLOSED</h1> -->
+                    <img style="position: relative; width: 320px;" src="{{url('upload/case_closed.png')}}" alt="">
+                </div>
+                @endif
             </div>
-            @endif
-            </div>
-            
+
         </div>
 
         <div class="card-box">
@@ -245,25 +245,38 @@
     <div class="col-12">
         <div class="h3 text-center mb-3">Patient Processing Gallery</div>
     </div>
+
+    @php
+    $path = File::glob(public_path('/storage/files/1/CaseRecord/'.$caserecord->id).'/*') ;
+    @endphp
+
+
+    @if($path)
     <div class="col-12 bg-dark">
         <div id="lightgallery" class="my-3 mx-2">
-            
-            @foreach(File::glob(public_path('/storage/files/1/CaseRecord/'.$caserecord->id).'/*') as $path)
-                @if(substr($path, 65) != 'thumbs')
-                    
-                    <a href="{{substr($path, 34)}}" class="">
-                        <img src="{{substr($path, 34)}}" style="height: 150px; padding: 5px;" class="rounded"/>
-                    </a>
-                @endif
 
+            @foreach(File::glob(public_path('/storage/files/1/CaseRecord/'.$caserecord->id).'/*') as $path)
+            @if(substr($path, 65) != 'thumbs')
+            <a href="{{substr($path, 39)}}" class="">
+                <img src="{{substr($path, 39)}}" style="height: 150px; padding: 5px;" class="rounded" />
+            </a>
+            @endif
             @endforeach
         </div>
     </div>
+    @else
+    <div class="col-12">
+        <p class="text-center">There no photo for this process...</p>
+    </div>
+    
+    @endif
+
+
 </div>
 
 <div class="row">
     <div class="col-12">
-        
+
     </div>
 </div>
 
@@ -710,7 +723,9 @@
 <script>
     $(document).ready(function() {
 
-        var description_form = {!!json_encode($caserecord-> description)!!};
+        var description_form = {
+            !!json_encode($caserecord - > description) !!
+        };
         CKEDITOR.instances.ckeditor1_cr.setData(description_form);
 
         $(function() {
@@ -943,7 +958,11 @@
 <!-- CASE RECORD DETAIL -->
 <script>
     $(document).ready(function() {
-        var id = {{$caserecord->id}};
+        var id = {
+            {
+                $caserecord - > id
+            }
+        };
         $('#crdetail').DataTable({
             searching: false,
             paging: true,
@@ -1129,7 +1148,11 @@
 
 <script>
     $(document).ready(function() {
-        var id = {{$caserecord->id}};
+        var id = {
+            {
+                $caserecord - > id
+            }
+        };
         $('#crinstallment').DataTable({
             searching: false,
             paging: true,
@@ -1305,7 +1328,11 @@
 
 <script>
     $(document).ready(function() {
-        var id = {{$caserecord->id}};
+        var id = {
+            {
+                $caserecord - > id
+            }
+        };
         $('#crprocess').DataTable({
             searching: false,
             paging: true,
@@ -1497,7 +1524,11 @@
 
 <script>
     $(document).ready(function() {
-        var id = {{$caserecord->id}};
+        var id = {
+            {
+                $caserecord - > id
+            }
+        };
         $('#crprescription').DataTable({
             searching: false,
             paging: true,

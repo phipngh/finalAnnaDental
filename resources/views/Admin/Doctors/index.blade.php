@@ -147,14 +147,15 @@
 <!-- ---------INFO---------- -->
 
 <div id="infoModal" name="infoModal" class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-xl" style="overflow-y: initial !important;">
         <div class="modal-content">
 
             <div class="modal-header text-center">
                 <h4 class="modal-title col-12 text-center" id="myExtraLargeModalLabel">Doctor</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="height: 85vh;
+    overflow-y: auto;">
                 <div class="form-group form-row">
                     <div class="col-2 text-center">
                         <img src="" style="width: 75px;" class="rounded-circle" id="image_info" alt="">
