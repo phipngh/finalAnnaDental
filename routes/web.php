@@ -15,6 +15,10 @@
 //    return view('welcome');
 //});
 
+use App\Jobs\SendEmailJob;
+
+use Illuminate\Support\Carbon;
+
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth', 'admin']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
@@ -23,17 +27,30 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth',
 Route::group(
     ['middleware' => 'verified'],
     function () {
-        // for user profile
+        Route::get('/profile', 'User\UserProfileController@profile')->name('user.profile');
+        Route::post('/profile/changepassword', 'User\UserProfileController@changepassword')->name('user.password.update');
+        Route::get('/caserecord/{id}', 'User\UserProfileController@detail')->name('user.caserecord.detail');
+        Route::get('presc/{id}', 'User\UserProfileController@presc')->name('user.presc');
     }
 );
+
 
 Route::get('/', 'User\UserController@index')->name('user.index');
 Route::get('/aboutus', 'User\UserController@aboutus')->name('user.aboutus');
 Route::get('/contactus', 'User\UserController@contactus')->name('user.contactus');
-Route::post('/contactus','User\MessageController@store')->name('user.message.store');
-Route::post('/appointment','User\AppointmentController@store')->name('user.appointment.store');
+Route::post('/contactus', 'User\MessageController@store')->name('user.message.store');
+Route::post('/appointment', 'User\AppointmentController@store')->name('user.appointment.store');
+Route::post('/subcrible', 'User\SubcribleController@store')->name('user.subcrible.store');
 Route::get('/blog', 'User\UserController@blog')->name('user.blog');
 
+Route::get('/tester', function() {
+
+    if ( ! \File::exists(public_path()."/storage/files/1/test")) {
+        \File::makeDirectory(public_path()."/storage/files/1/test1");
+    }
+
+    return 'ok';
+});
 
 //EndUserSide
 

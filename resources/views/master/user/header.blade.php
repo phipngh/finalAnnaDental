@@ -58,7 +58,7 @@
                                 @if(\Illuminate\Support\Facades\Auth::user()->role->id == 2)
                                 <li><a href="{{route('admin.dashboard')}}" class="nav-link">Dashboard</a></li>
                                 @else
-                                <li><a href="#" class="nav-link">Profile</a></li>
+                                <li><a href="{{route('user.profile')}}" class="nav-link">Profile</a></li>
                                 @endif
                                 <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();

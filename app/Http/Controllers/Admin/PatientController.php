@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use App\Patient;
-use Illuminate\Support\Facades\DB;
 use App\Helper\Helper as Helper;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class PatientController extends Controller
 {
@@ -56,6 +56,7 @@ class PatientController extends Controller
         $rules = array(
             'name'    =>  'required|unique:patients',
 
+
             // 'slug'    =>  'required',
         );
 
@@ -65,6 +66,19 @@ class PatientController extends Controller
             return response()->json(['errors' => $error->errors()->all()]);
         }
 
+        $fullname = '';
+        if ($request->hasFile('image')) {
+            $image = $request->image;
+            $fullname = uniqid() . '_' . $image->getClientOriginalname();
+            //$image->move('upload',$fullname);
+            $image_resize = Image::make($image->getRealPath());
+            $image_resize->resize(200, 200);
+            $image_resize->save(public_path('upload/' . $fullname));
+           
+        } else {
+            $fullname = 'DefaultAvatar.png';
+        }
+
         $form_data = array(
             'name'        =>  $request->name,
             'birthday'        =>  $request->birthday,
@@ -72,7 +86,7 @@ class PatientController extends Controller
             'email'        =>  $request->email,
             'phone'        =>  $request->phone,
             'address'        =>  $request->address,
-            'image'        =>  $request->image,
+            'image'        =>  $fullname,
             'info'        =>  $request->info,
             'note'        =>  $request->note,
         );
@@ -101,6 +115,8 @@ class PatientController extends Controller
 
     public function update(Request $request, Patient $patient)
     {
+        $patient = Patient::find($request->hidden_id);
+
         $rules = array(
             'name'        =>  'required',
 
@@ -112,6 +128,26 @@ class PatientController extends Controller
             return response()->json(['errors' => $error->errors()->all()]);
         }
 
+        $fullname = '';
+
+        if ($request->hasFile('image')) {
+
+            if (file_exists(public_path('upload/') . $patient->image)) {
+                if ($patient->image == 'DefaultAvatar.png') { } else {
+                    unlink(public_path('upload/') . $patient->image);
+                }
+            }
+
+            $image = $request->image;
+            $fullname = uniqid() . '_' . $image->getClientOriginalname();
+            $image_resize = Image::make($image->getRealPath());
+            $image_resize->resize(200, 200);
+            $image_resize->save(public_path('upload/' . $fullname));
+            //$form_data = array('image' => $fullname);
+            // $doctor->image = $fullname;
+
+        }
+
         $form_data = array(
             'name'        =>  $request->name,
             'birthday'        =>  $request->birthday,
@@ -119,7 +155,7 @@ class PatientController extends Controller
             'email'        =>  $request->email,
             'phone'        =>  $request->phone,
             'address'        =>  $request->address,
-            'image'        =>  $request->image,
+            'image'        =>  $fullname,
             'info'        =>  $request->info,
             'note'        =>  $request->note,
 

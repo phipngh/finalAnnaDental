@@ -33,12 +33,7 @@
 
 <div class="row">
     <div class="col-md-3 order-lg-1 text-center">
-        <img src="https://images.unsplash.com/photo-1602526213372-376ca17a8e02?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" class="mx-auto img-fluid img-circle d-block img-thumbnail w-75" alt="avatar">
-        <h6 class="mt-2">Upload a different photo</h6>
-        <label class="custom-file">
-            <input type="file" id="file" class="custom-file-input">
-            <span class="custom-file-control">Choose file</span>
-        </label>
+        <img src="/upload/{{$patient->image}}" class="mx-auto img-fluid img-circle d-block img-thumbnail w-75" alt="avatar">
     </div>
 
     <div class="col-md-9">
@@ -132,7 +127,7 @@
                 @else
                 <span class="badge badge-danger float-right">Closed</span>
                 @endif
-                <a href="{{route('admin.caserecord.detail',$caserecord->id)}}" class="{{$caserecord->is_paied == 0 ? 'text-success' : 'text-danger'}} my-3" >
+                <a href="{{route('admin.caserecord.detail',$caserecord->id)}}" class="{{$caserecord->is_paied == 0 ? 'text-success' : 'text-danger'}} my-3">
                     <h5 class="card-title text-uppercase">{{$caserecord->name}}</h5>
                 </a>
                 <h6 class="ml-3 card-subtitle text-muted">By {{$caserecord->doctor->name}}</h6>
@@ -160,7 +155,7 @@
                 <button type="button" name="edit_create" id="{{$caserecord->id}}" class="edit_create btn btn-success btn-sm rounded float-right px-2 "><i class="far fa-edit"></i></button>
                 <button type="button" name="delete_create" id="{{$caserecord->id}}" class="delete_create btn btn-danger btn-sm rounded float-right px-2 mx-1"><i class="fas fa-trash"></i></button>
             </div>
-            
+
             @if($caserecord->is_paied == 1)
             <div class="" style="z-index: 2;position: absolute; top: 40%;right: 10%; transform: rotate(0deg); ">
                 <!-- <h1 class="text-danger">CLOSED</h1> -->
@@ -189,7 +184,7 @@
                     <div class="form-group form-row">
                         <div class="col-6">
                             <label>Name</label>
-                            <input type="text" class="form-control" id="name_create" name="name_create" placeholder="Enter Patient Name">
+                            <input type="text" class="form-control" id="name_create" name="name_create" placeholder="Enter Case Record Name">
                         </div>
                         <div class="col-6">
                             <label>Dortor</label>
@@ -259,13 +254,17 @@
                 <div class="modal-body" style=" overflow-y: auto;">
                     <span id="form_result"></span>
                     <div class="form-group form-row">
+                        <div class="col-3 text-center">
+                            <img src="" style="width: 75px;" class="rounded-circle" id="image_show" alt="">
+                            <input type="file" class="" id="image" name="image" placeholder="Enter Doctor Image">
+                        </div>
                         <div class="col-6">
                             <label>Name</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="Enter Patient Name">
                         </div>
-                        <div class="col-6">
-                            <label>Image</label>
-                            <input type="text" class="form-control" id="image" name="image" placeholder="Enter Patient Image">
+                        <div class="col-3">
+                            <label>Phone Number</label>
+                            <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Patient Phone Number">
                         </div>
                     </div>
                     <div class="form-row">
@@ -288,13 +287,9 @@
                         </div>
                     </div>
                     <div class="mt-2 form-row">
-                        <div class="col">
-                            <label>Phone Number</label>
-                            <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Patient Phone Number">
-                        </div>
-                        <div class="col-8">
+                        <div class="col-12">
                             <label>Address</label>
-                            <textarea class="form-control mb-1" name="address" id="address" rows="4" placeholder="Enter Patient Address"></textarea>
+                            <textarea class="form-control mb-1" name="address" id="address" rows="2" placeholder="Enter Patient Address"></textarea>
                         </div>
 
                     </div>
@@ -344,6 +339,22 @@
 
 <script>
     $(document).ready(function() {
+        function filePreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    //$('#formModal + #image_show').remove();
+                    $('#image_show').attr('src', e.target.result);
+
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#image").change(function() {
+            filePreview(this);
+        });
+        
 
         $(document).on('click', '.edit', function() {
             var id = $(this).attr('id');
@@ -353,13 +364,13 @@
                 dataType: "json",
                 success: function(data) {
                     $('#name').val(data.result.name);
-
+                    var imgurl = "{{url('upload')}}" + "/" + data.result.image;
                     $('#birthday').val(data.result.birthday);
                     $('#sex').val(data.result.sex);
                     $('#email').val(data.result.email);
                     $('#phone').val(data.result.phone);
                     $('#address').val(data.result.address);
-                    $('#image').val(data.result.image);
+                    $('#image_show').attr('src', imgurl);
 
                     CKEDITOR.instances.ckeditor1.setData(data.result.info);
                     CKEDITOR.instances.ckeditor2.setData(data.result.note);
@@ -377,7 +388,7 @@
 
         $('#sample_form').on('submit', function(event) {
             event.preventDefault();
-
+            var formData = new FormData($(this)[0]);
             var id = $(this).attr('id');
 
 
@@ -393,9 +404,11 @@
                 },
                 url: "/admin/patient/" + id + "/update",
                 method: "POST",
-                data: $(this).serialize(),
-                // data: $("form[name='formModal']").serialize(),
+                //data: $(this).serialize(),
+                data: formData,
                 dataType: "json",
+                processData: false,
+                contentType: false,
 
                 success: function(data) {
                     var html = '';
@@ -533,7 +546,7 @@
                         CKEDITOR.instances.ckeditor1_cr.setData("");
                         CKEDITOR.instances.ckeditor2_cr.setData("");
 
-
+                      
                         if ($('#action_create').val() == 'Edit') {
                             $('#createModal').modal('hide');
                         }

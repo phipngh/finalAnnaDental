@@ -81,6 +81,7 @@
 
 
 
+
         <button name="create_record" id="create_record" class="btn btn-md btn-circle btn-dark" style="position: fixed; bottom: 20px; left: 20px;z-index: 99999;"><i class="fab fa-wpforms fa-2x"></i></button>
 
     </div> <!-- .site-wrap -->
@@ -151,6 +152,8 @@
 
     <script>
         $(document).ready(function() {
+
+
             $('#create_record').click(function() {
                 $('#form_result').html('');
                 $('#name').val('');
@@ -214,6 +217,55 @@
             });
         });
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#subcrible_email').val('');
+
+            $('#footer-subscribe').on('submit', function(event) {
+                event.preventDefault();
+                var action_url = "{{ route('user.subcrible.store') }}";
+              
+                $.ajax({
+                    url: action_url,
+                    method: "POST",
+                    data: $(this).serialize(),
+                    dataType: "json",
+                    success: function(data) {
+
+                        if (data.errors) {
+                            var customText = data.errors;
+
+                            Swal.fire({
+                                position: "top",
+                                type: "error",
+                                titleText: data.errors,
+                            });
+                        }
+                        if (data.success) {
+                            Swal.fire({
+                                position: "top",
+                                type: "success",
+                                title: "Your Email Has Been Sent.\nPlease Check Your Mail Box.",
+                                showConfirmButton: !1,
+                                timer: 2000
+                            });
+                            $('#subcrible_email').val('');
+
+                        }
+
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $('.disabled').click(function(e) {
+            e.preventDefault();
+        })
+    </script>
+
     @yield('script')
 </body>
 

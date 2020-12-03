@@ -62,7 +62,7 @@ class DoctorController extends Controller
         if ($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-
+        $fullname = '';
         if ($request->hasFile('image')) {
             $image = $request->image;
             $fullname = uniqid() . '_' . $image->getClientOriginalname();
@@ -124,7 +124,7 @@ class DoctorController extends Controller
         if ($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-
+        $fullname = '';
         if ($request->hasFile('image')) {
 
             if (file_exists(public_path('upload/') . $doctor->image)) {

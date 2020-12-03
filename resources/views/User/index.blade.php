@@ -311,14 +311,7 @@
     </div>
 </div> -->
 
-@section('script')
-<script>
-    $('.disabled').click(function(e) {
-        e.preventDefault();
-    })
-</script>
 
-@endsection
 
 
 @endsection

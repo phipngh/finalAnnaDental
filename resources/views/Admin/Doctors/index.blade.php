@@ -75,19 +75,7 @@
                 <div class="modal-body" style="height: 85vh;
     overflow-y: auto;">
                     <span id="form_result"></span>
-                    <!-- <div class="form-row form-group">
-                        <div class="col-3 text-center">
-                            <img src="" style="width: 75px;" class="rounded-circle" id="image_show" alt="">
-                        </div>
-
-                        <div class="col-3">
-                            <label>Image</label>
-                            <input type="file" class="form-control border-input" id="image" name="image" placeholder="Enter Doctor Image">
-                        </div>
-                        <div class="col-3">
-                            <img src="" style="width: 75px; height: 75px;" class="rounded-circle" id="image_show_new" alt="">
-                        </div>
-                    </div> -->
+                    
                     <div class="form-group form-row">
                         <div class="col-3 text-center">
                             <img src="" style="width: 75px;" class="rounded-circle" id="image_show" alt="">
@@ -423,7 +411,8 @@
             $('#name').val('');
             CKEDITOR.instances.ckeditor1.setData("");
             CKEDITOR.instances.ckeditor2.setData("");
-          
+            $('#image_show').attr('src', '');
+            $('#image').val('');
 
             // $('#slug').val('');
             $('.modal-title').text('Services');

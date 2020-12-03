@@ -45,7 +45,10 @@ class CaseRecordController extends Controller
 
         );
 
-        CaseRecord::create($form_data);
+        $cr = CaseRecord::create($form_data);
+
+        \File::makeDirectory(public_path()."/storage/files/1/CaseRecord/".$cr->id);
+        
 
         return response()->json(['success' => 'Data Added successfully.']);
     }
@@ -116,6 +119,8 @@ class CaseRecordController extends Controller
         $crprs = Prescription::where('case_record_id', $id)->get();
         $services = Service::all();
         $medicines = Medicine::all();
+
+        $images = \File::allFiles(public_path("/storage/files/1/CaseRecord/".$id));
         return view('Admin.CaseRecord.detail', compact('caserecord', 'doctors', 'crds', 'services', 'crips', 'crps', 'medicines', 'crprs'));
     }
 

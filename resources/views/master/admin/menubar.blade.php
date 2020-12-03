@@ -21,12 +21,12 @@
 
                 <!--start here-->
 
-                <li>
+                <!-- <li>
                     <a href="{{route('admin.role')}}">
                         <i class="fas fa-user-tag"></i>
                         <span> Role </span>
                     </a>
-                </li>
+                </li> -->
 
                 <li>
                     <a href="{{route('admin.service')}}">

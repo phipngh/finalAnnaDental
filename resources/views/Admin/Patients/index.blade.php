@@ -73,13 +73,17 @@
                 <div class="modal-body" style=" overflow-y: auto;">
                     <span id="form_result"></span>
                     <div class="form-group form-row">
+                        <div class="col-3 text-center">
+                            <img src="" style="width: 75px;" class="rounded-circle" id="image_show" alt="">
+                            <input type="file" class="" id="image" name="image" placeholder="Enter Doctor Image">
+                        </div>
                         <div class="col-6">
                             <label>Name</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="Enter Patient Name">
                         </div>
-                        <div class="col-6">
-                            <label>Image</label>
-                            <input type="text" class="form-control" id="image" name="image" placeholder="Enter Patient Image">
+                        <div class="col-3">
+                            <label>Phone Number</label>
+                            <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Patient Phone Number">
                         </div>
                     </div>
                     <div class="form-row">
@@ -102,13 +106,10 @@
                         </div>
                     </div>
                     <div class="mt-2 form-row">
-                        <div class="col">
-                            <label>Phone Number</label>
-                            <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Patient Phone Number">
-                        </div>
-                        <div class="col-8">
+
+                        <div class="col-12">
                             <label>Address</label>
-                            <textarea class="form-control mb-1" name="address" id="address" rows="4" placeholder="Enter Patient Address"></textarea>
+                            <textarea class="form-control mb-1" name="address" id="address" rows="2" placeholder="Enter Patient Address"></textarea>
                         </div>
 
                     </div>
@@ -151,14 +152,19 @@
             <div class="modal-body" style="height: 85vh;
     overflow-y: auto;">
                 <div class="form-group form-row">
+                    <div class="col-2 text-center">
+
+                        <img src="" style="width: 75px;" class="rounded-circle" id="image_info" alt="">
+                    </div>
                     <div class="col-6">
                         <label>Name</label>
                         <input type="text" class="form-control" id="name_info" name="name_info" disabled>
                     </div>
-                    <div class="col-6">
-                        <label>Image</label>
-                        <input type="text" class="form-control" id="image_info" name="image_info" disabled>
+                    <div class="col-3">
+                        <label>Phone</label>
+                        <input type="number" class="form-control" id="phone_info" name="phone_info" disabled>
                     </div>
+
                 </div>
                 <div class="form-row">
                     <div class="col">
@@ -180,13 +186,10 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col">
-                        <label>Phone</label>
-                        <input type="number" class="form-control" id="phone_info" name="phone_info" disabled>
-                    </div>
-                    <div class="col-8">
+
+                    <div class="col-12">
                         <label>Address</label>
-                        <textarea class="form-control mb-1" name="address_info" id="address_info" rows="4" disabled></textarea>
+                        <textarea class="form-control mb-1" name="address_info" id="address_info" rows="2" disabled></textarea>
                     </div>
                 </div>
                 <div class="form-row">
@@ -394,6 +397,8 @@
             CKEDITOR.instances.ckeditor1.setData("");
             CKEDITOR.instances.ckeditor2.setData("");
 
+            $('#image_show').attr('src', '');
+            $('#image').val('');
             // $('#slug').val('');
             $('.modal-title').text('Patients');
             $('#formModal').modal('show');
@@ -414,6 +419,7 @@
 
         $('#sample_form').on('submit', function(event) {
             event.preventDefault();
+            var formData = new FormData($(this)[0]);
             var action_url = '';
 
             if ($('#action').val() == 'Add') {
@@ -435,10 +441,11 @@
                 },
                 url: action_url,
                 method: "POST",
-                data: $(this).serialize(),
-                // data: $("form[name='formModal']").serialize(),
+                //data: $(this).serialize(),
+                data: formData,
                 dataType: "json",
-
+                processData: false,
+                contentType: false,
                 success: function(data) {
                     var html = '';
                     if (data.errors) {
@@ -482,7 +489,7 @@
                 url: "/admin/patient/" + id + "/info",
                 dataType: "json",
                 success: function(data) {
-
+                    var imgurl = "{{url('upload')}}" + "/" + data.result.image;
                     $('#name_info').val(data.result.name);
 
                     $('#birthday_info').val(data.result.birthday);
@@ -490,9 +497,11 @@
                     $('#email_info').val(data.result.email);
                     $('#phone_info').val(data.result.phone);
                     $('#address_info').val(data.result.address);
-                    $('#image_info').val(data.result.image);
+
                     CKEDITOR.instances.ckeditor1_info.setData(data.result.info);
                     CKEDITOR.instances.ckeditor2_info.setData(data.result.note);
+
+                    $('#image_info').attr('src', imgurl);
                     // var descHtml ='<div class="p-1 overflow-auto">';
                     // descHtml += data.result.description;
                     // descHtml += '</div>';
@@ -509,7 +518,21 @@
         });
 
         // ---------------
+        function filePreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    //$('#formModal + #image_show').remove();
+                    $('#image_show').attr('src', e.target.result);
 
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#image").change(function() {
+            filePreview(this);
+        });
 
         //---------------------------------
 
@@ -521,13 +544,13 @@
                 dataType: "json",
                 success: function(data) {
                     $('#name').val(data.result.name);
-
+                    var imgurl = "{{url('upload')}}" + "/" + data.result.image;
                     $('#birthday').val(data.result.birthday);
                     $('#sex').val(data.result.sex);
                     $('#email').val(data.result.email);
                     $('#phone').val(data.result.phone);
                     $('#address').val(data.result.address);
-                    $('#image').val(data.result.image);
+                    $('#image_show').attr('src', imgurl);
 
                     CKEDITOR.instances.ckeditor1.setData(data.result.info);
                     CKEDITOR.instances.ckeditor2.setData(data.result.note);

@@ -75,7 +75,7 @@
                         </div>
                         <div class="col-md-6">
                             <label>Duration</label>
-                            <input type="text" class="form-control" id="duration" name="duration">
+                            <input type="text" class="form-control" id="duration" name="duration" placeholder="Enter Duration">
                             <small class="text-danger" id="duration_error"></small>
                         </div>
                     </div>

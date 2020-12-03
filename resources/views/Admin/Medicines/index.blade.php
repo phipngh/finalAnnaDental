@@ -63,7 +63,7 @@
 <!-- ------------------- -->
 
 <div id="formModal" name="formModal" class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-xl" style="overflow-y: initial !important;">
+    <div class="modal-dialog modal-xl" style="overflow-y: initial !important;">
         <div class="modal-content ">
             <form id="sample_form" method="POST">
                 @csrf
@@ -93,11 +93,11 @@
                     <div class="form-row">
                         <div class="col-6">
                             <label>Manufacturer</label>
-                            <input type="text" class="form-control" id="manufacturer" name="manufacturer" placeholder="Enter Medicine Name">
+                            <input type="text" class="form-control" id="manufacturer" name="manufacturer" placeholder="Enter Medicine Manufacturer">
                         </div>
                         <div class="col-6">
                             <label>Image</label>
-                            <input type="text" class="form-control" id="image" name="image" placeholder="Enter Medicine Name">
+                            <input type="text" class="form-control" id="image" name="image" placeholder="Enter Medicine Image">
                         </div>
                     </div>
                     <div class="form-group">
@@ -399,7 +399,7 @@
             CKEDITOR.instances.ckeditor1.setData("");
             CKEDITOR.instances.ckeditor2.setData("");
             CKEDITOR.instances.ckeditor0.setData("");
-          
+
 
             // $('#slug').val('');
             $('.modal-title').text('Medicine');
@@ -452,7 +452,7 @@
                         html = '<div class="alert alert-danger"><ul>';
                         for (var count = 0; count < data.errors.length; count++) {
                             html += '<li style="display:inline;">' + data.errors[count] + '</li>';
-                            if(count % 2 == 0 ){
+                            if (count % 2 == 0) {
                                 html += '&nbsp|&nbsp'
                             }
                         }
@@ -537,7 +537,7 @@
                     CKEDITOR.instances.ckeditor2.setData(data.result.note);
                     CKEDITOR.instances.ckeditor0.setData(data.result.dose);
                     //$('#description').val(data.result.description);
-                   
+
                     // $('#slug').val(data.result.slug);
                     $('#hidden_id').val(id);
                     $('.modal-title').text('Services');

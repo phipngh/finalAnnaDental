@@ -5,6 +5,7 @@
 <link href="{{asset('AdminSide/libs/datatables/responsive.bootstrap4.css')}}" rel="stylesheet" type="text/css" />
 
 <link rel="stylesheet" href="{{asset('AdminSide/libs/sweetalert2/sweetalert2.min.css')}}">
+<link rel="stylesheet" href="{{asset('UserSide/css/lightgallery.css')}}">
 
 @endsection
 
@@ -64,7 +65,7 @@
                                 $IPn = \App\InstallmentPlan::where('case_record_id',$caserecord->id)->pluck('money')->sum();
                                 @endphp
                                 @if($caserecord->is_instalment_plant == 1)
-                                <p>* Installment Plan : <span class="text-uppercase">$ <span id="ipn">{{$IPn}}</span>  / $ {{$caserecord->total_fee}}</span></p>
+                                <p>* Installment Plan : <span class="text-uppercase">$ <span id="ipn">{{$IPn}}</span> / $ {{$caserecord->total_fee}}</span></p>
                                 @endif
                                 <div class="row">
                                     @if($caserecord->is_active == 1)
@@ -110,7 +111,14 @@
                 <div class="tab-pane" id="settings-b1">
                     {!! html_entity_decode($caserecord->note) !!}
                 </div>
+                @if($caserecord->is_paied == 1)
+            <div class="" style="z-index: 2;position: absolute; top: 10%;right: 10%; transform: rotate(0deg); ">
+                <!-- <h1 class="text-danger">CLOSED</h1> -->
+                <img style="position: relative; width: 320px;" src="{{url('upload/case_closed.png')}}" alt="">
             </div>
+            @endif
+            </div>
+            
         </div>
 
         <div class="card-box">
@@ -131,227 +139,6 @@
     </div>
     <div class="col-6">
 
-    
-        <!-- <div class="card-box">
-            @if($crds->count() > 0 )
-            <a id="" name="create_crDetail" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
-            <h4 class="header-title text-center">All Case Record Detail</h4>
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th style="width: 5%;">#</th>
-                            <th style="width: 25%;">Service</th>
-                            <th style="width: 10%;">Price</th>
-                            <th style="width: 10%;">Quantity</th>
-                            <th>Note</th>
-                            <th style="width: 17%;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                        $index = 1;
-                        $total = 0;
-                        @endphp
-                        @foreach($crds as $crd)
-                        <tr>
-                            <th scope="row">{{$index}}</th>
-                            <td>{{$crd->service->name}}</td>
-                            <td>{{$crd->service->price}}</td>
-                            <td>{{$crd->quantity}}</td>
-                            <td>{{$crd->note}}</td>
-                            <td>
-                                <button type="button" name="edit_crDetail" id="{{$crd->id}}" class="edit_crDetail btn btn-info btn-sm rounded"><i class="far fa-edit"></i></button>
-                                <button type="button" name="delete_crDetail" id="{{$crd->id}}" class="delete_crDetail btn btn-danger btn-sm rounded"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        @php
-                        $index++;
-                        $total += $crd->service->price*$crd->quantity;
-                        @endphp
-                        @endforeach
-                        <tr class="table-primary">
-                            <th scope="">-</th>
-                            <td class="font-weight-bold">Total</td>
-                            <td></td>
-                            <td></td>
-                            <td class="font-weight-bold">{{$total}}</td>
-                            <td class="text-center"><a type="button" href="{{route('admin.caserecord.invoice',$caserecord->id)}}" name="edit_crDetail" id="{{$crd->id}}" class="edit_crDetail btn btn-secondary btn-sm rounded"><i class="fas fa-file-invoice-dollar"></i></a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            @else
-            <a id="create_crDetail" name="create_crDetail" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
-            <h4 class="header-title text-center">All Case Record Detail</h4>
-            @endif
-        </div> -->
-
-        <!-- <div class="card-box">
-            @if($crps->count() > 0 )
-            <a id="create_crProcess" name="create_crProcess" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
-            <h4 class="header-title text-center my-2">All Case Record Processing Plan</h4>
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th style="width: 5%;">#</th>
-                            <th style="width: 20%;">Title</th>
-                            <th style="width: 20%;">Date</th>
-                            <th style="width: 15%;">Time</th>
-                            <th style="width: 10%;">Duration</th>
-                            <th>Note</th>
-                            <th style="width: 16%;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @php
-                        $index = 1;
-
-                        @endphp
-
-                        @foreach($crps as $crp)
-                        <tr>
-                            <th scope="row">{{$index}}</th>
-                            <td>{{$crp->title}}</td>
-                         
-                            <td>{{date("d-m-y", strtotime($crp->schedule_date))}}</td>
-                            <td>{{date("H:i:s", strtotime($crp->schedule_date))}}</td>
-                            <td>{{$crp->duration}}</td>
-                            @if(is_null($crp->note))
-                            <td><span class="badge badge-warning">Empty</span></td>
-                            @else
-                            <td><span class="badge badge-success"><i class="fas fa-check"></i> </span></td>
-                            @endif
-
-                            <td>
-                                <button type="button" name="edit_crProcess" id="{{$crp->id}}" class="edit_crProcess btn btn-info btn-sm rounded"><i class="far fa-edit"></i></button>
-
-                                <button type="button" name="delete_crProcess" id="{{$crp->id}}" class="delete_crProcess btn btn-danger btn-sm rounded"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        @php
-                        $index++;
-
-                        @endphp
-
-                        @endforeach
-
-                    </tbody>
-                </table>
-            </div>
-
-            @else
-            <a id="create_crProcess" name="create_crProcess" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Process</span></a>
-            <h4 class="header-title text-center">All Case Record Processing Plan</h4>
-            @endif
-        </div> -->
-
-        <!-- @if($caserecord->is_instalment_plant == 1)
-        <div class="card-box">
-            @if($crips->count() > 0 )
-            <a id="create_crIPlan" name="create_crIPlan" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
-            <h4 class="header-title text-center my-2">All Case Record Installment Plan</h4>
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th style="width: 5%;">#</th>
-                            <th style="width: 25%;">Date</th>
-                            <th style="width: 15%;">Money</th>
-                            <th>Note</th>
-                            <th style="width: 16%;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @php
-                        $index = 1;
-                        $total = 0;
-                        @endphp
-
-                        @foreach($crips as $crip)
-                        <tr>
-                            <th scope="row">{{$index}}</th>
-                            <td>{{date('d-m-Y', strtotime($crip->created_at))}}</td>
-                            <td>{{$crip->money}}</td>
-                            <td>
-                                @if($crip->note != NULL)
-                                {{$crip->note}}
-                                @endif
-
-                            </td>
-                            <td>
-                                <button type="button" name="edit_crIPlan" id="{{$crip->id}}" class="edit_crIPlan btn btn-info btn-sm rounded"><i class="far fa-edit"></i></button>
-                                <button type="button" name="delete_crIPlan" id="{{$crip->id}}" class="delete_crIPlan btn btn-danger btn-sm rounded"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        @php
-                        $index++;
-                        $total += $crip->money;
-                        @endphp
-
-                        @endforeach
-                        <tr class="table-primary">
-                            <th scope="">-</th>
-                            <td class="font-weight-bold">Total</td>
-                            <td class="font-weight-bold">{{$total}}</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            @else
-            <a id="create_crIPlan" name="create_crIPlan" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Plan</span></a>
-            <h4 class="header-title text-center">All Case Record Installment Plan</h4>
-            @endif
-        </div>
-        @endif -->
-<!-- 
-        <div class="card-box">
-            @if($crprs->count() > 0 )
-            <a id="create_crPresc" name="create_crPresc" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Prescription</span></a>
-            <h4 class="header-title text-center my-2">All Case Record Prescription</h4>
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th style="width: 5%;">#</th>
-                            <th style="">Date</th>
-                            <th style="width: 16%;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @php
-                        $index = 1;
-                        $total = 0;
-                        @endphp
-
-                        @foreach($crprs as $crpr)
-                        <tr>
-                            <th scope="row">{{$index}}</th>
-                            <td>{{date('d-m-Y', strtotime($crpr->created_at))}}</td>
-
-                            <td>
-                                <a type="button" href="{{route('admin.presciption.detail',$crpr->id)}}" name="detail_crPresc" id="{{$crpr->id}}" class="detail_crPresc btn btn-secondary btn-sm rounded text-white"><i class="fas fa-info"></i></a>
-                                <button type="button" name="delete_crPresc" id="{{$crpr->id}}" class="delete_crPresc btn btn-danger btn-sm rounded"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        @php
-                        $index++;
-                        @endphp
-                        @endforeach
-
-                    </tbody>
-                </table>
-            </div>
-            @else
-            <a id="create_crPresc" name="create_crPresc" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Prescription</span></a>
-            <h4 class="header-title text-center">All Case Record Prescription</h4>
-            @endif
-        </div> -->
 
         <!-- DATA TABLE TEST -->
         <div class="card-box">
@@ -376,14 +163,14 @@
                             <td></td>
                             <td></td>
                             @php
-                                $total = 0;
-                                $datas = \App\CaseRecordDetail::where('case_record_id',$caserecord->id)->get();
-                                foreach($datas as $data)
-                                    $total += $data->service->price*$data->quantity;
-                               
+                            $total = 0;
+                            $datas = \App\CaseRecordDetail::where('case_record_id',$caserecord->id)->get();
+                            foreach($datas as $data)
+                            $total += $data->service->price*$data->quantity;
                             @endphp
+
                             <td id="total" class="font-weight-bold">{{$total}}</td>
-                            <td class="text-center"><a type="button" href="{{route('admin.caserecord.invoice',$caserecord->id)}}" name="edit_crDetail" id="{{$crd->id}}" class="edit_crDetail btn btn-secondary btn-sm rounded"><i class="fas fa-file-invoice-dollar"></i></a></td>
+                            <td class="text-center"><a type="button" href="{{route('admin.caserecord.invoice',$caserecord->id)}}" name="edit_crDetail" id="" class="edit_crDetail btn btn-secondary btn-sm rounded"><i class="fas fa-file-invoice-dollar"></i></a></td>
                         </tr>
                     </tfoot>
                 </table>
@@ -392,7 +179,7 @@
 
 
         <div class="card-box">
-           
+
             <a id="create_crProcess" name="create_crProcess" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Detail</span></a>
             <h4 class="header-title text-center my-2">All Case Record Processing Plan</h4>
             <div class="table-responsive">
@@ -433,7 +220,7 @@
         @endif
 
         <div class="card-box">
-            
+
             <a id="create_crPresc" name="create_crPresc" type="button" class="btn btn-primary float-right mx-2 mb-2 text-light width-md"> <i class="fas fa-plus"></i><span> &nbsp;Add New Prescription</span></a>
             <h4 class="header-title text-center my-2">All Case Record Prescription</h4>
             <div class="table-responsive">
@@ -451,6 +238,32 @@
 
 
 
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="h3 text-center mb-3">Patient Processing Gallery</div>
+    </div>
+    <div class="col-12 bg-dark">
+        <div id="lightgallery" class="my-3 mx-2">
+            
+            @foreach(File::glob(public_path('/storage/files/1/CaseRecord/'.$caserecord->id).'/*') as $path)
+                @if(substr($path, 65) != 'thumbs')
+                    
+                    <a href="{{substr($path, 34)}}" class="">
+                        <img src="{{substr($path, 34)}}" style="height: 150px; padding: 5px;" class="rounded"/>
+                    </a>
+                @endif
+
+            @endforeach
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        
     </div>
 </div>
 
@@ -472,7 +285,7 @@
                         <div class="form-row form-group">
                             <div class="col-12">
                                 <label>Title</label>
-                                <input type="text" class="form-control" id="title_crProcess" name="title_crProcess" placeholder="Enter Money">
+                                <input type="text" class="form-control" id="title_crProcess" name="title_crProcess" placeholder="Enter Title">
                             </div>
                         </div>
 
@@ -483,7 +296,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label>Duration</label>
-                                <input type="text" class="form-control" id="duration_crProcess" name="duration_crProcess">
+                                <input type="text" class="form-control" id="duration_crProcess" name="duration_crProcess" placeholder="Enter Duration (Hour)">
                             </div>
                             <div class="col-md-3">
                                 <label>Service</label>
@@ -499,11 +312,11 @@
                         <div class="form-group form-row">
                             <div class="col-6">
                                 <label>Description</label>
-                                <textarea type="text" class="form-control" id="description_crProcess" name="description_crProcess" rows="2" placeholder="Enter Patient Name"></textarea>
+                                <textarea type="text" class="form-control" id="description_crProcess" name="description_crProcess" rows="2" placeholder="Enter Description"></textarea>
                             </div>
                             <div class="col-6">
                                 <label>Note</label>
-                                <textarea type="text" class="form-control" id="note_crProcess" name="note_crProcess" rows="2" placeholder="Enter Patient Name"></textarea>
+                                <textarea type="text" class="form-control" id="note_crProcess" name="note_crProcess" rows="2" placeholder="Enter Note"></textarea>
                             </div>
                         </div>
 
@@ -545,7 +358,7 @@
                             </div>
                             <div class="col-8">
                                 <label>Note</label>
-                                <textarea type="text" class="form-control" id="note_crIPlan" name="note_crIPlan" rows="1" placeholder="Enter Patient Name"></textarea>
+                                <textarea type="text" class="form-control" id="note_crIPlan" name="note_crIPlan" rows="1" placeholder="Enter Note"></textarea>
                             </div>
                         </div>
                         <!-- ----- -->
@@ -589,11 +402,11 @@
                             </div>
                             <div class="col-2">
                                 <label for="">Quantity</label>
-                                <input type="text" class="form-control" id="quantity_crDetail" name="quantity_crDetail">
+                                <input type="text" class="form-control" id="quantity_crDetail" name="quantity_crDetail" placeholder="Enter Quantity">
                             </div>
                             <div class="col-6">
                                 <label>Note</label>
-                                <textarea type="text" class="form-control" id="note_crDetail" name="note_crDetail" rows="1" placeholder="Enter Patient Name"></textarea>
+                                <textarea type="text" class="form-control" id="note_crDetail" name="note_crDetail" rows="1" placeholder="Enter Note"></textarea>
                             </div>
                         </div>
                         <!-- ----- -->
@@ -728,18 +541,21 @@
 
 <script src="{{asset('AdminSide/libs/sweetalert2/sweetalert2.min.js')}}"></script>
 <script src="{{ asset('AdminSide/libs/ckeditor/ckeditor.js') }}"></script>
+<script src="{{ asset('UserSide/js/lightgallery.js') }}"></script>
+<script src="{{ asset('UserSide/js/lg-thumbnail.js') }}"></script>
+<script src="{{ asset('UserSide/js/lg-fullscreen.js') }}"></script>
 
 
 <script>
     $(document).ready(function() {
-        
+
     });
 </script>
 <!-- installment Plan -->
 <script>
     $(document).ready(function() {
-        
-        
+
+
     });
 </script>
 <!--End crDetail -->
@@ -894,8 +710,7 @@
 <script>
     $(document).ready(function() {
 
-
-        var description_form = {!!json_encode($caserecord->description)!!};
+        var description_form = {!!json_encode($caserecord-> description)!!};
         CKEDITOR.instances.ckeditor1_cr.setData(description_form);
 
         $(function() {
@@ -1223,7 +1038,7 @@
                         html += '</div>';
                     }
                     if (data.success) {
-                        
+
                         Swal.fire({
                             position: "top",
                             type: "success",
@@ -1307,13 +1122,13 @@
                 }
             })
         });
-        
+
 
     });
 </script>
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
         var id = {{$caserecord->id}};
         $('#crinstallment').DataTable({
             searching: false,
@@ -1349,15 +1164,15 @@
                 },
             ],
         }).buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)");
-    
+
         $('#create_crIPlan').click(function() {
-                $('#action_button_crIPlan').val('Add');
-                $('#action_crIPlan').val('Add');
-                $('#form_result_crIPlan').html('');
-                $('#note_crIPlan').val('');
-                $('#money_crIPlan').val('');
-                $('.modal-title_crIPlan').text('Case Record Installment Plan');
-                $('#crIPlanModal').modal('show');
+            $('#action_button_crIPlan').val('Add');
+            $('#action_crIPlan').val('Add');
+            $('#form_result_crIPlan').html('');
+            $('#note_crIPlan').val('');
+            $('#money_crIPlan').val('');
+            $('.modal-title_crIPlan').text('Case Record Installment Plan');
+            $('#crIPlanModal').modal('show');
         });
 
         $('#cancel_button').click(function() {
@@ -1417,9 +1232,9 @@
                         $('#crIPlanForm')[0].reset();
                         $('#ipn').html(data.data);
 
-                        
-                            $('#crIPlanModal').modal('hide');
-                 
+
+                        $('#crIPlanModal').modal('hide');
+
                     }
                     $('#form_result_crIPlan').html(html);
 
@@ -1489,7 +1304,7 @@
 </script>
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
         var id = {{$caserecord->id}};
         $('#crprocess').DataTable({
             searching: false,
@@ -1548,7 +1363,7 @@
             $('.modal-title_crProcess').text('Case Record Installment Plan');
             $('#crProcessModal').modal('show');
         });
-       
+
         $('#cancel_button').click(function() {
             if ($('#action_crProcess').val() == 'Edit') {
                 Swal.fire({
@@ -1604,9 +1419,9 @@
                         $('#crprocess').DataTable().ajax.reload();
                         $('#crProcessForm')[0].reset();
 
-                        
-                            $('#crProcessModal').modal('hide');
-                        
+
+                        $('#crProcessModal').modal('hide');
+
                     }
                     $('#form_result_Process').html(html);
 
@@ -1655,7 +1470,8 @@
                     $.ajax({
                         url: "/admin/process/destroy/" + id,
                         success: function(data) {
-                            $('#crprocess').DataTable().ajax.reload();                        }
+                            $('#crprocess').DataTable().ajax.reload();
+                        }
                     });
                     Swal.fire({
                         title: "Deleted!",
@@ -1680,7 +1496,7 @@
 </script>
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
         var id = {{$caserecord->id}};
         $('#crprescription').DataTable({
             searching: false,
@@ -1744,19 +1560,19 @@
             $(this).closest("#medicineAdd").remove();
         });
 
-        
-            $('#create_crPresc').click(function() {
-                count = 1;
-                dynamic_field(count);
-                $('#action_button_crPresc').val('Add');
-                $('#action_crPresc').val('Add');
-                $('#form_result_crPresc').html('');
-                $('#note_crPresc').val('');
-                // $('#slug').val('');
-                $('.modal-title_crPresc').text('Case Record Prescription');
-                $('#crPrescModal').modal('show');
-            });
-        
+
+        $('#create_crPresc').click(function() {
+            count = 1;
+            dynamic_field(count);
+            $('#action_button_crPresc').val('Add');
+            $('#action_crPresc').val('Add');
+            $('#form_result_crPresc').html('');
+            $('#note_crPresc').val('');
+            // $('#slug').val('');
+            $('.modal-title_crPresc').text('Case Record Prescription');
+            $('#crPrescModal').modal('show');
+        });
+
 
         $('#crPrescForm').on('submit', function(event) {
             event.preventDefault();
@@ -1778,7 +1594,7 @@
                     } else {
                         dynamic_field(1);
                         $('#form_result_crPresc').html('<div class="alert alert-success">' + data.success + '</div>');
-                        $('#crprescription').DataTable().ajax.reload();       
+                        $('#crprescription').DataTable().ajax.reload();
                     }
                     $('#action_button_crPresc').attr('disabled', false);
                 }
@@ -1803,7 +1619,8 @@
                     $.ajax({
                         url: "/admin/prescription/destroy/" + id,
                         success: function(data) {
-                            $('#crprescription').DataTable().ajax.reload();                        }
+                            $('#crprescription').DataTable().ajax.reload();
+                        }
                     });
                     Swal.fire({
                         title: "Deleted!",
@@ -1824,6 +1641,9 @@
             })
         });
     });
+</script>
+<script type="text/javascript">
+    lightGallery(document.getElementById('lightgallery'));
 </script>
 
 @endsection
