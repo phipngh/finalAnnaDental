@@ -163,7 +163,14 @@ Route::group(
         Route::get('appointment/destroy/{id}', 'AppointmentController@destroy');
         Route::get('appointment/accept/{id}', 'AppointmentController@accept');
         Route::get('appointment/pending/{id}', 'AppointmentController@pending');
-
         Route::get('appointment/datatable', 'AppointmentController@index2')->name('appointment.datatable');
+
+        //Message
+        Route::get('message','MessageController@index')->name('message');
+        Route::get('message/destroy/{id}','MessageController@destroy');
+
+        //Subcrible
+        Route::get('subcrible','SubcribleController@index')->name('subcrible');
+        Route::get('subcrible/destroy/{id}','SubcribleController@destroy');
     }
 );

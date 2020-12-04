@@ -77,6 +77,20 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{route('admin.message')}}">
+                        <i class="fas fa-comments"></i>
+                        <span> Message </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('admin.subcrible')}}">
+                        <i class="fas fa-comments"></i>
+                        <span> Subcrible </span>
+                    </a>
+                </li>
+
 
                 <!-- end here -->
                 <hr>
