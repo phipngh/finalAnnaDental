@@ -40,7 +40,7 @@
                 <thead>
                     <tr class="text-primary">
                         <th style="width: 1%;">#</th>
-                        <th style="width: 1%;">ID</th>
+
                         <th>Name</th>
                         <th>Birthday</th>
                         <th>Email</th>
@@ -267,6 +267,7 @@
         // Datatable config
 
         $('#catelogy_table').DataTable({
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             dom: 'Blfrtip',
             buttons: [
                 // 'copy',
@@ -276,20 +277,26 @@
                     extend: 'pdf',
                     footer: false,
                     className: 'btn btn-sm btn-primary mb-1 float-right ml-1',
-                    title: 'All Roles',
-                    filename: 'Roles',
+                    title: 'All Patients',
+                    filename: 'Patients',
                     exportOptions: {
-                        columns: [0, 2, 3, 4]
+                        modifier: {
+                            page: 'all',
+                        },
+                        columns: [0, 1, 2, 3, 4]
                     }
                 },
                 {
                     extend: 'excel',
                     footer: false,
                     className: 'btn btn-sm btn-primary mb-1 float-right ml-1',
-                    title: 'All Roles',
-                    filename: 'Roles',
+                    title: 'All Patients',
+                    filename: 'Patients',
                     exportOptions: {
-                        columns: [0, 2, 3, 4]
+                        modifier: {
+                            page: 'all',
+                        },
+                        columns: [0, 1, 2, 3, 4]
                     }
                 },
                 {
@@ -299,44 +306,19 @@
                 {
                     extend: 'print',
                     className: 'btn btn-sm btn-primary mb-1 float-right ',
-                    title: 'All Roles',
-                    filename: 'Roles',
+                    title: 'All Patients',
+                    filename: 'Patients',
                     exportOptions: {
-                        columns: [0, 2, 3, 4]
+                        modifier: {
+                            page: 'all',
+                        },
+                        columns: [0, 1, 2, 3, 4]
                     },
                 },
 
 
             ],
-            columnDefs: [{
-                    "targets": 0,
-                    "className": "text-center text-info",
-                },
-                {
-                    "targets": 1,
-                    "className": "text-center text-info",
-                },
-                {
-                    "targets": 2,
-                    "className": "text-center h5 text-primary text-bold",
-                },
-                {
-                    "targets": 3,
-                    "className": "text-center h5 text-primary text-bold",
-                },
-                {
-                    "targets": 4,
-                    "className": "text-center",
-                },
-                {
-                    "targets": 5,
-                    "className": "text-center",
-                },
-                {
-                    "targets": 6,
-                    "className": "text-center",
-                },
-            ],
+
             "order": [
                 [1, "asc"]
             ],
@@ -349,10 +331,7 @@
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
                 },
-                {
-                    data: 'id',
-                    name: 'id'
-                },
+
                 {
                     data: 'name',
                     name: 'name'

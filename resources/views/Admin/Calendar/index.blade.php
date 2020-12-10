@@ -35,9 +35,6 @@
 </div>
 
 
-{{date('d-m-Y', strtotime(Carbon\Carbon::now()))}}
-<br>
-{{Carbon\Carbon::now()->format('m-d-Y')}}
 <!-- ------------------------ -->
 <div id="CldModal" name="CldModal" class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" style="overflow-y: initial !important;">

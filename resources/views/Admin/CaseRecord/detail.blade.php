@@ -35,7 +35,7 @@
 </div>
 
 <div class="row">
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12" id="testheight">
+    <div class="col-xl-6 col-lg-6 col-md-12" id="testheight">
         <div class="card-box">
             <ul class="nav nav-tabs nav-bordered">
                 <li class="nav-item">
@@ -137,7 +137,7 @@
             </form>
         </div>
     </div>
-    <div class="col-6">
+    <div class="col-lg-6 col-md-12">
 
 
         <!-- DATA TABLE TEST -->
@@ -158,7 +158,8 @@
                     </thead>
                     <tfoot>
                         <tr class="table-primary">
-                            <th scope="">-</th>
+                        <td class="text-center"><a type="button" href="{{route('admin.caserecord.invoice',$caserecord->id)}}" target="_blank" name="edit_crDetail" id="" class="edit_crDetail btn btn-secondary btn-sm rounded"><i class="fas fa-file-invoice-dollar"></i></a></td>
+
                             <td class="font-weight-bold">Total</td>
                             <td></td>
                             <td></td>
@@ -170,7 +171,7 @@
                             @endphp
 
                             <td id="total" class="font-weight-bold">{{$total}}</td>
-                            <td class="text-center"><a type="button" href="{{route('admin.caserecord.invoice',$caserecord->id)}}" name="edit_crDetail" id="" class="edit_crDetail btn btn-secondary btn-sm rounded"><i class="fas fa-file-invoice-dollar"></i></a></td>
+                            <td></td>
                         </tr>
                     </tfoot>
                 </table>
@@ -249,6 +250,7 @@
     @php
     $path = File::glob(public_path('/storage/files/1/CaseRecord/'.$caserecord->id).'/*') ;
     @endphp
+    
 
 
     @if($path)
@@ -256,9 +258,12 @@
         <div id="lightgallery" class="my-3 mx-2">
 
             @foreach(File::glob(public_path('/storage/files/1/CaseRecord/'.$caserecord->id).'/*') as $path)
-            @if(substr($path, 65) != 'thumbs')
-            <a href="{{substr($path, 39)}}" class="">
-                <img src="{{substr($path, 39)}}" style="height: 150px; padding: 5px;" class="rounded" />
+           
+            
+            {{--@if(substr($path, 65) != 'thumbs') --}} 
+            @if(!strpos($path, "thumbs"))
+            <a href="{{substr($path,strpos($path,'/'))}}" class="">
+                <img src="{{substr($path,strpos($path,'/'))}}" style="height: 150px; padding: 5px;" class="rounded" />
             </a>
             @endif
             @endforeach
@@ -723,9 +728,7 @@
 <script>
     $(document).ready(function() {
 
-        var description_form = {
-            !!json_encode($caserecord - > description) !!
-        };
+        var description_form = {!!json_encode($caserecord->description)!!};
         CKEDITOR.instances.ckeditor1_cr.setData(description_form);
 
         $(function() {
@@ -807,10 +810,10 @@
     CKEDITOR.replace('ckeditor1_cr', {
         height: 350,
         readOnly: true,
-        filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
-        filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token=',
-        filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
-        filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token='
+        filebrowserImageBrowseUrl: '/laravel-filemanager',
+        filebrowserImageUploadUrl: '/laravel-filemanager',
+        filebrowserBrowseUrl: '/laravel-filemanager',
+        filebrowserUploadUrl: '/laravel-filemanager'
     });
     CKEDITOR.replace('ckeditor2_cr', {
         height: 150
@@ -958,11 +961,7 @@
 <!-- CASE RECORD DETAIL -->
 <script>
     $(document).ready(function() {
-        var id = {
-            {
-                $caserecord - > id
-            }
-        };
+        var id = {{$caserecord->id}};
         $('#crdetail').DataTable({
             searching: false,
             paging: true,
@@ -1148,11 +1147,7 @@
 
 <script>
     $(document).ready(function() {
-        var id = {
-            {
-                $caserecord - > id
-            }
-        };
+        var id = {{$caserecord->id}};
         $('#crinstallment').DataTable({
             searching: false,
             paging: true,
@@ -1328,11 +1323,7 @@
 
 <script>
     $(document).ready(function() {
-        var id = {
-            {
-                $caserecord - > id
-            }
-        };
+        var id = {{$caserecord->id}};
         $('#crprocess').DataTable({
             searching: false,
             paging: true,
@@ -1524,11 +1515,7 @@
 
 <script>
     $(document).ready(function() {
-        var id = {
-            {
-                $caserecord - > id
-            }
-        };
+        var id = {{$caserecord->id}};
         $('#crprescription').DataTable({
             searching: false,
             paging: true,

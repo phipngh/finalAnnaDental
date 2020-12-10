@@ -30,14 +30,14 @@
             <table id="catelogy_table" class="table  table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Customer Name</th>
-                        <th>Email</th>
-                        <th>PhoneNumber</th>
-                        <th>Date</th>
+                        <th style="width: 3%;">#</th>
+                        <th style="width: 15%;">Customer Name</th>
+                        <th style="width: 10%;">Email</th>
+                        <th style="width: 10%;">PhoneNumber</th>
+                        <th style="width: 20%;">Date</th>
                         <th style="width: 20%;">Note</th>
-                        <th>Created At</th>
-                        <th>Action</th>
+                        <th style="width: 7%;">Created At</th>
+                        <th style="15%">Action</th>
                     </tr>
                 </thead>
             </table>
@@ -51,20 +51,33 @@
             <table id="catelogy" class="table  table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Customer Name</th>
-                        <th>Email</th>
-                        <th>PhoneNumber</th>
-                        <th>Date</th>
+                    <th style="width: 3%;">#</th>
+                        <th style="width: 15%;">Customer Name</th>
+                        <th style="width: 10%;">Email</th>
+                        <th style="width: 10%;">PhoneNumber</th>
+                        <th style="width: 20%;">Date</th>
                         <th style="width: 20%;">Note</th>
-                        <th>Created At</th>
-                        <th>Action</th>
+                        <th style="width: 7%;">Created At</th>
+                        <th style="15%">Action</th>
                     </tr>
                 </thead>
             </table>
         </div>
     </div>
 </div>
+
+<hr>
+<p>hello</p>
+
+@php
+$allApp = App\Appointment::where('date','>',Carbon\Carbon::now()->startOfWeek())->where('date','<',Carbon\Carbon::now()->endOfWeek())->count();
+$appendApp = App\Appointment::where('date','>',Carbon\Carbon::now()->startOfWeek())->where('date','<',Carbon\Carbon::now()->endOfWeek())->where('is_accepted',1)->count();
+@endphp
+
+
+
+
+
 
 <!-- ------------------- -->
 
@@ -149,6 +162,7 @@
 <script>
     $(document).ready(function() {
         $('#catelogy_table').DataTable({
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             processing: true,
             serverSide: true,
             ajax: {
@@ -326,6 +340,7 @@
         //Table 2 
 
         $('#catelogy').DataTable({
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             processing: true,
             serverSide: true,
             ajax: {

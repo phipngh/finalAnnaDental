@@ -44,11 +44,13 @@
                             <input type="text" class="form-control" id="email" name="email" value="{{Auth::user()->email}}" readonly>
                         </div>
                     </div>
+                    @if(!Auth::user()->google_id)
                     <div class="form-group form-row">
                         <div class="col-12">
                             <label>If you wanna change your account password ? &nbsp;&nbsp;<a href="" class="disabled" id="changepassword">Click Here</a></label>
                         </div>
                     </div>
+                    @endif
                 </div>
 
             </div>
@@ -133,7 +135,7 @@
 
 
 
-<br><br><br><br><br><br><br><br><br>
+
 <br><br><br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br><br><br>
 

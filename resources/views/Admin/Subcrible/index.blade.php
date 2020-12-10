@@ -21,10 +21,10 @@
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="{{route('admin.index')}}">AnnaDental</a></li>
                     <!-- <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li> -->
-                    <li class="breadcrumb-item active">Message</li>
+                    <li class="breadcrumb-item active">Subcrible</li>
                 </ol>
             </div>
-            <h4 class="page-title">Message Page</h4>
+            <h4 class="page-title">Subcrible Page</h4>
         </div>
     </div>
 </div>
@@ -33,7 +33,7 @@
 
     <div class="col-12">
         <div class="card-box table-responsive">
-            <h4 class="header-title text-center text-primary"><b>Message</b></h4>
+            <h4 class="header-title text-center text-primary"><b>Subcrible</b></h4>
             <table id="catelogy_table" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                 <thead>
                     <tr class="text-primary">
@@ -120,47 +120,7 @@
         // Datatable config
 
         $('#catelogy_table').DataTable({
-            dom: 'Blfrtip',
-            buttons: [
-                // 'copy',
-                // 'excel',
-                // 'pdf'
-                {
-                    extend: 'pdf',
-                    footer: false,
-                    className: 'btn btn-sm btn-primary mb-1 float-right ml-1',
-                    title: 'All Roles',
-                    filename: 'Roles',
-                    exportOptions: {
-                        columns: [0, 2, 3, 4]
-                    }
-                },
-                {
-                    extend: 'excel',
-                    footer: false,
-                    className: 'btn btn-sm btn-primary mb-1 float-right ml-1',
-                    title: 'All Roles',
-                    filename: 'Roles',
-                    exportOptions: {
-                        columns: [0, 2, 3, 4]
-                    }
-                },
-                {
-                    extend: 'copy',
-                    className: 'btn btn-sm btn-primary mb-1 float-right ml-1',
-                },
-                {
-                    extend: 'print',
-                    className: 'btn btn-sm btn-primary mb-1 float-right ',
-                    title: 'All Roles',
-                    filename: 'Roles',
-                    exportOptions: {
-                        columns: [0, 2, 3, 4]
-                    },
-                },
-
-
-            ],
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "order": [
                 [0, "asc"]
             ],
@@ -197,7 +157,7 @@
                     orderable: false
                 }
             ]
-        }).buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)");
+        });
 
 
 

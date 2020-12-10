@@ -68,7 +68,7 @@ class PrescriptionController extends Controller
             return DataTables::of($data)
                 ->addColumn('action', function ($data) {
                     //href="{{route('admin.presciption.detail',$crpr->id)}}"
-                    $button = '<a type="button" href="/admin/prescription/'.$data->id. '" name="edit" id="' . $data->id . '" class="edit btn btn-secondary btn-sm rounded"><i class="far fa-edit"></i></a>';
+                    $button = '<a type="button" href="/admin/prescription/'.$data->id. '" name="edit" id="' . $data->id . '" class="edit btn btn-secondary btn-sm rounded" target="_blank"><i class="far fa-edit"></i></a>';
                     $button .= '&nbsp<button  name="delete" id="' . $data->id . '" class="delete_pre btn btn-danger btn-sm rounded"><i class="fas fa-trash"></i></button>';
                     return $button;
                 })

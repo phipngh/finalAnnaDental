@@ -58,6 +58,10 @@ Route::get('/tester', function() {
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('auth/google', 'Auth\GoogleController@redirectToGoogle');
+Route::get('auth/google/callback', 'Auth\GoogleController@handleGoogleCallback');
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(
     ['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']],
@@ -65,7 +69,11 @@ Route::group(
         Route::get('/', function () {
             return redirect()->route('admin.dashboard');
         })->name('index');
+
         Route::get('dashboard', 'AdminController@dashboard')->name('dashboard');
+        Route::get('dashboard/statistic/appointment/{year}','DashboardController@appByYear')->name('dashboard.appbyyear');
+        Route::get('dashboard/statistic/patient/{year}','DashboardController@patientByYear')->name('dashboard.patientbyyear');
+        Route::get('dashboard/statistic/caserecord/{year}','DashboardController@caserecordByYear')->name('dashboard.caserecordbyyear');
 
         //Role Page 
         Route::get('role', 'RoleController@index')->name('role');

@@ -40,7 +40,7 @@
                 <thead>
                     <tr class="text-primary">
                         <th style="width: 1%;">#</th>
-                        <th style="width: 1%;">ID</th>
+
                         <th>Name</th>
                         <th>Price</th>
                         <th style="width: 2%;">Description</th>
@@ -218,6 +218,7 @@
         // Datatable config
 
         $('#catelogy_table').DataTable({
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             dom: 'Blfrtip',
             buttons: [
                 // 'copy',
@@ -230,7 +231,7 @@
                     title: 'All Roles',
                     filename: 'Roles',
                     exportOptions: {
-                        columns: [0, 2, 3, 4]
+                        columns: [0, 1, 2, ]
                     }
                 },
                 {
@@ -240,7 +241,7 @@
                     title: 'All Roles',
                     filename: 'Roles',
                     exportOptions: {
-                        columns: [0, 2, 3, 4]
+                        columns: [0, 1, 2, ]
                     }
                 },
                 {
@@ -253,42 +254,13 @@
                     title: 'All Roles',
                     filename: 'Roles',
                     exportOptions: {
-                        columns: [0, 2, 3, 4]
+                        columns: [0, 1, 2, ]
                     },
                 },
 
 
             ],
-            columnDefs: [{
-                    "targets": 0,
-                    "className": "text-center text-info",
-                },
-                {
-                    "targets": 1,
-                    "className": "text-center text-info",
-                },
-                {
-                    "targets": 5,
-                    "className": "text-center",
-                },
-                {
-                    "targets": 6,
-                    "className": "text-center",
-                },
-                {
-                    "targets": 4,
-                    "className": "text-center",
-                },
-                {
-                    "targets": 3,
-                    "className": "text-center h5 text-primary text-bold",
-                },
-                {
-                    "targets": 2,
-                    "className": "text-center h5 text-primary text-bold",
-                },
 
-            ],
             "order": [
                 [1, "asc"]
             ],
@@ -301,10 +273,7 @@
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
                 },
-                {
-                    data: 'id',
-                    name: 'id'
-                },
+
                 {
                     data: 'name',
                     name: 'name'
@@ -397,7 +366,7 @@
                         }
                         html += '</div>';
 
-                        
+
                     }
                     if (data.success) {
                         // html = '<div class="alert alert-success">' + data.success + '</div>';
