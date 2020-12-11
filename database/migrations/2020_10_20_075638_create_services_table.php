@@ -21,6 +21,7 @@ class CreateServicesTable extends Migration
             $table->text('description')->nullable();
             $table->text('note')->nullable();
             $table->timestamps();
+            
         });
     }
 

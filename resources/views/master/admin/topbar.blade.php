@@ -120,7 +120,7 @@
 
     <!-- LOGO -->
     <div class="logo-box">
-        <a href="" class="logo text-center">
+        <a href="/admin" class="logo text-center">
             <span class="logo-lg">
                 <img src="{{asset('AdminSide/images/logo-light.png')}}" alt="" height="16">
                 <!-- <span class="logo-lg-text-light">UBold</span> -->

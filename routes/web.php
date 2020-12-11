@@ -114,6 +114,7 @@ Route::group(
         Route::post('patient/update', 'PatientController@update')->name('patient.update');
         Route::post('patient/{id}/update', 'PatientController@update')->name('patient.update.detail');
         Route::get('patient/destroy/{id}', 'PatientController@destroy');
+        Route::get('patient/restore/{id}', 'PatientController@restore');
         Route::get('patient/{id}', 'PatientController@detail')->name('patient.detail');
 
         //Case Record Page     
@@ -180,5 +181,14 @@ Route::group(
         //Subcrible
         Route::get('subcrible','SubcribleController@index')->name('subcrible');
         Route::get('subcrible/destroy/{id}','SubcribleController@destroy');
+
+        //Trash
+        Route::get('trash/patient','TrashController@index')->name('trash.patient');
+        Route::get('trash/caserecord','TrashController@index2')->name('trash.caserecord');
+        Route::get('trash/caserecorddetail','TrashController@index3')->name('trash.caserecorddetail');
+        Route::get('trash/installmentplan','TrashController@index4')->name('trash.installmentplan');
+        Route::get('trash/process','TrashController@index5')->name('trash.process');
+        Route::get('trash/prescription','TrashController@index6')->name('trash.presciption');
+        Route::get('trash/prescriptiondetail','TrashController@index7')->name('trash.prescriptiondetail');
     }
 );

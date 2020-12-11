@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Process extends Model
 {
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
+    
     protected $fillable = [
         'title', 'note', 'description', 'schedule_date', 'duration', 'case_record_id'
     ];

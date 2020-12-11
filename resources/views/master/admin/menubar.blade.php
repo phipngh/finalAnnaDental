@@ -17,7 +17,7 @@
                     </a>
                 </li>
 
-              
+
 
                 <!--start here-->
 
@@ -89,6 +89,21 @@
                         <i class="fas fa-folder-open"></i>
                         <span> File Manager </span>
                     </a>
+                </li>
+
+                <hr>
+                <li>
+                    <a href="javascript: void(0);">
+                        <i class="fas fa-trash"></i>
+                        <span> Trash </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li><a href="{{route('admin.trash.patient')}}">Patient</a></li>
+                        <li><a href="{{route('admin.trash.caserecord')}}">Case Record</a></li>
+                        <li><a href="{{route('admin.trash.caserecorddetail')}}">Case Record Detail</a></li>
+                        
+                    </ul>
                 </li>
                 <!-- end here -->
             </ul>

@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CaseRecord extends Model
 {
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
+
     protected $fillable = [
         'name','description','note','total_fee','is_active','is_paied','is_instalment_plant',
         'doctor_id','patient_id'
@@ -24,6 +28,25 @@ class CaseRecord extends Model
 
     public function patient(){
         return $this->belongsTo('App\Patient','patient_id');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function ($cr) {
+            $cr->caserecorddetails()->delete();
+            $cr->installmentplans()->delete();
+            $cr->process()->delete();
+            $cr->prescription->each->delete();
+        });
+
+        static::restored(function ($cr) {
+            $cr->caserecorddetails()->restore();
+            $cr->installmentplans()->restore();
+            $cr->process()->restore();
+            $cr->prescription->each->restore();
+        });
     }
 
     public function caserecorddetails(){

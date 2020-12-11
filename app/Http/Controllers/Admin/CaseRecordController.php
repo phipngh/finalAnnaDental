@@ -22,6 +22,7 @@ class CaseRecordController extends Controller
     {
         $rules = array(
             'name_create'    =>  'required',
+            'doctor_id_create'    =>  'required',
 
 
             // 'slug'    =>  'required',
