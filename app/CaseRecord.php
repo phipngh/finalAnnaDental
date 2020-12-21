@@ -42,10 +42,10 @@ class CaseRecord extends Model
         });
 
         static::restored(function ($cr) {
-            $cr->caserecorddetails()->restore();
-            $cr->installmentplans()->restore();
-            $cr->process()->restore();
-            $cr->prescription->each->restore();
+            $cr->caserecorddetails->restore(); 
+            $cr->installmentplans->restore(); 
+            $cr->process->restore(); 
+            $cr->prescription->each->restore(); 
         });
     }
 

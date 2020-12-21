@@ -52,8 +52,7 @@ class TrashController extends Controller
             return DataTables::of($data)
                 ->addColumn('action', function ($data) {
                     
-                    $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-secondary btn-sm rounded"><i class="far fa-edit"></i></button>';
-                    $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm rounded"><i class="fas fa-trash"></i></button>';
+                    $button = '<button type="button" name="restore" id="' . $data->id . '" class="restore btn btn-success btn-sm rounded"><i class="fas fa-undo"></i></button>';
                     return $button;
                 })
                 ->editColumn('deleted_at', function ($data) {

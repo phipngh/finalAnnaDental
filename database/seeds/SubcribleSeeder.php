@@ -12,6 +12,6 @@ class SubcribleSeeder extends Seeder
      */
     public function run()
     {
-        factory(Subcrible::class,50)->create();
+        factory(Subcrible::class,30)->create();
     }
 }

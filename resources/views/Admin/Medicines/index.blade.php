@@ -44,7 +44,7 @@
                         <th>Name</th>
                         <th>Price</th>
                         <th>Manufacturer</th>
-                        <th>Image</th>
+                 
                         <th style="width: 2%;">Dose</th>
                         <th style="width: 2%;">Description</th>
                         <th style="width: 2%;">Note</th>
@@ -324,10 +324,7 @@
                     name: 'manufacturer'
                 },
 
-                {
-                    data: 'image',
-                    name: 'image'
-                },
+               
                 {
                     data: 'dose',
                     name: 'dose'

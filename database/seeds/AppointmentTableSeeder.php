@@ -12,6 +12,6 @@ class AppointmentTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Appointment::class,100)->create();
+        factory(Appointment::class,30)->create();
     }
 }

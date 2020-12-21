@@ -1,9 +1,9 @@
 <?php
 
-use App\CaseRecord;
+use App\Doctor;
 use Illuminate\Database\Seeder;
 
-class CaseRecordSeeder extends Seeder
+class DoctorSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class CaseRecordSeeder extends Seeder
      */
     public function run()
     {
-        factory(CaseRecord::class,130)->create();
+        factory(Doctor::class,15)->create();
     }
 }

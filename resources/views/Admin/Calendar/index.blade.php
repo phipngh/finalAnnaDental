@@ -176,6 +176,7 @@
                 $('#action').val('Edit');
                 $('#form_result').html('');
                 $('#title').val(event.title);
+                $('#color').val(event.color);
                 //var newdates = event.start.toString().split('GMT')[0] + ' UTC'.toISOString().split('.')[0];
                 $('#duration').val(event.duration);
                 //$('#schedule_date').val(event.start.format());

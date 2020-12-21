@@ -11,7 +11,7 @@ $factory->define(Appointment::class, function (Faker $faker) {
         'name' => $faker->name,
         'email' => $faker->email,
         'phonenumber' => $faker->phoneNumber,
-        'date' => $faker->dateTimeBetween($startDate = '2017-01-01 00:00:00', $endDate = '2019-12-30 23:59:59', $timezone = null),
+        'date' => $faker->dateTimeBetween($startDate = '2020-12-01 00:00:00', $endDate = '2021-02-20 23:59:59', $timezone = null),
         'note' =>$faker->text
     ];
 });

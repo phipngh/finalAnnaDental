@@ -101,7 +101,7 @@
                     <ul class="nav-second-level" aria-expanded="false">
                         <li><a href="{{route('admin.trash.patient')}}">Patient</a></li>
                         <li><a href="{{route('admin.trash.caserecord')}}">Case Record</a></li>
-                        <li><a href="{{route('admin.trash.caserecorddetail')}}">Case Record Detail</a></li>
+                        
                         
                     </ul>
                 </li>

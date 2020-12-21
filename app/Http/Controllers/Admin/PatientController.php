@@ -185,9 +185,8 @@ class PatientController extends Controller
 
     public function restore($id){
         $patient = Patient::withTrashed()->whereId($id);
-        $caserecord = CaseRecord::withTrashed()->where('patient_id',$id);
-
-        $caserecord->restore();
         $patient->restore();
     }
 }
+
+

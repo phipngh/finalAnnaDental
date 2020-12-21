@@ -136,27 +136,14 @@
         });
 
         var id;
-        $(document).on('click', '.accept', function() {
-            id = $(this).attr('id');
-            $.ajax({
-                url: "/admin/appointment/accept/" + id,
-                success: function(data) {
-                    $('#catelogy_table').DataTable().ajax.reload();
-                }
-            });
-        });
-
-        
-
-        var id;
-        $(document).on('click', '.delete', function() {
+        $(document).on('click', '.restore', function() {
             id = $(this).attr('id');
             Swal.fire({
                 title: "Are you sure?",
-                text: "You won't be able to revert this!",
+                text: "Do you want to restore this.",
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonText: "Yes, delete it!",
+                confirmButtonText: "Yes, Do it!",
                 cancelButtonText: "No, cancel!",
                 confirmButtonClass: "btn btn-success mt-2",
                 cancelButtonClass: "btn btn-danger ml-2 mt-2",
@@ -164,14 +151,14 @@
             }).then(function(t) {
                 if (t.value) {
                     $.ajax({
-                        url: "/admin/appointment/destroy/" + id,
+                        url: "/admin/caserecord/restore/" + id,
                         success: function(data) {
-                            $('#catelogy_table').DataTable().ajax.reload();
+                            $('#catelogy_caserecord').DataTable().ajax.reload();
                         }
                     });
                     Swal.fire({
-                        title: "Deleted!",
-                        text: "Your file has been deleted.",
+                        title: "Restored!",
+                        text: "Your file has been restored.",
                         type: "success",
                         timer: 1500,
                         showConfirmButton: !1,
@@ -179,7 +166,7 @@
                 } else {
                     t.dismiss === Swal.DismissReason.cancel && Swal.fire({
                         title: "Cancelled",
-                        text: "Your data is safe :)",
+                        text: "Your data is in trash :)",
                         type: "error",
                         timer: 1500,
                         showConfirmButton: !1,

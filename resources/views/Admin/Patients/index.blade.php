@@ -83,7 +83,7 @@
                         </div>
                         <div class="col-3">
                             <label>Phone Number</label>
-                            <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Patient Phone Number">
+                            <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Patient Phone Number">
                         </div>
                     </div>
                     <div class="form-row">
@@ -162,7 +162,7 @@
                     </div>
                     <div class="col-3">
                         <label>Phone</label>
-                        <input type="number" class="form-control" id="phone_info" name="phone_info" disabled>
+                        <input type="text" class="form-control" id="phone_info" name="phone_info" disabled>
                     </div>
 
                 </div>

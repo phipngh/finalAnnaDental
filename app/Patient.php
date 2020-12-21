@@ -27,12 +27,12 @@ class Patient extends Model
             $patient->caserecords->each->delete(); 
         });
 
-        // static::restored(function ($patient) {
-        //     $patient->caserecords->each->restore(); 
-        // });
-
-        static::restoring(function($patient) {
-            $patient->caserecords()->withTrashed()->first()->restore();
+        static::restored(function ($patient) {
+            $patient->caserecords->restore(); 
         });
+
+        // static::restoring(function($patient) {
+        //     $patient->caserecords()->withTrashed()->first()->restore();
+        // });
     }
 }

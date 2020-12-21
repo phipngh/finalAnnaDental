@@ -124,6 +124,7 @@ Route::group(
         Route::post('caserecord/{id}/update', 'CaseRecordController@update')->name('caserecord.update.detail');
         Route::post('caserecord/{id}/update/description', 'CaseRecordController@description')->name('caserecord.update.description');
         Route::get('caserecord/destroy/{id}', 'CaseRecordController@destroy');
+        Route::get('caserecord/restore/{id}', 'CaseRecordController@restore');
         Route::get('caserecord/{id}', 'CaseRecordController@detail')->name('caserecord.detail');
         Route::get('caserecord/{id}/invoice', 'CaseRecordController@invoice')->name('caserecord.invoice');
 

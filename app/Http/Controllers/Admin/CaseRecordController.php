@@ -130,4 +130,9 @@ class CaseRecordController extends Controller
         $caserecord = CaseRecord::find($id);
         return view('Admin.CaseRecord.invoice', compact('caserecord'));
     }
+
+    public function restore($id){
+        $cr = CaseRecord::withTrashed()->whereId($id);
+        $cr->restore();
+    }
 }
