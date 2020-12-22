@@ -16,7 +16,7 @@ class ServiceController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Service::latest()->get();
+            $data = Service::oldest()->get();
             return DataTables::of($data)
                 ->addColumn('action', function ($data) {
                     $button = '<button type="button" name="info" id="' . $data->id . '" class="info btn btn-info btn-sm rounded"><i class="fas fa-info"></i></button>';

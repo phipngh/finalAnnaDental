@@ -229,8 +229,8 @@
                     extend: 'pdf',
                     footer: false,
                     className: 'btn btn-sm btn-primary mb-1 float-right ml-1',
-                    title: 'All Roles',
-                    filename: 'Roles',
+                    title: 'All Services',
+                    filename: 'Services',
                     exportOptions: {
                         columns: [0, 1, 2, ]
                     }
@@ -239,8 +239,8 @@
                     extend: 'excel',
                     footer: false,
                     className: 'btn btn-sm btn-primary mb-1 float-right ml-1',
-                    title: 'All Roles',
-                    filename: 'Roles',
+                    title: 'All Services',
+                    filename: 'Services',
                     exportOptions: {
                         columns: [0, 1, 2, ]
                     }
@@ -252,8 +252,8 @@
                 {
                     extend: 'print',
                     className: 'btn btn-sm btn-primary mb-1 float-right ',
-                    title: 'All Roles',
-                    filename: 'Roles',
+                    title: 'All Services',
+                    filename: 'Services',
                     exportOptions: {
                         columns: [0, 1, 2, ]
                     },
@@ -263,7 +263,7 @@
             ],
 
             "order": [
-                [1, "asc"]
+                [0, "asc"]
             ],
             processing: true,
             serverSide: true,
@@ -386,9 +386,9 @@
                         CKEDITOR.instances.ckeditor2.setData("");
                         $('#catelogy_table').DataTable().ajax.reload();
 
-                        if ($('#action').val() == 'Edit') {
-                            $('#formModal').modal('hide');
-                        }
+                       
+                        $('#formModal').modal('hide');
+                        
                     }
                     $('#form_result').html(html);
                 }

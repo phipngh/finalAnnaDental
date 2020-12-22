@@ -17,7 +17,7 @@ class PatientController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Patient::latest()->get();
+            $data = Patient::orderBy('created_at')->get();
             return DataTables::of($data)
                 ->addColumn('action', function ($data) {
                     $button = '<button type="button" name="info" id="' . $data->id . '" class="info btn btn-info btn-sm rounded"><i class="fas fa-info"></i></button>';
@@ -26,10 +26,10 @@ class PatientController extends Controller
                     $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="' . $data->id . '" class="delete btn btn-danger btn-sm rounded"><i class="fas fa-trash"></i></button>';
                     return $button;
                 })
-                ->editColumn('name', function ($data) {
-                    $button = '<a href="/admin/patient/' . $data->id . '">' . $data->name . '</a>';
-                    return $button;
-                })
+                // ->editColumn('name', function ($data) {
+                //     $button = '<a href="/admin/patient/' . $data->id . '">' . $data->name . '</a>';
+                //     return $button;
+                // })
                 ->editColumn('info', function ($data) {
                     if ($data->info == '') {
                         return '<span class="badge badge-pill badge-warning">Empty</span>';
@@ -44,6 +44,15 @@ class PatientController extends Controller
                         return '<span class="badge badge-pill badge-success">Active</span>';
                     }
                 })
+                ->editColumn('name', function ($data) {
+                    if(CaseRecord::where('patient_id',$data->id)->exists()){
+                        return '<a href="/admin/patient/' . $data->id . '">' . $data->name . '</a>' . '<span class="badge badge-pill badge-success float-right">'.CaseRecord::where('patient_id',$data->id)->count() .'</span>';
+                    }else{
+                        return '<a href="/admin/patient/' . $data->id . '">' . $data->name . '</a>' . '<span class="badge badge-pill badge-danger float-right">New</span>';
+                    }
+                    //
+                    
+                })
                 ->rawColumns(['action', 'info', 'note', 'name', 'ordinal'])
                 ->addIndexColumn()
                 ->make(true);
@@ -55,7 +64,7 @@ class PatientController extends Controller
     {
         $rules = array(
             'name'    =>  'required|unique:patients',
-
+       
 
             // 'slug'    =>  'required',
         );
@@ -87,8 +96,8 @@ class PatientController extends Controller
             'phone'        =>  $request->phone,
             'address'        =>  $request->address,
             'image'        =>  $fullname,
-            'info'        =>  $request->info,
-            'note'        =>  $request->note,
+            'info'        =>  $request->info_cr,
+            'note'        =>  $request->note_cr,
         );
 
         Patient::create($form_data);
@@ -133,7 +142,8 @@ class PatientController extends Controller
         if ($request->hasFile('image')) {
 
             if (file_exists(public_path('upload/') . $patient->image)) {
-                if ($patient->image == 'DefaultAvatar.png') { } else {
+                if ($patient->image == 'DefaultAvatar.png') { }
+                 else {
                     unlink(public_path('upload/') . $patient->image);
                 }
             }
@@ -145,6 +155,9 @@ class PatientController extends Controller
             $image_resize->save(public_path('upload/' . $fullname));
             //$form_data = array('image' => $fullname);
             // $doctor->image = $fullname;
+            $form_data = array(
+                'image' => $fullname,
+            );
 
         }
 
@@ -155,9 +168,9 @@ class PatientController extends Controller
             'email'        =>  $request->email,
             'phone'        =>  $request->phone,
             'address'        =>  $request->address,
-            'image'        =>  $fullname,
-            'info'        =>  $request->info,
-            'note'        =>  $request->note,
+            'image' => $fullname,
+            'info'        =>  $request->info_cr,
+            'note'        =>  $request->note_cr,
 
         );
 

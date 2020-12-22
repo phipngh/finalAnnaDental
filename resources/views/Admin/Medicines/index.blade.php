@@ -265,8 +265,8 @@
                     extend: 'pdf',
                     footer: false,
                     className: 'btn btn-sm btn-primary mb-1 float-right ml-1',
-                    title: 'All Roles',
-                    filename: 'Roles',
+                    title: 'All Medicines',
+                    filename: 'Medicines',
                     exportOptions: {
                         columns: [0, 1, 2, 3]
                     }
@@ -275,8 +275,8 @@
                     extend: 'excel',
                     footer: false,
                     className: 'btn btn-sm btn-primary mb-1 float-right ml-1',
-                    title: 'All Roles',
-                    filename: 'Roles',
+                    title: 'All Medicines',
+                    filename: 'Medicines',
                     exportOptions: {
                         columns: [0, 1, 2, 3]
                     }
@@ -288,8 +288,8 @@
                 {
                     extend: 'print',
                     className: 'btn btn-sm btn-primary mb-1 float-right ',
-                    title: 'All Roles',
-                    filename: 'Roles',
+                    title: 'All Medicines',
+                    filename: 'Medicines',
                     exportOptions: {
                         columns: [0, 1, 2, 3]
                     },
@@ -298,9 +298,9 @@
 
             ],
 
-            "order": [
-                [1, "asc"]
-            ],
+            // "order": [
+            //     [0, "asc"]
+            // ],
             processing: true,
             serverSide: true,
             ajax: {
@@ -411,14 +411,13 @@
                 success: function(data) {
                     var html = '';
                     if (data.errors) {
-                        html = '<div class="alert alert-danger"><ul>';
+                        html = '<div class="alert alert-danger">';
                         for (var count = 0; count < data.errors.length; count++) {
-                            html += '<li style="display:inline;">' + data.errors[count] + '</li>';
-                            if (count % 2 == 0) {
-                                html += '&nbsp|&nbsp'
-                            }
+                            html += '<p>' + data.errors[count] + '</p>';
                         }
-                        html += '</ul></div>';
+                        html += '</div>';
+
+
                     }
                     if (data.success) {
                         // html = '<div class="alert alert-success">' + data.success + '</div>';
@@ -438,9 +437,9 @@
                         CKEDITOR.instances.ckeditor0.setData("");
                         $('#catelogy_table').DataTable().ajax.reload();
 
-                        if ($('#action').val() == 'Edit') {
+                      
                             $('#formModal').modal('hide');
-                        }
+                        
                     }
                     $('#form_result').html(html);
                 }
@@ -493,8 +492,8 @@
                 success: function(data) {
                     $('#name').val(data.result.name);
                     $('#price').val(data.result.price);
-                    $('#image').val(data.result.price);
-                    $('#manufacturer').val(data.result.price);
+                    $('#image').val(data.result.image);
+                    $('#manufacturer').val(data.result.manufacturer);
                     CKEDITOR.instances.ckeditor1.setData(data.result.description);
                     CKEDITOR.instances.ckeditor2.setData(data.result.note);
                     CKEDITOR.instances.ckeditor0.setData(data.result.dose);

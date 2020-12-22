@@ -70,7 +70,8 @@
                     <h4 class="modal-title col-12 text-center" id="myExtraLargeModalLabel"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
-                <div class="modal-body" style=" overflow-y: auto;">
+                <div class="modal-body"  style="
+    overflow-y: auto;">
                     <span id="form_result"></span>
                     <div class="form-group form-row">
                         <div class="col-3 text-center">
@@ -116,11 +117,11 @@
                     <div class="form-row">
                         <div class="col-6">
                             <label>Info</label>
-                            <textarea type="text" class="form-control" id="ckeditor1" name="info" placeholder="Enter Patient Info" rows="6"></textarea>
+                            <textarea type="text" class="form-control" id="info_cr" name="info_cr" placeholder="Enter Patient Info" rows="4"></textarea>
                         </div>
                         <div class="col-6">
                             <label>Note</label>
-                            <textarea type="text" class="form-control" id="ckeditor2" name="note" placeholder="Enter Patient Note" rows="4"></textarea>
+                            <textarea type="text" class="form-control" id="note_cr" name="note_cr" placeholder="Enter Patient Note" rows="4"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -149,8 +150,7 @@
                 <h4 class="modal-title col-12 text-center" id="myExtraLargeModalLabel">Patient</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
-            <div class="modal-body" style="height: 85vh;
-    overflow-y: auto;">
+            <div class="modal-body" style="overflow-y: auto;">
                 <div class="form-group form-row">
                     <div class="col-2 text-center">
 
@@ -195,11 +195,11 @@
                 <div class="form-row">
                     <div class="col-6">
                         <label>Info</label>
-                        <textarea type="text" class="form-control" id="ckeditor1_info" name="info_info" placeholder="Enter Patient Description" rows="6" disabled></textarea>
+                        <textarea type="text" class="form-control" id="info_info" name="info_info" placeholder="Enter Patient Description" rows="4" disabled></textarea>
                     </div>
                     <div class="col-6">
                         <label>Note</label>
-                        <textarea type="text" class="form-control" id="ckeditor2_info" name="note_info" placeholder="Enter Patient Note" rows="4" disabled></textarea>
+                        <textarea type="text" class="form-control" id="note_info" name="note_info" placeholder="Enter Patient Note" rows="4" disabled></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -245,20 +245,7 @@
 
 
 <script src="{{ asset('AdminSide/libs/ckeditor/ckeditor.js') }}"></script>
-<script>
-    CKEDITOR.replace('ckeditor1', {
-        height: 150
-    });
-    CKEDITOR.replace('ckeditor2', {
-        height: 150
-    });
-    CKEDITOR.replace('ckeditor1_info', {
-        height: 150,
-    });
-    CKEDITOR.replace('ckeditor2_info', {
-        height: 150
-    });
-</script>
+
 
 
 <script>
@@ -373,8 +360,9 @@
             $('#action').val('Add');
             $('#form_result').html('');
             $('#name').val('');
-            CKEDITOR.instances.ckeditor1.setData("");
-            CKEDITOR.instances.ckeditor2.setData("");
+            $('#info_cr').val('');
+            $('#note_cr').val('');
+            
 
             $('#image_show').attr('src', '');
             $('#image').val('');
@@ -409,9 +397,7 @@
                 action_url = "{{ route('admin.patient.update') }}";
             }
 
-            for (instance in CKEDITOR.instances) {
-                CKEDITOR.instances[instance].updateElement();
-            }
+            
 
             $.ajax({
 
@@ -420,11 +406,13 @@
                 },
                 url: action_url,
                 method: "POST",
-                //data: $(this).serialize(),
+                 //data: $(this).serialize(),
                 data: formData,
                 dataType: "json",
                 processData: false,
                 contentType: false,
+
+                
                 success: function(data) {
                     var html = '';
                     if (data.errors) {
@@ -447,13 +435,12 @@
                             timer: 1500
                         });
                         $('#sample_form')[0].reset();
-                        CKEDITOR.instances.ckeditor1.setData("");
-                        CKEDITOR.instances.ckeditor2.setData("");
+                        
                         $('#catelogy_table').DataTable().ajax.reload();
 
-                        if ($('#action').val() == 'Edit') {
+                      
                             $('#formModal').modal('hide');
-                        }
+                        
                     }
                     $('#form_result').html(html);
                 }
@@ -476,9 +463,8 @@
                     $('#email_info').val(data.result.email);
                     $('#phone_info').val(data.result.phone);
                     $('#address_info').val(data.result.address);
-
-                    CKEDITOR.instances.ckeditor1_info.setData(data.result.info);
-                    CKEDITOR.instances.ckeditor2_info.setData(data.result.note);
+                    $('#info_info').val(data.result.info);
+                    $('#note_info').val(data.result.note);
 
                     $('#image_info').attr('src', imgurl);
                     // var descHtml ='<div class="p-1 overflow-auto">';
@@ -529,10 +515,11 @@
                     $('#email').val(data.result.email);
                     $('#phone').val(data.result.phone);
                     $('#address').val(data.result.address);
+                    $('#info_cr').val(data.result.info);
+                    $('#note_cr').val(data.result.note);
                     $('#image_show').attr('src', imgurl);
 
-                    CKEDITOR.instances.ckeditor1.setData(data.result.info);
-                    CKEDITOR.instances.ckeditor2.setData(data.result.note);
+                    
                     //$('#description').val(data.result.description);
                     // $('#slug').val(data.result.slug);
                     $('#hidden_id').val(id);

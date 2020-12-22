@@ -60,7 +60,8 @@ class ProcessController extends Controller
     {
         if (request()->ajax()) {
             $data = Process::findOrFail($id);
-            return response()->json(['result' => $data]);
+            $calendar = Calendar::where('process_id',$data->id)->first();
+            return response()->json(['result' => $data,'calendar'=>$calendar]);
         }
     }
 

@@ -68,7 +68,11 @@
                             <h5>Birthday</h5>
                             <p class="ml-4 h4 text-primary">
                                 <!-- {{$patient->birthday}} -->
+                                @if($patient->birthday)
                                 {{date('d-m-Y', strtotime($patient->birthday))}}
+                                
+                                
+                                @endif
                             </p>
                         </div>
 
@@ -190,7 +194,7 @@
                             <label>Dortor</label>
                             <select class="custom-select" name="doctor_id_create" id="doctor_id_create" place>
                                 @foreach($doctors as $doctor )
-                                <option value="{{$doctor->id}}">{{$doctor->name}}</option>
+                                <option value="{{$doctor->id}}">Dr. {{$doctor->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -251,7 +255,8 @@
                     <h4 class="modal-title col-12 text-center" id="myExtraLargeModalLabel"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
-                <div class="modal-body" style=" overflow-y: auto;">
+                <div class="modal-body"  style="
+    overflow-y: auto;">
                     <span id="form_result"></span>
                     <div class="form-group form-row">
                         <div class="col-3 text-center">
@@ -296,11 +301,11 @@
                     <div class="form-row">
                         <div class="col-6">
                             <label>Info</label>
-                            <textarea type="text" class="form-control" id="ckeditor1" name="info" placeholder="Enter Patient Info" rows="6"></textarea>
+                            <textarea type="text" class="form-control" id="info" name="info" placeholder="Enter Patient Info" rows="4"></textarea>
                         </div>
                         <div class="col-6">
                             <label>Note</label>
-                            <textarea type="text" class="form-control" id="ckeditor2" name="note" placeholder="Enter Patient Note" rows="4"></textarea>
+                            <textarea type="text" class="form-control" id="note" name="note" placeholder="Enter Patient Note" rows="4"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -323,12 +328,7 @@
 <script src="{{ asset('AdminSide/libs/ckeditor/ckeditor.js') }}"></script>
 
 <script>
-    CKEDITOR.replace('ckeditor1', {
-        height: 150
-    });
-    CKEDITOR.replace('ckeditor2', {
-        height: 150
-    });
+    
     CKEDITOR.replace('ckeditor1_cr', {
         height: 150
     });
@@ -368,12 +368,13 @@
                     $('#birthday').val(data.result.birthday);
                     $('#sex').val(data.result.sex);
                     $('#email').val(data.result.email);
+                    $('#info').val(data.result.info);
+                    $('#note').val(data.result.note);
                     $('#phone').val(data.result.phone);
                     $('#address').val(data.result.address);
                     $('#image_show').attr('src', imgurl);
 
-                    CKEDITOR.instances.ckeditor1.setData(data.result.info);
-                    CKEDITOR.instances.ckeditor2.setData(data.result.note);
+                    
                     //$('#description').val(data.result.description);
                     // $('#slug').val(data.result.slug);
                     $('#hidden_id').val(id);
@@ -390,12 +391,6 @@
             event.preventDefault();
             var formData = new FormData($(this)[0]);
             var id = $(this).attr('id');
-
-
-
-            for (instance in CKEDITOR.instances) {
-                CKEDITOR.instances[instance].updateElement();
-            }
 
             $.ajax({
 

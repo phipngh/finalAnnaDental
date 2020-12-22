@@ -15,7 +15,7 @@ class DoctorController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Doctor::latest()->get();
+            $data = Doctor::orderBy('created_at')->get();
             return DataTables::of($data)
                 ->addColumn('action', function ($data) {
                     $button = '<button type="button" name="info" id="' . $data->id . '" class="info btn btn-info btn-sm rounded"><i class="fas fa-info"></i></button>';
@@ -24,7 +24,7 @@ class DoctorController extends Controller
                     return $button;
                 })
                 ->editColumn('description', function ($data) {
-                    if ($data->description == '') {
+                    if ($data->info == '') {
                         return '<span class="badge badge-pill badge-warning">Empty</span>';
                     } else {
                         return '<span class="badge badge-pill badge-success">Active</span>';
@@ -53,7 +53,7 @@ class DoctorController extends Controller
     {
         $rules = array(
             'name'    =>  'required|unique:doctors',
-
+            
             // 'slug'    =>  'required',
         );
 
@@ -72,7 +72,7 @@ class DoctorController extends Controller
             $image_resize->save(public_path('upload/' . $fullname));
             //$image_resize->move('upload',$fullname);
         } else {
-            $fullname = 'DefaultAvatar.png';
+            $fullname = 'doctor.png';
         }
 
         $form_data = array(
@@ -128,10 +128,13 @@ class DoctorController extends Controller
         if ($request->hasFile('image')) {
 
             if (file_exists(public_path('upload/') . $doctor->image)) {
-                if ($doctor->image == 'DefaultAvatar.png') { } else {
+                if ($doctor->image == 'doctor.png') { }
+                else {
                     unlink(public_path('upload/') . $doctor->image);
                 }
             }
+
+            
 
             $image = $request->image;
             $fullname = uniqid() . '_' . $image->getClientOriginalname();
@@ -140,7 +143,9 @@ class DoctorController extends Controller
             $image_resize->save(public_path('upload/' . $fullname));
             //$form_data = array('image' => $fullname);
             // $doctor->image = $fullname;
-
+            $form_data = array(
+                'image' => $fullname,
+            );
         }
 
 

@@ -30,7 +30,7 @@
 
 <div class="row">
     <div class="col-md-12 text-center">
-        <h4 class="text-capitalize">{{$caserecord->name}}</h4>
+        <h4 class="text-capitalize">#{{$caserecord->id}}-{{$caserecord->name}}</h4>
     </div>
 </div>
 
@@ -162,7 +162,6 @@
 
                             <td class="font-weight-bold">Total</td>
                             <td></td>
-                            <td></td>
                             @php
                             $total = 0;
                             $datas = \App\CaseRecordDetail::where('case_record_id',$caserecord->id)->get();
@@ -171,6 +170,8 @@
                             @endphp
 
                             <td id="total" class="font-weight-bold">{{$total}}</td>
+                            <td></td>
+                            
                             <td></td>
                         </tr>
                     </tfoot>
@@ -1066,7 +1067,7 @@
                         });
                         $('#crdetail').DataTable().ajax.reload();
                         $('#crDetailForm')[0].reset();
-
+                        $('#quantity_crDetail').val(1);
                         if ($('#action_crDetail').val() == 'Edit') {
                             $('#crDetailModal').modal('hide');
                         }
@@ -1087,7 +1088,8 @@
                 url: "/admin/caserecorddetail/" + id + "/edit",
                 dataType: "json",
                 success: function(data) {
-                    $('#service_id_crDetail').val(data.result.service_id);
+                    $("#service_id_crDetail").val(data.result.service_id);
+                    
                     $('#note_crDetail').val(data.result.note);
                     $('#quantity_crDetail').val(data.result.quantity);
                     $('#hidden_id_crDetail').val(id);
@@ -1454,6 +1456,8 @@
                 url: "/admin/process/" + id + "/edit",
                 dataType: "json",
                 success: function(data) {
+                    console.log(data.calendar.color);
+                    $('#color_crProcess').val(data.calendar.color);
                     $('#title_crProcess').val(data.result.title);
                     $('#description_crProcess').val(data.result.description);
                     $('#note_crProcess').val(data.result.note);

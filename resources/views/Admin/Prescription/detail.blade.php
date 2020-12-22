@@ -2,6 +2,22 @@
 
 @section('content')
 <div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="{{route('admin.index')}}">AnnaDental</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('admin.patient.detail',$pescr->caserecord->patient->id)}}">{{$pescr->caserecord->patient->name}}</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('admin.caserecord.detail',$pescr->caserecord->id)}}">{{$pescr->caserecord->name}}</a></li>
+                    <!-- <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li> -->
+                    <li class="breadcrumb-item active">Invoice #{{$pescr->id}}</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Prescription Detail</h4>
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-12">
         <div class="card-box">
             <div class="clearfix">
@@ -146,7 +162,6 @@
             <div class="hidden-print mt-4 mb-4">
                 <div class="text-right d-print-none">
                     <a href="javascript:window.print()" class="btn btn-primary waves-effect waves-light"><i class="fa fa-print mr-1"></i> Print</a>
-                    <a href="#" class="btn btn-info waves-effect waves-light">Submit</a>
                 </div>
             </div>
         </div>
