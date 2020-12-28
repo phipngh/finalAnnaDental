@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use App\Doctor;
+use App\CaseRecord;
 use App\Helper\Helper as Helper;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -37,12 +38,14 @@ class DoctorController extends Controller
                         return '<span class="badge badge-pill badge-success">Active</span>';
                     }
                 })
-                // ->editColumn('image', function ($data) {
-                //     $url = url('upload/' . $data->image);
-                //     $image = '<img style="width: 70px;" src="' . $url . '" alt="" id="image_info" class="rounded-circle">';;
-                //     return $image;
-                // })
-                ->rawColumns(['action', 'description', 'note', 'ordinal', 'image'])
+                ->editColumn('name', function ($data) {
+                    if(CaseRecord::where('doctor_id',$data->id)->exists()){
+                        return '<a href="/admin/doctor/' . $data->id . '">' . $data->name . '</a>' . '<span class="badge badge-pill badge-success float-right">'.CaseRecord::where('doctor_id',$data->id)->count() .'</span>';
+                    }else{
+                        return '<a href="/admin/doctor/' . $data->id . '">' . $data->name . '</a>' . '<span class="badge badge-pill badge-danger float-right">New</span>';
+                    }       
+                })
+                ->rawColumns(['action', 'description', 'note', 'ordinal', 'name'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -172,5 +175,14 @@ class DoctorController extends Controller
     {
         $data = Doctor::findOrFail($id);
         $data->delete();
+    }
+
+    public function detail($id)
+    {
+        $doctor = Doctor::findOrFail($id);   
+        $caserecords = CaseRecord::where('doctor_id', $id)->get();
+        //$doctor_cr = CaseRecord::where('doctor_id',$id)->get();
+        $doctor_crs = CaseRecord::where('doctor_id', $id)->select('patient_id')->distinct()->get();
+        return view('Admin.Doctors.detail', compact('doctor', 'caserecords','doctor_crs'));
     }
 }

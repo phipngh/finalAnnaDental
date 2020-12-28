@@ -57,6 +57,13 @@
                 </li>
 
                 <li>
+                    <a href="{{route('admin.caserecord')}}">
+                        <i class="fas fa-user-injured"></i>
+                        <span> Case Record </span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="{{route('admin.calendar')}}">
                         <i class="far fa-calendar-alt"></i>
                         <span> Calendar </span>

@@ -18,6 +18,32 @@ use App\Service;
 class CaseRecordController extends Controller
 {
 
+    public function index(){
+
+        $caserecords = CaseRecord::orderBy('created_at')->paginate(20);
+
+        $doctors = Doctor::all();
+
+        return view('Admin.CaseRecord.index',compact('caserecords','doctors'));
+    }
+
+    public function search(Request $request){
+
+        $request->validate([
+            'startDate'=>'required',
+            'endDate'=>'required|after_or_equal:startDate',
+        ]);
+
+        $startDate = $request['startDate'];
+        $endDate = $request['endDate'];
+
+        $caserecords = CaseRecord::orderBy('created_at')->whereDate('created_at','>=',$startDate)->whereDate('created_at','<=',$endDate)->get();
+        $doctors = Doctor::all();
+
+        return view('Admin.CaseRecord.searchDate',compact('caserecords','startDate','endDate','doctors'));
+    }
+
+
     public function store(Request $request)
     {
         $rules = array(

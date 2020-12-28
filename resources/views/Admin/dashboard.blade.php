@@ -41,7 +41,7 @@
     <div class="col-md-6 col-xl-3">
         <div class="card-box tilebox-one">
             <i class="fe-layers float-right"></i>
-            <h5 class="text-muted text-uppercase mb-3 mt-0">Case Record</h5>
+            <h5 class="text-muted text-uppercase mb-3 mt-0">Case Records in 2020</h5>
             @php
             $crCurrYear= App\CaseRecord::where('created_at','>',Carbon\Carbon::now()->startOfYear())->where('created_at','<',Carbon\Carbon::now()->endOfYear())->count();
             $crAll = App\CaseRecord::all()->count();
@@ -58,7 +58,7 @@
     <div class="col-md-6 col-xl-3">
         <div class="card-box tilebox-one">
             <i class="fe-tag float-right"></i>
-            <h5 class="text-muted text-uppercase mb-3 mt-0">Patient</h5>
+            <h5 class="text-muted text-uppercase mb-3 mt-0">Patients in 2020</h5>
             @php
             $ptCurrYear= App\Patient::where('created_at','>',Carbon\Carbon::now()->startOfYear())->where('created_at','<',Carbon\Carbon::now()->endOfYear())->count();
             $ptAll = App\Patient::all()->count();
@@ -75,7 +75,7 @@
     <div class="col-md-6 col-xl-3">
         <div class="card-box tilebox-one">
             <i class="fe-briefcase float-right"></i>
-            <h5 class="text-muted text-uppercase mb-3 mt-0">Subcribler</h5>
+            <h5 class="text-muted text-uppercase mb-3 mt-0">Subcribers in 2020</h5>
             @php
             $subCurrYear= App\Subcrible::where('created_at','>',Carbon\Carbon::now()->startOfYear())->where('created_at','<',Carbon\Carbon::now()->endOfYear())->count();
             $subAll = App\Subcrible::all()->count();

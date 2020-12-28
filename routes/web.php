@@ -105,7 +105,7 @@ Route::group(
         Route::get('doctor/{id}/edit', 'DoctorController@edit')->name('doctor.edit');
         Route::post('doctor/update', 'DoctorController@update')->name('doctor.update');
         Route::get('doctor/destroy/{id}', 'DoctorController@destroy');
-
+        Route::get('doctor/{id}', 'DoctorController@detail')->name('doctor.detail');
         //patient Page 
         Route::get('patient', 'PatientController@index')->name('patient');
         Route::post('patient', 'PatientController@store')->name('patient.store');
@@ -118,6 +118,8 @@ Route::group(
         Route::get('patient/{id}', 'PatientController@detail')->name('patient.detail');
 
         //Case Record Page     
+        Route::get('caserecord', 'CaseRecordController@index')->name('caserecord');
+        Route::post('caserecord/search', 'CaseRecordController@search')->name('caserecord.search');
         Route::post('caserecord', 'CaseRecordController@store')->name('caserecord.store');
         Route::get('caserecord/{id}/edit', 'CaseRecordController@edit')->name('caserecord.edit');
         Route::post('caserecord/update', 'CaseRecordController@update')->name('caserecord.update');
